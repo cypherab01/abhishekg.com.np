@@ -1,8 +1,12 @@
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
-import React from "react";
+
+export const revalidate = 60 * 60 * 24 * 7; // 7 days
+
+export const dynamicParams = true;
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
   return (
     <>
       <div className="flex flex-col items-center justify-center gap-4">
@@ -31,8 +35,7 @@ const Footer = () => {
         </div>
         <div>
           <p className="text-sm">
-            &copy; {new Date().getFullYear()} Abhishek Ghimire · All Rights
-            Reserved.
+            &copy; {currentYear} Abhishek Ghimire · All Rights Reserved.
           </p>
         </div>
       </div>

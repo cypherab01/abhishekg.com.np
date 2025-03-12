@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import Navbar from "@/components/(Navbar)/page";
-import Footer from "@/components/(Footer)/page";
+import Navbar from "@/components/layouts/Navbar";
+import Footer from "@/components/layouts/Footer";
 import { Separator } from "@/components/ui/separator";
 
 const ubuntu = Ubuntu({

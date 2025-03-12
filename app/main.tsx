@@ -2,7 +2,10 @@ import Image from "next/image";
 import React from "react";
 import heroImage from "@/public/abhishek-ghimire.jpg";
 
-const Hero = () => {
+const Hero = async () => {
+  // promise of 2 seconds
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
   return (
     <>
       <div className="container mx-auto">
