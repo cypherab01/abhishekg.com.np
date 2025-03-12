@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${ubuntu.className} antialiased mx-auto max-w-screen-md`}
+        className={`${ubuntu.className} antialiased mx-auto max-w-(--breakpoint-md)`}
       >
         <ThemeProvider
           attribute="class"
