@@ -50,7 +50,7 @@ export function MobileNav() {
           </svg>
           <span className="sr-only">Toggle Menu</span>
           <span className="flex items-center justify-between flex-1 h-8 px-2 text-sm font-normal border rounded-md shadow-none bg-muted/50 text-muted-foreground">
-            Search documentation...
+            Search sections...
           </span>
         </Button>
       </DrawerTrigger>

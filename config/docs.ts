@@ -1,11 +1,3 @@
-import { MainNavItem, SidebarNavItem } from "@/types/nav";
-
-export interface DocsConfig {
-  mainNav: MainNavItem[];
-  sidebarNav: SidebarNavItem[];
-  chartsNav: SidebarNavItem[];
-}
-
 export const docsConfig = {
   mainNav: [
     {
@@ -19,7 +11,7 @@ export const docsConfig = {
   ],
   sidebarNav: [
     {
-      title: "Getting Started",
+      title: "Sections",
       items: [
         {
           title: "Introduction",

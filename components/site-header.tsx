@@ -31,7 +31,7 @@ export function SiteHeader() {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <Icons.logo className="w-4 h-4" />
+                  <Icons.gitHub className="w-4 h-4" />
                   <span className="sr-only">GitHub</span>
                 </Link>
               </Button>

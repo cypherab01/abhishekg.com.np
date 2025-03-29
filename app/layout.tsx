@@ -10,6 +10,8 @@ import { SiteHeader } from "@/components/site-header";
 import { SideNav } from "@/components/side-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { docsConfig } from "@/config/docs";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: siteConfig.name,

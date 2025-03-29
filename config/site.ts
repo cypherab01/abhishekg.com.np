@@ -9,6 +9,7 @@ export const siteConfig = {
     twitter: "https://x.com/cypherab01",
     github: "https://github.com/cypherab01/abhishekg.com.np",
     githubProfile: "https://github.com/cypherab01",
+    resume: "https://www.overleaf.com/read/pwbbqtpthxxr#946f81",
   },
 };
 
