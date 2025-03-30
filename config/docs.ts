@@ -20,11 +20,11 @@ export const docsConfig = {
         },
         {
           title: "About Me",
-          href: "/about-me",
+          href: "/about",
           items: [],
         },
         {
-          title: "Projects & Portfolio",
+          title: "Projects",
           href: "/projects",
           items: [],
         },

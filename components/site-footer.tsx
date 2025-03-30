@@ -6,10 +6,10 @@ import Link from "next/link";
 export async function SiteFooter() {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="border-grid border-t py-6 md:py-0">
+    <footer className="py-6 border-t border-grid md:py-0">
       <div className="container-wrapper">
         <div className="container py-4">
-          <div className="text-balance text-center text-sm leading-loose text-muted-foreground">
+          <div className="hidden text-sm leading-loose text-center text-balance text-muted-foreground md:block">
             Built with <span className="font-medium">Next.js</span>,{" "}
             <span className="font-medium">shadcn/ui </span>
             and <span className="font-medium">Tailwind CSS</span>. Coded in
@@ -34,7 +34,8 @@ export async function SiteFooter() {
             </Link>
             .
           </div>
-          <div className="text-balance text-center text-sm leading-loose text-muted-foreground">
+
+          <div className="text-sm leading-loose text-center text-balance text-muted-foreground">
             © 2018 - {currentYear} Abhishek Ghimire · All rights reserved.
           </div>
         </div>
