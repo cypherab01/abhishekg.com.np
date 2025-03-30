@@ -133,7 +133,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               </div>
             </div>
           </ThemeProvider>
-          <Toaster />
+          <Toaster richColors position="top-center" />
         </body>
       </html>
     </>

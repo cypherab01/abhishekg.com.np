@@ -23,4 +23,19 @@ const getSkills = () => {
 
 console.log(getSkills());
 `,
+  contact: `const contactDetails = {
+    name: "Abhishek Ghimire",
+    email: "hi@abhishekg.com.np",
+    mobile: "+977-9847526298",
+    location: "Balkhu, Kathmandu",
+    linkedIn: "linkedin.com/in/cypherab01",
+    github: "github.com/cypherab01",
+  };
+  
+function reachOut() {
+    console.log(\`Reach out to me via email at \${contactDetails.email} or connect on LinkedIn: \${contactDetails.linkedIn}\`);
+  }
+  
+reachOut();
+  `,
 };

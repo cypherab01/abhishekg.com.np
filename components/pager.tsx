@@ -20,7 +20,7 @@ const Pager = ({
 }) => {
   const pathname = usePathname();
   return (
-    <div className="flex flex-row items-center justify-between mt-8">
+    <div className="flex flex-row items-center justify-between w-full mt-8">
       {prevHref !== pathname && (
         <Button variant="ghost" asChild>
           <Link href={prevHref}>

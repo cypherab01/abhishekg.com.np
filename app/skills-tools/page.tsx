@@ -34,7 +34,6 @@ const SkillsToolsPage = () => {
             key={item.title}
             className="p-4 py-2 border border-secondary bg-secondary-foreground"
           >
-            {/* @ts-expect-error - dynamic icon access */}
             {Icons[item.icon as keyof typeof Icons]?.({
               className: "mr-2 size-4",
             })}
