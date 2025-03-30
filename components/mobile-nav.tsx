@@ -76,7 +76,7 @@ export function MobileNav() {
                 <div key={index} className="flex flex-col gap-4 pt-6">
                   <h4 className="text-xl font-medium">{item.title}</h4>
                   {item?.items?.length &&
-                    item.items.map((item) => (
+                    item.items.map((item: any) => (
                       <React.Fragment key={item.href}>
                         {!item.disabled &&
                           (item.href ? (
