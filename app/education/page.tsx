@@ -61,10 +61,6 @@ const EducationPage = () => {
             specializing in programming, web development, and software
             engineering.
           </p>
-          <p className="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
-            My coursework includes Data Structures, Web Technologies, and
-            Software Project Management.
-          </p>
 
           <HoverCard>
             <HoverCardTrigger className="cursor-pointer ">
