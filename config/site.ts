@@ -12,6 +12,7 @@ export const siteConfig = {
     resume: "https://www.overleaf.com/read/pwbbqtpthxxr#946f81",
     email: "mailto:hi@abhishekg.com.np",
   },
+  bitinfonepal: "https://bitinfonepal.com",
 };
 
 export type SiteConfig = typeof siteConfig;

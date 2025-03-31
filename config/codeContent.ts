@@ -38,4 +38,17 @@ function reachOut() {
   
 reachOut();
   `,
+  education: `const BIT_Coursework = [
+    "C Programming",
+    "Data Structures",
+    "Web Technology I & II",
+    "Software Engineering",
+    "Artificial Intelligence",
+    "Database Administration",
+    "Advanced Java Programming",
+    "e-Commerce",
+    "Cloud Computing",
+  ];
+  
+console.log("Skills built through coursework:", BIT_Coursework.join(", "));`,
 };

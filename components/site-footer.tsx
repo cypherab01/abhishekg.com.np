@@ -10,20 +10,21 @@ export async function SiteFooter() {
       <div className="container-wrapper">
         <div className="container py-4">
           <div className="hidden text-sm leading-loose text-center text-balance text-muted-foreground md:block">
-            Built with <span className="font-medium">Next.js</span>,{" "}
+            © 2018 - {currentYear} · Built with{" "}
+            <span className="font-medium">Next.js</span>,{" "}
             <span className="font-medium">shadcn/ui </span>
-            and <span className="font-medium">Tailwind CSS</span>. Coded in
+            and <span className="font-medium">Tailwind CSS</span> · Coded in
             <span className="font-medium"> Cursor</span> and deployed with
-            <span className="font-medium"> Vercel</span>. Developed by{" "}
+            <span className="font-medium"> Vercel</span> · Developed by{" "}
             <Link
               href={siteConfig.links.githubProfile}
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"
             >
-              Abhishek Ghimire
+              Abhishek Ghimire{" "}
             </Link>
-            . Source code available on{" "}
+            · Source code available on{" "}
             <Link
               href={siteConfig.links.github}
               target="_blank"
@@ -32,11 +33,6 @@ export async function SiteFooter() {
             >
               GitHub
             </Link>
-            .
-          </div>
-
-          <div className="text-sm leading-loose text-center text-balance text-muted-foreground">
-            © 2018 - {currentYear} Abhishek Ghimire · All rights reserved.
           </div>
         </div>
       </div>
