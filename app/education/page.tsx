@@ -138,13 +138,13 @@ const EducationPage = () => {
         </li>
       </ol>
 
-      <CodeSnippet code={code.education} title="coursework.ts" />
+      <CodeSnippet code={code.educationJourney} title="educationJourney.ts" />
 
       <Pager
         prevHref="/experience"
-        nextHref="/testimonials"
+        nextHref="/contact"
         prevTitle="Experience"
-        nextTitle="Testimonials"
+        nextTitle="Contact"
       />
     </>
   );
