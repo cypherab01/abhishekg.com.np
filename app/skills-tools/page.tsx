@@ -15,6 +15,9 @@ const SkillsToolsPage = () => {
     <>
       <PageHeader>
         <PageHeaderHeading>Skills & Tools</PageHeaderHeading>
+        <PageHeaderHeading className="mt-2 text-muted-foreground">
+          Learned by coding all night and debugging all day!
+        </PageHeaderHeading>
         <PageHeaderDescription>
           As a full-stack Software Engineer, I specialize in building scalable
           web applications using modern technologies such as Next.js, React, and

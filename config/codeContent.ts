@@ -51,4 +51,30 @@ reachOut();
   ];
   
 console.log("Skills built through coursework:", BIT_Coursework.join(", "));`,
+  experience: `const experience = [
+    {
+      role: "Senior Coffee Consumer",
+      company: "Remote Office (My Desk)",
+      duration: "Forever",
+      skills: ["Caffeine Management", "Bug Staring", "Keyboard Jamming"],
+    },
+    {
+      role: "Full-Stack Developer",
+      company: "Stack Overflow Solutions Inc.",
+      duration: "When Google is Available",
+      skills: ["Copy-Pasting", "Fixing Bugs with Console.log", "Deploying & Praying"],
+    },
+    {
+      role: "Intern",
+      company: "My Own Side Projects",
+      duration: "Since Birth",
+      skills: ["Breaking Code", "Googling Errors", "Naming Variables Creatively"],
+    },
+  ];
+  
+  experience.forEach((job) => {
+    console.log(
+      \`👨‍💻 \${job.role} at \${job.company} (\${job.duration}) \n🚀 Skills: \${job.skills.join(", ")}\`
+    );
+  })`,
 };
