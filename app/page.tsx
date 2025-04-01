@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { code } from "@/config/codeContent";
 import { siteConfig } from "@/config/site";
 import Link from "next/link";
-import { ArrowDownToLine, ExternalLink, Mail } from "lucide-react";
+import { ExternalLink, Mail } from "lucide-react";
 
 const IntroductionPage = async () => {
   return (

@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useActionState, useEffect, useState, Suspense } from "react";
-import { sendMessageServerAction } from "@/app/actions/actions";
 import { toast } from "sonner";
+import { sendMessageServerAction } from "../actions/sendMailServerAction";
 
 const labelWithRequiredStar = ({ label }: { label: string }) => {
   return (

@@ -13,6 +13,7 @@ export const siteConfig = {
     githubProfile: "https://github.com/cypherab01",
     resume: "https://www.overleaf.com/read/pwbbqtpthxxr#946f81",
     email: "mailto:hi@abhishekg.com.np",
+    githubUsername: "cypherab01",
   },
   bitinfonepal: "https://bitinfonepal.com",
   projects: {

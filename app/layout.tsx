@@ -10,8 +10,8 @@ import { SiteHeader } from "@/components/site-header";
 import { SideNav } from "@/components/side-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { docsConfig } from "@/config/docs";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
+import { setViewsServerAction } from "./actions/getAndSetViewsServerAction";
+import { getLoveCountServerAction } from "./actions/getAndSetLoveCountServerAction";
 
 export const metadata: Metadata = {
   title: siteConfig.name,
@@ -76,7 +76,18 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+async function loadStats() {
+  try {
+    await setViewsServerAction();
+    await getLoveCountServerAction();
+  } catch (error) {
+    console.error("Failed to load stats:", error);
+    return;
+  }
+}
+
+export default async function RootLayout({ children }: RootLayoutProps) {
+  await loadStats();
   return (
     <>
       <html lang="en" suppressHydrationWarning>

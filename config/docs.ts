@@ -53,6 +53,11 @@ export const docsConfig = {
           href: "/contact",
           items: [],
         },
+        {
+          title: "Stats",
+          href: "/stats",
+          items: [],
+        },
       ],
     },
   ],
