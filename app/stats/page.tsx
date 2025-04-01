@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import {
   PageHeader,
   PageHeaderDescription,
@@ -22,10 +24,10 @@ const StatCard = ({
     className={`card border border-border/40 rounded-xl p-4 w-full h-full transition-transform duration-200 hover:scale-105 ${className}`}
   >
     <div className="card-content">
-      <h3 className="card-title text-lg font-semibold tracking-tight text-muted-foreground">
+      <h3 className="text-lg font-semibold tracking-tight card-title text-muted-foreground">
         {title}
       </h3>
-      <span className="card-value text-5xl leading-tight font-bold tracking-tight text-muted-foreground">
+      <span className="text-5xl font-bold leading-tight tracking-tight card-value text-muted-foreground">
         {value}
       </span>
     </div>
@@ -75,12 +77,12 @@ const Stats = async () => {
         </PageHeaderDescription>
       </PageHeader>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        <div className="group flex flex-col p-8 bg-card/50 backdrop-blur-sm text-card-foreground rounded-xl border border-border/40 hover:border-border/80 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <div className="grid grid-cols-1 gap-6 mt-8 md:grid-cols-2">
+        <div className="relative flex flex-col p-8 overflow-hidden transition-all duration-300 border shadow-sm group bg-card/50 backdrop-blur-sm text-card-foreground rounded-xl border-border/40 hover:border-border/80 hover:shadow-md">
+          <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-br from-primary/5 to-transparent group-hover:opacity-100"></div>
 
-          <div className="space-y-2 relative z-10">
-            <h3 className="text-xl font-semibold tracking-tight flex items-center gap-2">
+          <div className="relative z-10 space-y-2">
+            <h3 className="flex items-center gap-2 text-xl font-semibold tracking-tight">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -101,7 +103,7 @@ const Stats = async () => {
             <div className="h-[1px] w-full bg-muted/60"></div>
           </div>
 
-          <div className="flex flex-col items-center justify-center flex-1 py-6 relative z-10">
+          <div className="relative z-10 flex flex-col items-center justify-center flex-1 py-6">
             {views.success === true ? (
               <p className="text-5xl font-bold text-primary">{views.message}</p>
             ) : (
@@ -117,11 +119,11 @@ const Stats = async () => {
           </div>
         </div>
 
-        <div className="group flex flex-col p-8 bg-card/50 backdrop-blur-sm text-card-foreground rounded-xl border border-border/40 hover:border-border/80 shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div className="relative flex flex-col p-8 overflow-hidden transition-all duration-300 border shadow-sm group bg-card/50 backdrop-blur-sm text-card-foreground rounded-xl border-border/40 hover:border-border/80 hover:shadow-md">
+          <div className="absolute inset-0 transition-opacity duration-500 opacity-0 bg-gradient-to-br from-rose-500/5 to-transparent group-hover:opacity-100"></div>
 
-          <div className="space-y-2 relative z-10">
-            <h3 className="text-xl font-semibold tracking-tight flex items-center gap-2">
+          <div className="relative z-10 space-y-2">
+            <h3 className="flex items-center gap-2 text-xl font-semibold tracking-tight">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"
@@ -141,11 +143,11 @@ const Stats = async () => {
             <div className="h-[1px] w-full bg-muted/60"></div>
           </div>
 
-          <div className="flex flex-col items-center justify-center flex-1 py-4 relative z-10">
+          <div className="relative z-10 flex flex-col items-center justify-center flex-1 py-4">
             {loveCount.success === true ? (
               <>
                 <p
-                  className="text-5xl font-bold text-rose-500 py-6"
+                  className="py-6 text-5xl font-bold text-rose-500"
                   id="love-count"
                 >
                   {loveCount.count}
@@ -170,12 +172,12 @@ const Stats = async () => {
       </PageHeader>
 
       {/* GitHub Graphs */}
-      <div className="mb-8 w-full flex justify-center items-center border border-border/40 rounded-xl p-4">
+      <div className="flex items-center justify-center w-full p-4 mb-8 border border-border/40 rounded-xl">
         <GitHubGraphs />
       </div>
 
       <div className="mb-8">
-        <div className="card-container grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 card-container md:grid-cols-3">
           {githubStatCards.map((card, index) => (
             <StatCard
               key={index}
