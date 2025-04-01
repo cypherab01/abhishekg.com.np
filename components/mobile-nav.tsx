@@ -14,6 +14,9 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { ModeSwitcher } from "./mode-switcher";
+import { siteConfig } from "@/config/site";
+import { Icons } from "./icons";
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false);
@@ -57,6 +60,20 @@ export function MobileNav() {
       <DrawerTitle>
         <DrawerContent className="max-h-[80svh] p-0">
           <div className="p-6 overflow-auto">
+            <div className="flex items-center justify-between gap-2 my-6">
+              <h4 className="text-xl font-medium">Abhishek Ghimire</h4>
+              <div className="flex items-center justify-center gap-4">
+                <ModeSwitcher className="size-6" />
+                <Link
+                  href={siteConfig.links.github}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Icons.gitHub className="size-6" />
+                  <span className="sr-only">GitHub</span>
+                </Link>
+              </div>
+            </div>
             <div className="flex flex-col space-y-3">
               {docsConfig.mainNav?.map(
                 (item) =>
@@ -100,6 +117,21 @@ export function MobileNav() {
                 </div>
               ))}
             </div>
+            <div className="flex flex-col gap-2">
+              <div className="items-center hidden gap-2 ml-auto md:flex-1 md:justify-end md:flex">
+                <Link
+                  href={siteConfig.links.github}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Icons.gitHub className="w-4 h-4" />
+                  <span className="sr-only">GitHub</span>
+                </Link>
+              </div>
+            </div>
+            <p className="text-xs text-center text-muted-foreground">
+              — End of the menu —
+            </p>
           </div>
         </DrawerContent>
       </DrawerTitle>
@@ -128,7 +160,7 @@ function MobileLink({
         router.push(href.toString());
         onOpenChange?.(false);
       }}
-      className={cn("text-[1.15rem]", className)}
+      className={cn("text-[1.15rem] border-b border-border pb-2", className)}
       {...props}
     >
       {children}
