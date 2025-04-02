@@ -3,7 +3,7 @@ export const code = {
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  return NextResponse.json({ message: "Welcome to my portfolio!" });
+  return NextResponse.json({ message: "Welcome to my portfolio!" }, { status: 200 });
 }
 `,
 

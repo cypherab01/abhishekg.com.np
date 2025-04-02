@@ -10,6 +10,7 @@ import { getLoveCountServerAction } from "../actions/getAndSetLoveCountServerAct
 import LoveButtonComponent from "./LoveButtonComponent";
 import { getGitHubStatsServerAction } from "../actions/getGitHubStatsServerAction";
 import GitHubGraphs from "./GitHubGraphs";
+import Pager from "@/components/pager";
 
 const StatCard = ({
   title,
@@ -27,7 +28,7 @@ const StatCard = ({
       <h3 className="text-lg font-semibold tracking-tight card-title text-muted-foreground">
         {title}
       </h3>
-      <span className="text-5xl font-bold leading-tight tracking-tight card-value text-muted-foreground">
+      <span className="text-5xl font-bold leading-tight tracking-tight card-value">
         {value}
       </span>
     </div>
@@ -188,6 +189,13 @@ const Stats = async () => {
           ))}
         </div>
       </div>
+
+      <Pager
+        prevHref="/contact"
+        nextHref="/"
+        prevTitle="Contact"
+        nextTitle="Home"
+      />
     </>
   );
 };
