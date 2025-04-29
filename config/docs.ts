@@ -6,7 +6,7 @@ export const docsConfig = {
     },
     {
       title: "Blog",
-      href: "/blog",
+      href: "https://blog.abhishekg.com.np",
     },
   ],
   sidebarNav: [

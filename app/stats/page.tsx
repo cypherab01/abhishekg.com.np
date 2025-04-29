@@ -10,6 +10,7 @@ import { getLoveCountServerAction } from "../actions/getAndSetLoveCountServerAct
 import LoveButtonComponent from "./LoveButtonComponent";
 import { getGitHubStatsServerAction } from "../actions/getGitHubStatsServerAction";
 import GitHubGraphs from "./GitHubGraphs";
+import Pager from "@/components/pager";
 
 const StatCard = ({
   title,
@@ -27,7 +28,7 @@ const StatCard = ({
       <h3 className="text-lg font-semibold tracking-tight card-title text-muted-foreground">
         {title}
       </h3>
-      <span className="text-5xl font-bold leading-tight tracking-tight card-value text-muted-foreground">
+      <span className="text-5xl font-bold leading-tight tracking-tight card-value">
         {value}
       </span>
     </div>
@@ -42,28 +43,28 @@ const Stats = async () => {
   const githubStatCards = [
     {
       title: "Hireable",
-      value: githubStats.hireable ? "Yes" : "No",
-      className: githubStats.hireable ? "bg-green-500/20" : "",
+      value: githubStats.hireable && "Yes",
+      className: githubStats.hireable && "bg-green-500/20",
     },
     {
       title: "Total Public Repositories",
-      value: githubStats.public_repos || 0,
+      value: githubStats.public_repos,
     },
     {
       title: "Followers",
-      value: githubStats.followers || 0,
+      value: githubStats.followers,
     },
     {
       title: "Following",
-      value: githubStats.following || 0,
+      value: githubStats.following,
     },
     {
       title: "Current Company",
-      value: githubStats.company || "N/A",
+      value: githubStats.company,
     },
     {
       title: "Location",
-      value: githubStats.location || "N/A",
+      value: githubStats.location,
     },
   ];
 
@@ -182,12 +183,19 @@ const Stats = async () => {
             <StatCard
               key={index}
               title={card.title}
-              value={card.value}
+              value={card.value || "Limit Reached"}
               className={card.className}
             />
           ))}
         </div>
       </div>
+
+      <Pager
+        prevHref="/contact"
+        nextHref="/"
+        prevTitle="Contact"
+        nextTitle="Home"
+      />
     </>
   );
 };
