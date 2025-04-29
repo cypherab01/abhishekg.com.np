@@ -13,8 +13,11 @@ import { SiteHeader } from "@/components/site-header";
 import { SideNav } from "@/components/side-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { docsConfig } from "@/config/docs";
+
 import { setViewsServerAction } from "./actions/getAndSetViewsServerAction";
 import { getLoveCountServerAction } from "./actions/getAndSetLoveCountServerAction";
+
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: siteConfig.name,
@@ -151,6 +154,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <GoogleAnalytics
             gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ""}
           />
+          <SpeedInsights />
         </body>
       </html>
     </>
