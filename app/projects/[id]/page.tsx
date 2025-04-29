@@ -6,8 +6,8 @@ const getProject = async (slug: string) => {
 };
 
 const page = async ({ params }: { params: { id: string } }) => {
-  const slug = params.id;
-  const project = await getProject(slug);
+  const { id } = await params;
+  const project = await getProject(id);
 
   console.log(project);
   return (
