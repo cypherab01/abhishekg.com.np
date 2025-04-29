@@ -1,0 +1,20 @@
+{
+    "redirects": [
+        {
+            "source": "/:path*",
+            "destination": "https://www.abhishekg.com.np/:path*",
+            "permanent": true
+        }
+    ],
+    "headers": [
+        {
+            "source": "/site.webmanifest",
+            "headers": [
+                {
+                    "key": "Access-Control-Allow-Origin",
+                    "value": "*"
+                }
+            ]
+        }
+    ]
+}
