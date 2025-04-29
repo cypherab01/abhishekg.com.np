@@ -43,28 +43,28 @@ const Stats = async () => {
   const githubStatCards = [
     {
       title: "Hireable",
-      value: githubStats.hireable ? "Yes" : "No",
-      className: githubStats.hireable ? "bg-green-500/20" : "",
+      value: githubStats.hireable && "Yes",
+      className: githubStats.hireable && "bg-green-500/20",
     },
     {
       title: "Total Public Repositories",
-      value: githubStats.public_repos || 0,
+      value: githubStats.public_repos,
     },
     {
       title: "Followers",
-      value: githubStats.followers || 0,
+      value: githubStats.followers,
     },
     {
       title: "Following",
-      value: githubStats.following || 0,
+      value: githubStats.following,
     },
     {
       title: "Current Company",
-      value: githubStats.company || "N/A",
+      value: githubStats.company,
     },
     {
       title: "Location",
-      value: githubStats.location || "N/A",
+      value: githubStats.location,
     },
   ];
 
@@ -183,7 +183,7 @@ const Stats = async () => {
             <StatCard
               key={index}
               title={card.title}
-              value={card.value}
+              value={card.value || "Limit Reached"}
               className={card.className}
             />
           ))}

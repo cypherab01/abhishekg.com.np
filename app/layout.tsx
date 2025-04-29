@@ -1,5 +1,8 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import { META_THEME_COLORS, siteConfig } from "@/config/site";
+
+import { GoogleAnalytics } from "@next/third-parties/google";
+
 import { fontSans, fontMono } from "@/lib/fonts";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -145,6 +148,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             </div>
           </ThemeProvider>
           <Toaster richColors position="top-center" />
+          <GoogleAnalytics
+            gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ""}
+          />
         </body>
       </html>
     </>
