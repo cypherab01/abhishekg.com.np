@@ -120,13 +120,15 @@ const ProjectDetails = async ({
 
         {project.links && (
           <div id="links" className="my-4">
-            <h2 className="text-lg font-semibold">Link(s)</h2>
+            <h2 className="text-lg font-semibold">
+              {project.links.live && project.links.github ? "Links" : "Link"}
+            </h2>
 
             <div className="flex flex-wrap items-center gap-2">
               {project.links.live && (
                 <Link href={project.links.live} target="_blank">
                   <Badge variant="default" className="px-4 text-base">
-                    Link <ExternalLinkIcon className="w-4 h-4 -mt-2" />
+                    Live <ExternalLinkIcon className="w-4 h-4 -mt-2" />
                   </Badge>
                 </Link>
               )}
