@@ -41,14 +41,15 @@ export async function sendMessageServerAction(
   formData: FormData
 ) {
   // Validate inputs first
-  const fullname = formData.get("fullname") as string;
-  const email = formData.get("email") as string;
-  const message = formData.get("message") as string;
+  const fullname = (formData.get("fullname") as string)?.trim();
+  const email = (formData.get("email") as string)?.trim();
+  const message = (formData.get("message") as string)?.trim();
 
   // validate fullname
-  if (fullname?.length <= 4) {
+  if (fullname?.length <= 2) {
     return {
-      fullnameError: "Why your name is so short? 😂 Try full name instead.",
+      fullnameError:
+        "Wow, your name seems to be in stealth mode! 😄 How about unleashing the full version this time?",
     };
   }
 
@@ -56,14 +57,14 @@ export async function sendMessageServerAction(
   if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
     return {
       emailError:
-        "Uh!, seems like my regex couldn't validate your email address 😉 try again.",
+        "Oops! Looks like your email just threw a curveball at my regex skills 😅. Let’s give it another shot—what do you say?",
     };
   }
 
   // validate message
   if (message?.length <= 10) {
     return {
-      messageError: "Why so short? Feel free to express your thoughts.",
+      messageError: "That’s a bit brief! 😅 Let it flow—share the whole story!",
     };
   }
 

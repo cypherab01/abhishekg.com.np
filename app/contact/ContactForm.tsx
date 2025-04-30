@@ -48,7 +48,7 @@ const ContactForm = () => {
         <div className="space-y-1">
           <Input
             type="text"
-            required
+            // required
             id="name"
             placeholder="Your name, your fame"
             className="px-2 py-6"
@@ -67,8 +67,8 @@ const ContactForm = () => {
         {labelWithRequiredStar({ label: "Email" })}
         <div className="flex flex-col space-y-1">
           <Input
-            type="email"
-            required
+            type="text" // yes text
+            // required
             id="email"
             placeholder="Where can I reach you back?"
             className="px-2 py-6"
@@ -90,7 +90,7 @@ const ContactForm = () => {
         {labelWithRequiredStar({ label: "Message" })}
         <div className="space-y-1">
           <Textarea
-            required
+            // required
             id="message"
             placeholder="Your words, my inbox."
             className="px-2 py-4"
