@@ -120,7 +120,7 @@ const ProjectDetails = async ({
 
         {project.links && (
           <div id="links" className="my-4">
-            <h2 className="text-lg font-semibold">Links</h2>
+            <h2 className="text-lg font-semibold">Link(s)</h2>
 
             <div className="flex flex-wrap items-center gap-2">
               {project.links.live && (
