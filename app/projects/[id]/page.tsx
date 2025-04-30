@@ -22,6 +22,8 @@ const ProjectDetails = async ({
   const { id } = await params;
   const project = await getProject(id);
 
+  // await new Promise((resolve) => setTimeout(resolve, 1000));
+
   if (!project) {
     return (
       <>
