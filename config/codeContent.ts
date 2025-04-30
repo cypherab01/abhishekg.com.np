@@ -28,7 +28,7 @@ console.log(getSkills());
 
   contact: `const contactDetails = {
     name: "Abhishek Ghimire",
-    email: "hi@abhishekg.com.np",
+    email: "aghimire074@gmail.com",
     mobile: "+977-9847526298",
     location: "Kathmandu, Nepal",
     linkedIn: "linkedin.com/in/cypherab01",

@@ -2,18 +2,15 @@ import CodeSnippet from "@/components/code-snippet";
 import { PageHeader } from "@/components/page-header";
 import { PageHeaderHeading } from "@/components/page-header";
 import Pager from "@/components/pager";
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { code } from "@/config/codeContent";
-import { siteConfig } from "@/config/site";
 import Link from "next/link";
+import { projects } from "./projects";
 
 const ProjectsPage = () => {
   return (
@@ -25,42 +22,26 @@ const ProjectsPage = () => {
         </PageHeaderHeading>
       </PageHeader>
 
-      <div className="flex flex-wrap gap-4 card-container">
-        {Object.entries(siteConfig.projects).map(([key, project]) => (
-          <Card key={key} className="w-full max-w-[350px]  gap-2">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 card-container">
+        {projects.map((project, index) => (
+          <Card
+            title={project.overview}
+            key={index}
+            className="relative w-full transition-all duration-300 cursor-pointer isolate hover:scale-105"
+          >
             <CardHeader>
               <CardTitle className="leading-6">{project.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-2">
-              <CardDescription>{project.description}</CardDescription>
-              <CardDescription>
-                <div className="flex gap-2">
-                  {"live" in project && (
-                    <Link href={project.live} target="_blank">
-                      <Badge variant="default">Live</Badge>
-                    </Link>
-                  )}
-                  {"github" in project && (
-                    <Link href={project.github} target="_blank">
-                      <Badge variant="outline">GitHub</Badge>
-                    </Link>
-                  )}
-                  {!("live" in project) && !("github" in project) && (
-                    <Badge variant="outline">Private</Badge>
-                  )}
-                </div>
+              <CardDescription className="flex flex-col gap-2">
+                {project.tagline}
+                <Link
+                  href={`/projects/${project.slug}`}
+                  className="text-muted-foreground "
+                >
+                  Learn More...
+                  <span className="absolute inset-0"></span>
+                </Link>
               </CardDescription>
-            </CardContent>
-            <div className="my-2 border-t border-border" />
-            <CardFooter className="py-0">
-              <div className="flex flex-wrap gap-2">
-                {project.tags.map((tag) => (
-                  <Badge key={tag} variant="outline">
-                    {tag}
-                  </Badge>
-                ))}
-              </div>
-            </CardFooter>
+            </CardHeader>
           </Card>
         ))}
       </div>
