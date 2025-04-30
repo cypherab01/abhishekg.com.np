@@ -30,7 +30,7 @@ const ProjectsPage = () => {
             className="relative w-full transition-all duration-300 cursor-pointer isolate hover:scale-105"
           >
             <CardHeader>
-              <CardTitle>{project.title}</CardTitle>
+              <CardTitle className="leading-6">{project.title}</CardTitle>
               <CardDescription className="flex flex-col gap-2">
                 {project.tagline}
                 <Link

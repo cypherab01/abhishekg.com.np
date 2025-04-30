@@ -104,17 +104,19 @@ const ProjectDetails = async ({
           </ul>
         </div>
 
-        <div id="feedback" className="my-4">
-          <h2 className="text-lg font-semibold">Feedback</h2>
-          <p>
-            For feedback or suggestions, contact me at:{" "}
-            <Link href={siteConfig.links.email}>
-              <span className="text-primary">
-                {siteConfig.links.email.replace("mailto:", "")}
-              </span>
-            </Link>
-          </p>
-        </div>
+        {project.feedback && (
+          <div id="feedback" className="my-4">
+            <h2 className="text-lg font-semibold">Feedback</h2>
+            <p>
+              For feedback or suggestions, contact me at:{" "}
+              <Link href={siteConfig.links.email}>
+                <span className="text-primary">
+                  {siteConfig.links.email.replace("mailto:", "")}
+                </span>
+              </Link>
+            </p>
+          </div>
+        )}
 
         {project.links && (
           <div id="links" className="my-4">
