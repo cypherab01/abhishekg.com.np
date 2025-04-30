@@ -197,7 +197,7 @@ h1 {
 }
 
 h2 {
-  @apply pb-4 text-xl font-semibold tracking-tight border-b scroll-m-20 first:mt-0;
+  @apply mb-4  text-xl font-semibold tracking-tight scroll-m-20 first:mt-0;
 }
 
 h3 {

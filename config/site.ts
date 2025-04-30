@@ -1,5 +1,3 @@
-import { title } from "process";
-
 export const siteConfig = {
   name: "abhishekg.com.np",
   url: "https://abhishekg.com.np",

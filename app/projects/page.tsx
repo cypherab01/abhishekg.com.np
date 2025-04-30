@@ -2,17 +2,13 @@ import CodeSnippet from "@/components/code-snippet";
 import { PageHeader } from "@/components/page-header";
 import { PageHeaderHeading } from "@/components/page-header";
 import Pager from "@/components/pager";
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
-  CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { code } from "@/config/codeContent";
-import { siteConfig } from "@/config/site";
 import Link from "next/link";
 import { projects } from "./projects";
 
@@ -29,19 +25,20 @@ const ProjectsPage = () => {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 card-container">
         {projects.map((project, index) => (
           <Card
+            title={project.overview}
             key={index}
             className="relative w-full transition-all duration-300 cursor-pointer isolate hover:scale-105"
           >
             <CardHeader>
               <CardTitle>{project.title}</CardTitle>
               <CardDescription className="flex flex-col gap-2">
-                {project.description}
+                {project.tagline}
                 <Link
                   href={`/projects/${project.slug}`}
                   className="text-muted-foreground "
                 >
-                  Read More
-                  <span className="absolute inset-0 bg-red-500/20"></span>
+                  Learn More...
+                  <span className="absolute inset-0"></span>
                 </Link>
               </CardDescription>
             </CardHeader>

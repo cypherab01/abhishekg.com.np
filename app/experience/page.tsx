@@ -5,11 +5,7 @@ import {
   PageHeaderHeading,
 } from "@/components/page-header";
 import Pager from "@/components/pager";
-import { HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { HoverCard } from "@/components/ui/hover-card";
 import { code } from "@/config/codeContent";
-import { siteConfig } from "@/config/site";
-import Link from "next/link";
 
 const ExperiencePage = () => {
   return (
