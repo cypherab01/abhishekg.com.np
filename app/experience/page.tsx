@@ -41,12 +41,12 @@ const ExperiencePage = () => {
           </span>
           <h3 className="flex items-center mb-1 text-lg font-semibold text-gray-900 dark:text-white">
             Next.js Developer Intern · Treeleaf Technologies
-            <span className="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300 ms-3">
+            {/* <span className="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-blue-900 dark:text-blue-300 ms-3">
               Latest
-            </span>
+            </span> */}
           </h3>
           <time className="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-            Jan. 2025 - Present
+            Feb. 2025 - Mar. 2025
           </time>
           <p className="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
             Currently interning as a Next.js Developer at Treeleaf Technologies,
