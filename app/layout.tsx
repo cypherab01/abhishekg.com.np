@@ -2,6 +2,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { META_THEME_COLORS, siteConfig } from "@/config/site";
 
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/next";
 
 import { fontSans, fontMono } from "@/lib/fonts";
 import { Toaster } from "@/components/ui/sonner";
@@ -154,6 +155,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <GoogleAnalytics
             gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ""}
           />
+          <Analytics />
           <SpeedInsights />
         </body>
       </html>
