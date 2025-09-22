@@ -1,16 +1,13 @@
-import CodeSnippet from "@/components/code-snippet";
-import { PageHeader } from "@/components/page-header";
-import { PageHeaderHeading } from "@/components/page-header";
-import Pager from "@/components/pager";
+import { PageHeader, PageHeaderHeading } from '@/components/page-header';
+import Pager from '@/components/pager';
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { code } from "@/config/codeContent";
-import Link from "next/link";
-import { projects } from "./projects";
+} from '@/components/ui/card';
+import { projects } from '@/constants/projects';
+import Link from 'next/link';
 
 const ProjectsPage = () => {
   return (
@@ -45,8 +42,6 @@ const ProjectsPage = () => {
           </Card>
         ))}
       </div>
-
-      <CodeSnippet code={code.projects} title="projects.ts" />
 
       <Pager
         prevHref="/about"
