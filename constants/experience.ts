@@ -1,4 +1,6 @@
-export const experiences = [
+import { TimelineViewerData } from '@/types/TimelineViewer.types';
+
+export const experiences: TimelineViewerData[] = [
   {
     title: 'Mobile and Web Developer · Mantra IT',
     date: 'Mar. 2025 - Present',

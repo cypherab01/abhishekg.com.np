@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import connectToDatabase from "@/lib/database";
-import View from "@/model/views.model";
+import connectToDatabase from '@/lib/database';
+import View from '@/model/views.model';
 
 export async function getViewsServerAction() {
   try {
@@ -16,7 +16,7 @@ export async function getViewsServerAction() {
   } catch (error) {
     return {
       success: false,
-      message: "Failed to get views",
+      message: 'Failed to get views',
     };
   }
 }
@@ -25,7 +25,7 @@ export async function setViewsServerAction() {
   try {
     await connectToDatabase();
 
-    const views = await View.findOneAndUpdate(
+    await View.findOneAndUpdate(
       {},
       { $inc: { views: 1 } },
       { new: true, upsert: true }
@@ -33,12 +33,12 @@ export async function setViewsServerAction() {
 
     return {
       success: true,
-      message: "Views set successfully",
+      message: 'Views set successfully',
     };
   } catch (error) {
     return {
       success: false,
-      message: "Failed to set views",
+      message: 'Failed to set views',
     };
   }
 }
