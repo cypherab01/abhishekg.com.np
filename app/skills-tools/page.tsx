@@ -1,14 +1,12 @@
-import CodeSnippet from "@/components/code-snippet";
-import { Icons } from "@/components/icons";
+import { Icons } from '@/components/icons';
 import {
   PageHeader,
   PageHeaderDescription,
   PageHeaderHeading,
-} from "@/components/page-header";
-import Pager from "@/components/pager";
-import { Badge } from "@/components/ui/badge";
-import { code } from "@/config/codeContent";
-import { mySkills } from "@/constants";
+} from '@/components/page-header';
+import Pager from '@/components/pager';
+import { Badge } from '@/components/ui/badge';
+import { mySkills } from '@/constants';
 
 const SkillsToolsPage = () => {
   return (
@@ -27,7 +25,6 @@ const SkillsToolsPage = () => {
       </PageHeader>
 
       {/* skills and tools badges */}
-
       <div
         id="badges"
         className="flex flex-wrap items-center justify-center gap-2 my-4"
@@ -38,14 +35,12 @@ const SkillsToolsPage = () => {
             className="p-4 py-2 border border-secondary bg-secondary-foreground text-secondary"
           >
             {Icons[item.icon as keyof typeof Icons]?.({
-              className: "mr-2 size-4",
+              className: 'mr-2 size-4',
             })}
             {item.title}
           </Badge>
         ))}
       </div>
-
-      <CodeSnippet title="skills.ts" code={code.skillsTools} />
 
       <Pager
         prevHref="/projects"

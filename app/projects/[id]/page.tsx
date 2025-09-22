@@ -1,14 +1,14 @@
-import { projects } from "@/app/projects/projects";
+import { projects } from '@/constants/projects';
 import {
   PageHeader,
   PageHeaderDescription,
   PageHeaderHeading,
-} from "@/components/page-header";
-import { Badge } from "@/components/ui/badge";
+} from '@/components/page-header';
+import { Badge } from '@/components/ui/badge';
 
-import { siteConfig } from "@/config/site";
-import { ArrowLeftIcon, ExternalLinkIcon } from "lucide-react";
-import Link from "next/link";
+import { siteConfig } from '@/config/site';
+import { ArrowLeftIcon, ExternalLinkIcon } from 'lucide-react';
+import Link from 'next/link';
 
 const getProject = async (slug: string) => {
   return projects.find((project) => project.slug === slug);
@@ -44,7 +44,7 @@ const ProjectDetails = async ({
       <div className="navigation">
         <Link
           href="/projects"
-          className="flex items-center gap-2 mb-4 text-muted-foreground"
+          className="flex items-center gap-2 mb-4 text-muted-foreground cursor-pointer w-fit"
         >
           <ArrowLeftIcon className="w-4 h-4" />
           Back to projects
@@ -110,10 +110,10 @@ const ProjectDetails = async ({
           <div id="feedback" className="my-4">
             <h2 className="text-lg font-semibold">Feedback</h2>
             <p>
-              For feedback or suggestions, contact me at:{" "}
+              For feedback or suggestions, contact me at:{' '}
               <Link href={siteConfig.links.email}>
                 <span className="text-primary">
-                  {siteConfig.links.email.replace("mailto:", "")}
+                  {siteConfig.links.email.replace('mailto:', '')}
                 </span>
               </Link>
             </p>
@@ -123,7 +123,7 @@ const ProjectDetails = async ({
         {project.links && (
           <div id="links" className="my-4">
             <h2 className="text-lg font-semibold">
-              {project.links.live && project.links.github ? "Links" : "Link"}
+              {project.links.live && project.links.github ? 'Links' : 'Link'}
             </h2>
 
             <div className="flex flex-wrap items-center gap-2">

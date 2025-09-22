@@ -1,16 +1,14 @@
-import CodeSnippet from "@/components/code-snippet";
-import { PageActions } from "@/components/page-header";
 import {
+  PageActions,
+  PageHeader,
   PageHeaderDescription,
   PageHeaderHeading,
-} from "@/components/page-header";
-import { PageHeader } from "@/components/page-header";
-import Pager from "@/components/pager";
-import { Button } from "@/components/ui/button";
-import { code } from "@/config/codeContent";
-import { siteConfig } from "@/config/site";
-import Link from "next/link";
-import { ExternalLink, Mail } from "lucide-react";
+} from '@/components/page-header';
+import Pager from '@/components/pager';
+import { Button } from '@/components/ui/button';
+import { siteConfig } from '@/config/site';
+import { ExternalLink, Mail } from 'lucide-react';
+import Link from 'next/link';
 
 const IntroductionPage = async () => {
   return (
@@ -43,8 +41,6 @@ const IntroductionPage = async () => {
           </Button>
         </PageActions>
       </PageHeader>
-
-      <CodeSnippet title="welcome.ts" code={code.welcome} />
 
       <Pager
         prevHref="/"

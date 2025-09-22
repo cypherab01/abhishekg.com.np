@@ -1,11 +1,11 @@
-"use client";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useActionState, useEffect, useState, Suspense } from "react";
-import { toast } from "sonner";
-import { sendMessageServerAction } from "../actions/sendMailServerAction";
+'use client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { useActionState, useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import { sendMessageServerAction } from '../actions/sendMailServerAction';
 
 const labelWithRequiredStar = ({ label }: { label: string }) => {
   return (
@@ -24,15 +24,15 @@ const ContactForm = () => {
     null
   );
   const [formData, setFormData] = useState({
-    fullname: "",
-    email: "",
-    message: "",
+    fullname: '',
+    email: '',
+    message: '',
   });
 
   useEffect(() => {
     if (state?.success) {
       toast.success(state.success);
-      setFormData({ fullname: "", email: "", message: "" });
+      setFormData({ fullname: '', email: '', message: '' });
     }
   }, [state?.success]);
 
@@ -44,7 +44,7 @@ const ContactForm = () => {
   return (
     <form action={action} className="space-y-6">
       <div className="space-y-4">
-        {labelWithRequiredStar({ label: "Name" })}
+        {labelWithRequiredStar({ label: 'Name' })}
         <div className="space-y-1">
           <Input
             type="text"
@@ -64,7 +64,7 @@ const ContactForm = () => {
         </div>
       </div>
       <div className="space-y-4">
-        {labelWithRequiredStar({ label: "Email" })}
+        {labelWithRequiredStar({ label: 'Email' })}
         <div className="flex flex-col space-y-1">
           <Input
             type="text" // yes text
@@ -87,7 +87,7 @@ const ContactForm = () => {
         </div>
       </div>
       <div className="space-y-4">
-        {labelWithRequiredStar({ label: "Message" })}
+        {labelWithRequiredStar({ label: 'Message' })}
         <div className="space-y-1">
           <Textarea
             // required
@@ -114,7 +114,7 @@ const ContactForm = () => {
           variant="default"
           disabled={isPending}
         >
-          {isPending ? "Transporting your message to my inbox... 📨" : "Submit"}
+          {isPending ? 'Transporting your message to my inbox... 📨' : 'Submit'}
         </Button>
 
         <Button
@@ -124,9 +124,9 @@ const ContactForm = () => {
           variant="outline"
           onClick={() =>
             setFormData({
-              fullname: "",
-              email: "",
-              message: "",
+              fullname: '',
+              email: '',
+              message: '',
             })
           }
         >

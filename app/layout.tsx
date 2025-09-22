@@ -1,78 +1,56 @@
-import { ThemeProvider } from "@/components/theme-provider";
-import { META_THEME_COLORS, siteConfig } from "@/config/site";
+import { ThemeProvider } from '@/components/theme-provider';
+import { META_THEME_COLORS, siteConfig } from '@/config/site';
 
-import { GoogleAnalytics } from "@next/third-parties/google";
-import { Analytics } from "@vercel/analytics/next";
+import { GoogleAnalytics } from '@next/third-parties/google';
+import { Analytics } from '@vercel/analytics/next';
 
-import { fontSans, fontMono } from "@/lib/fonts";
-import { Toaster } from "@/components/ui/sonner";
+import { fontSans, fontMono } from '@/lib/fonts';
+import { Toaster } from '@/components/ui/sonner';
 
-import { Metadata, Viewport } from "next";
-import "./globals.css";
-import { cn } from "@/lib/utils";
-import { SiteHeader } from "@/components/site-header";
-import { SideNav } from "@/components/side-nav";
-import { SiteFooter } from "@/components/site-footer";
-import { docsConfig } from "@/config/docs";
+import { Metadata, Viewport } from 'next';
+import './globals.css';
+import { cn } from '@/lib/utils';
+import { SiteHeader } from '@/components/site-header';
+import { SideNav } from '@/components/side-nav';
+import { SiteFooter } from '@/components/site-footer';
+import { docsConfig } from '@/config/docs';
 
-import { setViewsServerAction } from "./actions/getAndSetViewsServerAction";
-import { getLoveCountServerAction } from "./actions/getAndSetLoveCountServerAction";
+import { setViewsServerAction } from './actions/getAndSetViewsServerAction';
+import { getLoveCountServerAction } from './actions/getAndSetLoveCountServerAction';
 
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: siteConfig.name,
   description: siteConfig.description,
   metadataBase: new URL(siteConfig.url),
-  keywords: [
-    "Abhishek Ghimire",
-    "Abhishek G",
-    "abhishekg.com.np",
-    "Abhishek Ghimire Portfolio",
-    "Abhishek Ghimire Projects",
-    "Abhishek Ghimire Skills",
-    "Abhishek Ghimire Experience",
-    "Abhishek Ghimire Education",
-    "Abhishek Ghimire Contact",
-    "Abhishek Ghimire Blog",
-    "Abhishek Ghimire Resume",
-  ],
+  keywords: siteConfig.keywords,
   authors: [
     {
-      name: "Abhishek Ghimire",
-      url: "https://abhishekg.com.np",
+      name: 'Abhishek Ghimire',
+      url: 'https://abhishekg.com.np',
     },
   ],
-  creator: "Abhishek Ghimire",
+  creator: 'Abhishek Ghimire',
   openGraph: {
-    type: "website",
-    locale: "en_US",
+    type: 'website',
+    locale: 'en_US',
     url: siteConfig.url,
     title: siteConfig.name,
     description: siteConfig.description,
     siteName: siteConfig.name,
-    images: [
-      {
-        url: siteConfig.ogImage,
-        width: 1200,
-        height: 630,
-        alt: siteConfig.name,
-      },
-    ],
   },
   twitter: {
-    card: "summary_large_image",
+    card: 'summary_large_image',
     title: siteConfig.name,
     description: siteConfig.description,
-    images: [siteConfig.ogImage],
-    creator: "@cypherab01",
+    creator: '@cypherab01',
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    icon: '/favicon.ico',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
   },
-  manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
 export const viewport: Viewport = {
@@ -88,13 +66,13 @@ async function loadStats() {
     await setViewsServerAction();
     await getLoveCountServerAction();
   } catch (error) {
-    console.error("Failed to load stats:", error);
+    console.error('Failed to load stats:', error);
     return;
   }
 }
 
-export default async function RootLayout({ children }: RootLayoutProps) {
-  await loadStats();
+export default function RootLayout({ children }: RootLayoutProps) {
+  loadStats();
   return (
     <>
       <html lang="en" suppressHydrationWarning>
@@ -113,7 +91,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         </head>
         <body
           className={cn(
-            "min-h-svh bg-background font-sans antialiased",
+            'min-h-svh bg-background font-sans antialiased',
             fontSans.variable,
             fontMono.variable
           )}
@@ -153,7 +131,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           </ThemeProvider>
           <Toaster richColors position="top-center" />
           <GoogleAnalytics
-            gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ""}
+            gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID || ''}
           />
           <Analytics />
           <SpeedInsights />

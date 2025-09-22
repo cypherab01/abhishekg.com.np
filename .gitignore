@@ -42,3 +42,9 @@ yarn-error.log*
 next-env.d.ts
 
 .vs_code
+
+# lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+bun.lock

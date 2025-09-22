@@ -1,15 +1,16 @@
-import CodeSnippet from "@/components/code-snippet";
 import {
   PageHeader,
   PageHeaderDescription,
   PageHeaderHeading,
-} from "@/components/page-header";
-import Pager from "@/components/pager";
-import { HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
-import { HoverCard } from "@/components/ui/hover-card";
-import { code } from "@/config/codeContent";
-import { siteConfig } from "@/config/site";
-import Link from "next/link";
+} from '@/components/page-header';
+import Pager from '@/components/pager';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card';
+import { siteConfig } from '@/config/site';
+import Link from 'next/link';
 
 const EducationPage = () => {
   return (
@@ -71,7 +72,7 @@ const EducationPage = () => {
             </HoverCardTrigger>
             <HoverCardContent>
               <p>
-                I co-created{" "}
+                I co-created{' '}
                 <Link
                   href={siteConfig.bitinfonepal}
                   className="underline cursor-pointer underline-offset-4"
@@ -133,8 +134,6 @@ const EducationPage = () => {
           </p>
         </li>
       </ol>
-
-      <CodeSnippet code={code.educationJourney} title="educationJourney.ts" />
 
       <Pager
         prevHref="/experience"

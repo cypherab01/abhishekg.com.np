@@ -13,6 +13,7 @@ export const Icons = {
       strokeLinecap="round"
       strokeLinejoin="round"
       className="lucide lucide-move-up-right-icon lucide-move-up-right"
+      {...props}
     >
       <path d="M13 5H19V11" />
       <path d="M19 5L5 19" />
