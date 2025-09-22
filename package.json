@@ -9,7 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@next/third-parties": "14.0.5-canary.59",
+        "@next/third-parties": "^15.5.3",
         "@radix-ui/react-aspect-ratio": "^1.1.4",
         "@radix-ui/react-dialog": "^1.1.6",
         "@radix-ui/react-hover-card": "^1.1.6",
@@ -24,11 +24,11 @@
         "embla-carousel-react": "^8.6.0",
         "lucide-react": "^0.484.0",
         "mongoose": "^8.13.1",
-        "next": "15.2.4",
+        "next": "^15.5.3",
         "next-themes": "^0.4.6",
         "nodemailer": "^6.10.0",
-        "react": "^19.0.0",
-        "react-dom": "^19.0.0",
+        "react": "19.1.1",
+        "react-dom": "19.1.1",
         "react-github-calendar": "^4.5.6",
         "remove": "^0.1.5",
         "simple-icons": "^14.11.1",
