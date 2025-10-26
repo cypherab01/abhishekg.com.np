@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.2.1] - 2025-10-26
+
+### Upgrade
+
+- Upgrade nextjs version to latest 16.0.0.
+
+### Removed
+
+- navbar meaningless code
+- navlink blog link
+
 ## [1.2.0] - 2025-09-22
 
 ### Removed
