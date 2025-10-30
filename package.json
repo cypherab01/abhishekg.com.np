@@ -1,6 +1,6 @@
 {
   "name": "abhishekg.com.np",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "private": false,
   "scripts": {
     "dev": "next dev",
@@ -21,7 +21,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "embla-carousel-react": "^8.6.0",
     "lucide-react": "^0.484.0",
     "mongoose": "^8.13.1",
     "next": "16.0.0",

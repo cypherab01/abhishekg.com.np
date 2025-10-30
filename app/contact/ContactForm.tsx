@@ -1,4 +1,7 @@
 'use client';
+
+export const dynamic = 'force-dynamic';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -27,12 +30,33 @@ const ContactForm = () => {
     fullname: '',
     email: '',
     message: '',
+    captcha: '',
+    correctCaptcha: '',
   });
+
+  // 👇 initialize captcha AFTER hydration to avoid SSR mismatch
+  const [numbers, setNumbers] = useState<{
+    firstNumber: number | null;
+    secondNumber: number | null;
+  }>({ firstNumber: null, secondNumber: null });
+
+  useEffect(() => {
+    setNumbers({
+      firstNumber: Math.floor(Math.random() * 10 + 1),
+      secondNumber: Math.floor(Math.random() * 10 + 1),
+    });
+  }, []);
 
   useEffect(() => {
     if (state?.success) {
       toast.success(state.success);
-      setFormData({ fullname: '', email: '', message: '' });
+      setFormData({
+        fullname: '',
+        email: '',
+        message: '',
+        captcha: '',
+        correctCaptcha: '',
+      });
     }
   }, [state?.success]);
 
@@ -41,6 +65,7 @@ const ContactForm = () => {
       toast.error(state.error);
     }
   }, [state?.error]);
+
   return (
     <form action={action} className="space-y-6">
       <div className="space-y-4">
@@ -106,6 +131,41 @@ const ContactForm = () => {
         </div>
       </div>
 
+      {numbers.firstNumber !== null && numbers.secondNumber !== null && (
+        <div className="space-y-4">
+          <div className="w-full p-2 text-left rounded-md">
+            <Label
+              htmlFor="captcha"
+              className="text-base font-bold text-red-600/70"
+            >
+              {numbers.firstNumber} + {numbers.secondNumber} = ?
+            </Label>
+            <Input
+              id="captcha"
+              type="number"
+              min={0}
+              max={25}
+              placeholder="Enter the result of the calculation"
+              className="px-2 py-6"
+              name="captcha"
+              value={formData.captcha}
+              onChange={(e) => {
+                setFormData({ ...formData, captcha: e.target.value });
+              }}
+            />
+            <Input
+              type="hidden"
+              name="correctCaptcha"
+              value={numbers.firstNumber + numbers.secondNumber}
+            />
+
+            {state?.captchaError && (
+              <span className="text-sm text-red-500">{state.captchaError}</span>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="space-y-4">
         <Button
           type="submit"
@@ -127,6 +187,8 @@ const ContactForm = () => {
               fullname: '',
               email: '',
               message: '',
+              captcha: '',
+              correctCaptcha: '',
             })
           }
         >

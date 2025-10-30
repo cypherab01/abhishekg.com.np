@@ -44,6 +44,18 @@ export async function sendMessageServerAction(
   const fullname = (formData.get('fullname') as string)?.trim();
   const email = (formData.get('email') as string)?.trim();
   const message = (formData.get('message') as string)?.trim();
+  const captcha = (formData.get('captcha') as string)?.trim();
+  const correctCaptcha = (formData.get('correctCaptcha') as string)?.trim();
+
+  if (!captcha || !correctCaptcha)
+    return {
+      captchaError: 'Calculation is required!',
+    };
+
+  if (parseInt(captcha) !== parseInt(correctCaptcha))
+    return {
+      captchaError: 'Calculation is wrong, please try again.',
+    };
 
   // validate fullname
   if (fullname?.length <= 2) {
@@ -71,7 +83,7 @@ export async function sendMessageServerAction(
   // If validation passes, try to send email
   try {
     const response = await sendEmail(fullname, email, message);
-    console.log('Response: ', response);
+    // const response = { success: true };
     if (response.success) {
       return {
         success: "Message sent successfully, I'll get back to you soon. 🤖",
