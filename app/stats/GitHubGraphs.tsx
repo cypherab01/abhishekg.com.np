@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import GitHubCalendar from "react-github-calendar";
-import { siteConfig } from "@/config/site";
-import { useTheme } from "next-themes";
+import { useEffect, useState } from 'react';
+import { GitHubCalendar } from 'react-github-calendar';
+import { siteConfig } from '@/config/site';
+import { useTheme } from 'next-themes';
 
 const GitHubGraphs = () => {
   const { resolvedTheme } = useTheme();
@@ -12,18 +12,18 @@ const GitHubGraphs = () => {
   // Standard GitHub green theme
   const theme = {
     dark: [
-      "#161b22", // background
-      "#0e4429", // level 1
-      "#006d32", // level 2
-      "#26a641", // level 3
-      "#39d353", // level 4
+      '#161b22', // background
+      '#0e4429', // level 1
+      '#006d32', // level 2
+      '#26a641', // level 3
+      '#39d353', // level 4
     ],
     light: [
-      "#ebedf0", // background
-      "#9be9a8", // level 1
-      "#40c463", // level 2
-      "#30a14e", // level 3
-      "#216e39", // level 4
+      '#ebedf0', // background
+      '#9be9a8', // level 1
+      '#40c463', // level 2
+      '#30a14e', // level 3
+      '#216e39', // level 4
     ],
   };
 
@@ -56,9 +56,8 @@ const GitHubGraphs = () => {
         <GitHubCalendar
           username={siteConfig.links.githubUsername}
           errorMessage="Could not fetch GitHub stats"
-          hideColorLegend
           theme={theme}
-          colorScheme={resolvedTheme as "light" | "dark"}
+          colorScheme={resolvedTheme as 'light' | 'dark'}
           showWeekdayLabels={true}
           blockMargin={6}
           transformData={transformThreeMonths}
@@ -70,9 +69,8 @@ const GitHubGraphs = () => {
         <GitHubCalendar
           username={siteConfig.links.githubUsername}
           errorMessage="Could not fetch GitHub stats"
-          hideColorLegend={false}
           theme={theme}
-          colorScheme={resolvedTheme as "light" | "dark"}
+          colorScheme={resolvedTheme as 'light' | 'dark'}
           showWeekdayLabels={true}
           blockMargin={6}
         />
