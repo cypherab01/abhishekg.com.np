@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { Geist, Geist_Mono } from "next/font/google";
-import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
+import { cn } from "@/lib/utils";
+import type { Metadata } from "next";
+import { Google_Sans, Google_Sans_Code } from "next/font/google";
+import "./globals.css";
 
-const geistSans = Geist({ subsets: ["latin"], variable: "--font-sans" });
-const geistMono = Geist_Mono({
+const googleSans = Google_Sans({ subsets: ["latin"], variable: "--font-sans" });
+const googleSansCode = Google_Sans_Code({
   subsets: ["latin"],
   variable: "--font-geist-mono",
 });
@@ -27,8 +27,8 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn(
         "h-full antialiased",
-        geistSans.variable,
-        geistMono.variable,
+        googleSans.variable,
+        googleSansCode.variable,
       )}
     >
       <body className="min-h-dvh flex flex-col">

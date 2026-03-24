@@ -64,7 +64,7 @@ export const projects: Project[] = [
     title: "KMC Website",
     description:
       "Official Kathmandu Metropolitan City website with responsive UI/UX design.",
-    skills: ["Next.js", "Tailwind CSS"],
+    skills: ["Next.js", "Tailwind CSS", "FastAPI"],
   },
   {
     title: "BID Management System",
