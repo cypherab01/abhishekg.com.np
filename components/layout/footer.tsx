@@ -40,8 +40,11 @@ export function Footer() {
             </a>
           </div>
         </div>
-        <p className="text-xs text-muted-foreground/60 mt-12">
-          &copy; {new Date().getFullYear()} {personalInfo.name}
+        <p className="text-xs text-muted-foreground/60 mt-12 flex items-center gap-1">
+          <span className="font-mono text-xl">&copy;</span>{" "}
+          <span>
+            {new Date().getFullYear()} {personalInfo.name}
+          </span>
         </p>
       </div>
     </footer>

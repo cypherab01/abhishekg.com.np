@@ -23,6 +23,7 @@ export const experiences: Experience[] = [
     company: "Kathmandu Metropolitan City",
     location: "Kathmandu, Nepal",
     title: "Software Developer",
+    date: "Jan 2026 – Present",
     description:
       "Developed the official KMC website with responsive UI/UX and the BID Management System with role-based access control for managing BID publications on Gorkhapatra.",
     skills: [
