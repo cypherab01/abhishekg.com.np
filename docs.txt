@@ -1,0 +1,49 @@
+Name: Abhishek Ghimire
+Email: aghimire074@gmail.com
+GitHub: github.com/cypherab01
+Website: abhishekg.com.np
+
+About
+A Software Engineer specializing in full-stack web application development, with a focus on Next.js, React for frontend development and FastApi for Backend development.
+
+Experience
+Company: Kathmandu Metropolitan City, Kathmandu, Nepal
+Title: Software Developer
+Skills: Nextjs, FastApi
+
+Projects:
+Kathmandu Metropolitan City Website: Official KMC website
+Task: developed responsive ui ux 
+Developed backend system using FastApi
+
+BID Management System: Web Application to manage BID published of Kathmandu Metropolitican City on Gorkhapatra
+Task : Developed user friendly designs, – nextjs shadcn, tanstack query, authjs
+Developed backend system using FastAPI - sql alchemy, fastapi, pydantic, postgresql  
+Role based access control 
+
+
+
+Company:  Mantra IT Solution Pvt. Ltd. - Lalitpur, Nepal
+title: Website and Mobile App Developer
+date: Dec 2024 - January 2026
+Projects that I have worked on there:
+Harvestmoon : International Flight Ticket Booking app
+			Languages: React, Next.js, shadcn/ui, tanstack query
+Shreeairlines: Nepal's domestic airline
+	Skills: Laravel Blade, frontend development
+Egrow Easy Farming: E-Grow – Easy Farming revolutionizes agricultural practices through advanced ARP technology.
+Skills: React Native CLI
+
+
+Education
+Bachelor's in Information Technology (BIT) — Patan Multiple Campus, Tribhuvan University (Mar 2021 – June 2025)
+Physical Science (Higher Secondary) — Deep Boarding High School, Butwal, NEB (July 2018 – Oct 2020)
+Secondary Education (SEE) — Motherland English School (Apr 2005 – Mar 2018)
+
+Skills & Tools
+HTML, CSS, JavaScript, TypeScript, React, Next.js, Tailwind CSS, shadcn/ui, Node.js, Express.js, MongoDB, Git, GitHub, Vercel, Postman, Linux, macOS, Windows, pnpm, npm, yarn, Docker, Python, Fastapi, sqlalchemy, pydantic, postresql,  
+
+Project
+bitinfonepal.com — Educational platform for BIT students in Nepal, featuring resources, quizzes, and official notices.
+
+

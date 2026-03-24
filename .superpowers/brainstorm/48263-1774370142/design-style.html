@@ -1,0 +1,131 @@
+<h2>Pick a design style for your portfolio</h2>
+<p class="subtitle">Click the one that feels right — zinc base + blue accent applied to all three</p>
+
+<div class="cards">
+  <!-- Option A: Minimal & Clean -->
+  <div class="card" data-choice="minimal" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#09090b;padding:24px;border-radius:8px;font-family:system-ui;min-height:320px;">
+        <!-- Nav -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:48px;">
+          <span style="color:#fafafa;font-size:16px;font-weight:600;">AG</span>
+          <div style="display:flex;gap:24px;">
+            <span style="color:#a1a1aa;font-size:13px;">About</span>
+            <span style="color:#a1a1aa;font-size:13px;">Work</span>
+            <span style="color:#a1a1aa;font-size:13px;">Contact</span>
+          </div>
+        </div>
+        <!-- Hero -->
+        <div style="margin-bottom:40px;">
+          <p style="color:#3b82f6;font-size:13px;margin:0 0 8px 0;letter-spacing:1px;">SOFTWARE ENGINEER</p>
+          <h1 style="color:#fafafa;font-size:28px;margin:0 0 12px 0;font-weight:300;line-height:1.2;">Abhishek Ghimire</h1>
+          <p style="color:#71717a;font-size:13px;margin:0;max-width:300px;line-height:1.6;">Full-stack developer specializing in Next.js, React, and FastAPI.</p>
+        </div>
+        <!-- Minimal cards -->
+        <div style="display:flex;gap:12px;">
+          <div style="flex:1;border:1px solid #27272a;border-radius:8px;padding:14px;">
+            <p style="color:#a1a1aa;font-size:11px;margin:0 0 4px 0;">01</p>
+            <p style="color:#fafafa;font-size:13px;margin:0;">KMC Website</p>
+          </div>
+          <div style="flex:1;border:1px solid #27272a;border-radius:8px;padding:14px;">
+            <p style="color:#a1a1aa;font-size:11px;margin:0 0 4px 0;">02</p>
+            <p style="color:#fafafa;font-size:13px;margin:0;">BID System</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Minimal & Clean</h3>
+      <p>Whitespace-heavy, typography-focused. Subtle blue accents. Lets your work speak for itself. Pairs naturally with shadcn's design language.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Bold & Modern -->
+  <div class="card" data-choice="bold" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#09090b;padding:24px;border-radius:8px;font-family:system-ui;min-height:320px;">
+        <!-- Nav -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+          <span style="color:#fafafa;font-size:18px;font-weight:800;">AG<span style="color:#3b82f6;">.</span></span>
+          <div style="display:flex;gap:16px;align-items:center;">
+            <span style="color:#a1a1aa;font-size:13px;">About</span>
+            <span style="color:#a1a1aa;font-size:13px;">Work</span>
+            <span style="background:#3b82f6;color:white;font-size:12px;padding:6px 14px;border-radius:6px;">Hire Me</span>
+          </div>
+        </div>
+        <!-- Hero with gradient -->
+        <div style="background:linear-gradient(135deg,#1e3a5f 0%,#09090b 70%);border-radius:12px;padding:24px;margin-bottom:16px;">
+          <p style="color:#60a5fa;font-size:12px;margin:0 0 6px 0;font-weight:600;letter-spacing:2px;">HI, I'M</p>
+          <h1 style="color:#fafafa;font-size:26px;margin:0 0 8px 0;font-weight:800;line-height:1.1;">Abhishek<br/>Ghimire</h1>
+          <p style="color:#a1a1aa;font-size:12px;margin:0;">Software Engineer • Full Stack</p>
+        </div>
+        <!-- Bold cards -->
+        <div style="display:flex;gap:10px;">
+          <div style="flex:1;background:#18181b;border-radius:10px;padding:12px;border-left:3px solid #3b82f6;">
+            <p style="color:#3b82f6;font-size:18px;font-weight:800;margin:0;">4+</p>
+            <p style="color:#71717a;font-size:11px;margin:4px 0 0 0;">Projects</p>
+          </div>
+          <div style="flex:1;background:#18181b;border-radius:10px;padding:12px;border-left:3px solid #3b82f6;">
+            <p style="color:#3b82f6;font-size:18px;font-weight:800;margin:0;">2+</p>
+            <p style="color:#71717a;font-size:11px;margin:4px 0 0 0;">Companies</p>
+          </div>
+          <div style="flex:1;background:#18181b;border-radius:10px;padding:12px;border-left:3px solid #3b82f6;">
+            <p style="color:#3b82f6;font-size:18px;font-weight:800;margin:0;">10+</p>
+            <p style="color:#71717a;font-size:11px;margin:4px 0 0 0;">Skills</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Bold & Modern</h3>
+      <p>Large headings, gradient accents, stat counters, card-heavy. More visual energy and punch. Great for standing out.</p>
+    </div>
+  </div>
+
+  <!-- Option C: Professional & Structured -->
+  <div class="card" data-choice="professional" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#09090b;padding:24px;border-radius:8px;font-family:system-ui;min-height:320px;">
+        <!-- Nav -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid #27272a;margin-bottom:24px;">
+          <span style="color:#fafafa;font-size:15px;font-weight:600;">Abhishek Ghimire</span>
+          <div style="display:flex;gap:20px;">
+            <span style="color:#a1a1aa;font-size:12px;">About</span>
+            <span style="color:#a1a1aa;font-size:12px;">Experience</span>
+            <span style="color:#a1a1aa;font-size:12px;">Projects</span>
+            <span style="color:#a1a1aa;font-size:12px;">Contact</span>
+          </div>
+        </div>
+        <!-- Two-column hero -->
+        <div style="display:flex;gap:20px;margin-bottom:20px;">
+          <div style="flex:1;">
+            <p style="color:#fafafa;font-size:18px;margin:0 0 8px 0;font-weight:600;">Software Engineer</p>
+            <p style="color:#71717a;font-size:12px;margin:0;line-height:1.6;">Full-stack developer with experience in Next.js, React, and FastAPI.</p>
+            <div style="display:flex;gap:8px;margin-top:12px;">
+              <span style="background:#1e3a5f;color:#60a5fa;font-size:10px;padding:4px 8px;border-radius:4px;">Next.js</span>
+              <span style="background:#1e3a5f;color:#60a5fa;font-size:10px;padding:4px 8px;border-radius:4px;">FastAPI</span>
+              <span style="background:#1e3a5f;color:#60a5fa;font-size:10px;padding:4px 8px;border-radius:4px;">React</span>
+            </div>
+          </div>
+        </div>
+        <!-- Timeline -->
+        <div style="border-left:2px solid #27272a;padding-left:16px;margin-left:4px;">
+          <div style="margin-bottom:14px;position:relative;">
+            <div style="width:8px;height:8px;background:#3b82f6;border-radius:50%;position:absolute;left:-21px;top:4px;"></div>
+            <p style="color:#fafafa;font-size:12px;margin:0;font-weight:500;">Kathmandu Metropolitan City</p>
+            <p style="color:#71717a;font-size:11px;margin:2px 0 0 0;">Software Developer</p>
+          </div>
+          <div style="position:relative;">
+            <div style="width:8px;height:8px;background:#3b82f6;border-radius:50%;position:absolute;left:-21px;top:4px;"></div>
+            <p style="color:#fafafa;font-size:12px;margin:0;font-weight:500;">Mantra IT Solution</p>
+            <p style="color:#71717a;font-size:11px;margin:2px 0 0 0;">Web & Mobile Developer</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. Professional & Structured</h3>
+      <p>Clear grid, timeline experience section, skill badges. Traditional resume-portfolio feel. Organized and easy to scan.</p>
+    </div>
+  </div>
+</div>

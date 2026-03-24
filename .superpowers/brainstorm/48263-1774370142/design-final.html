@@ -1,0 +1,148 @@
+<h2>Final Design: Minimal + Timeline</h2>
+<p class="subtitle">Minimal & clean aesthetic with timeline for experience. Here's the full page layout.</p>
+
+<div class="cards" style="grid-template-columns:1fr;">
+  <div class="card" data-choice="approved" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background:#09090b;padding:32px;border-radius:8px;font-family:system-ui;max-width:100%;">
+
+        <!-- ===== NAVBAR ===== -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:64px;">
+          <span style="color:#fafafa;font-size:16px;font-weight:600;">AG</span>
+          <div style="display:flex;gap:24px;align-items:center;">
+            <span style="color:#a1a1aa;font-size:13px;">About</span>
+            <span style="color:#a1a1aa;font-size:13px;">Experience</span>
+            <span style="color:#a1a1aa;font-size:13px;">Projects</span>
+            <span style="color:#a1a1aa;font-size:13px;">Education</span>
+            <span style="color:#a1a1aa;font-size:13px;">Contact</span>
+            <div style="width:28px;height:16px;background:#27272a;border-radius:8px;position:relative;">
+              <div style="width:12px;height:12px;background:#a1a1aa;border-radius:50%;position:absolute;right:2px;top:2px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== HERO ===== -->
+        <div style="margin-bottom:64px;max-width:520px;">
+          <p style="color:#3b82f6;font-size:13px;margin:0 0 10px 0;letter-spacing:1.5px;font-weight:500;">SOFTWARE ENGINEER</p>
+          <h1 style="color:#fafafa;font-size:36px;margin:0 0 16px 0;font-weight:300;line-height:1.15;">Abhishek Ghimire</h1>
+          <p style="color:#71717a;font-size:14px;margin:0 0 24px 0;line-height:1.7;">Full-stack developer specializing in Next.js, React, and FastAPI. Building web applications that matter.</p>
+          <div style="display:flex;gap:12px;">
+            <span style="border:1px solid #27272a;color:#a1a1aa;font-size:12px;padding:8px 16px;border-radius:6px;">GitHub ↗</span>
+            <span style="background:#3b82f6;color:white;font-size:12px;padding:8px 16px;border-radius:6px;">Get in Touch</span>
+          </div>
+        </div>
+
+        <!-- ===== ABOUT ===== -->
+        <div style="margin-bottom:56px;padding-top:32px;border-top:1px solid #18181b;">
+          <p style="color:#3b82f6;font-size:11px;margin:0 0 12px 0;letter-spacing:2px;font-weight:500;">ABOUT</p>
+          <p style="color:#a1a1aa;font-size:13px;margin:0;line-height:1.8;max-width:520px;">A Software Engineer specializing in full-stack web application development, with a focus on Next.js, React for frontend and FastAPI for backend development.</p>
+        </div>
+
+        <!-- ===== EXPERIENCE (Timeline) ===== -->
+        <div style="margin-bottom:56px;padding-top:32px;border-top:1px solid #18181b;">
+          <p style="color:#3b82f6;font-size:11px;margin:0 0 24px 0;letter-spacing:2px;font-weight:500;">EXPERIENCE</p>
+          <div style="border-left:2px solid #27272a;padding-left:24px;margin-left:4px;">
+            <!-- Job 1 -->
+            <div style="margin-bottom:28px;position:relative;">
+              <div style="width:10px;height:10px;background:#3b82f6;border-radius:50%;position:absolute;left:-30px;top:4px;"></div>
+              <p style="color:#fafafa;font-size:14px;margin:0;font-weight:500;">Software Developer</p>
+              <p style="color:#71717a;font-size:12px;margin:4px 0 8px 0;">Kathmandu Metropolitan City • Kathmandu, Nepal</p>
+              <p style="color:#a1a1aa;font-size:12px;margin:0;line-height:1.6;">Developed KMC website UI/UX and BID Management System with role-based access control.</p>
+              <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
+                <span style="background:#18181b;color:#71717a;font-size:10px;padding:3px 8px;border-radius:4px;">Next.js</span>
+                <span style="background:#18181b;color:#71717a;font-size:10px;padding:3px 8px;border-radius:4px;">FastAPI</span>
+                <span style="background:#18181b;color:#71717a;font-size:10px;padding:3px 8px;border-radius:4px;">shadcn/ui</span>
+              </div>
+            </div>
+            <!-- Job 2 -->
+            <div style="position:relative;">
+              <div style="width:10px;height:10px;background:#3b82f6;border-radius:50%;position:absolute;left:-30px;top:4px;"></div>
+              <p style="color:#fafafa;font-size:14px;margin:0;font-weight:500;">Website & Mobile App Developer</p>
+              <p style="color:#71717a;font-size:12px;margin:4px 0 8px 0;">Mantra IT Solution Pvt. Ltd. • Lalitpur, Nepal • Dec 2024 – Jan 2026</p>
+              <p style="color:#a1a1aa;font-size:12px;margin:0;line-height:1.6;">Harvestmoon flight booking, Shreeairlines, E-Grow farming app.</p>
+              <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;">
+                <span style="background:#18181b;color:#71717a;font-size:10px;padding:3px 8px;border-radius:4px;">React</span>
+                <span style="background:#18181b;color:#71717a;font-size:10px;padding:3px 8px;border-radius:4px;">React Native</span>
+                <span style="background:#18181b;color:#71717a;font-size:10px;padding:3px 8px;border-radius:4px;">Laravel</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== PROJECTS ===== -->
+        <div style="margin-bottom:56px;padding-top:32px;border-top:1px solid #18181b;">
+          <p style="color:#3b82f6;font-size:11px;margin:0 0 20px 0;letter-spacing:2px;font-weight:500;">PROJECTS</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div style="border:1px solid #27272a;border-radius:8px;padding:16px;">
+              <p style="color:#fafafa;font-size:13px;margin:0 0 4px 0;font-weight:500;">KMC Website</p>
+              <p style="color:#71717a;font-size:11px;margin:0;line-height:1.5;">Official Kathmandu Metropolitan City website</p>
+            </div>
+            <div style="border:1px solid #27272a;border-radius:8px;padding:16px;">
+              <p style="color:#fafafa;font-size:13px;margin:0 0 4px 0;font-weight:500;">BID Management</p>
+              <p style="color:#71717a;font-size:11px;margin:0;line-height:1.5;">BID publishing system for Gorkhapatra</p>
+            </div>
+            <div style="border:1px solid #27272a;border-radius:8px;padding:16px;">
+              <p style="color:#fafafa;font-size:13px;margin:0 0 4px 0;font-weight:500;">Harvestmoon</p>
+              <p style="color:#71717a;font-size:11px;margin:0;line-height:1.5;">International flight ticket booking app</p>
+            </div>
+            <div style="border:1px solid #27272a;border-radius:8px;padding:16px;">
+              <p style="color:#fafafa;font-size:13px;margin:0 0 4px 0;font-weight:500;">bitinfonepal.com</p>
+              <p style="color:#71717a;font-size:11px;margin:0;line-height:1.5;">Educational platform for BIT students</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== EDUCATION (Timeline) ===== -->
+        <div style="margin-bottom:56px;padding-top:32px;border-top:1px solid #18181b;">
+          <p style="color:#3b82f6;font-size:11px;margin:0 0 24px 0;letter-spacing:2px;font-weight:500;">EDUCATION</p>
+          <div style="border-left:2px solid #27272a;padding-left:24px;margin-left:4px;">
+            <div style="margin-bottom:20px;position:relative;">
+              <div style="width:10px;height:10px;background:#3b82f6;border-radius:50%;position:absolute;left:-30px;top:4px;"></div>
+              <p style="color:#fafafa;font-size:13px;margin:0;font-weight:500;">Bachelor's in Information Technology</p>
+              <p style="color:#71717a;font-size:11px;margin:4px 0 0 0;">Patan Multiple Campus, TU • 2021 – 2025</p>
+            </div>
+            <div style="margin-bottom:20px;position:relative;">
+              <div style="width:10px;height:10px;background:#27272a;border-radius:50%;position:absolute;left:-30px;top:4px;"></div>
+              <p style="color:#fafafa;font-size:13px;margin:0;font-weight:500;">Physical Science (Higher Secondary)</p>
+              <p style="color:#71717a;font-size:11px;margin:4px 0 0 0;">Deep Boarding High School, NEB • 2018 – 2020</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== SKILLS ===== -->
+        <div style="margin-bottom:56px;padding-top:32px;border-top:1px solid #18181b;">
+          <p style="color:#3b82f6;font-size:11px;margin:0 0 16px 0;letter-spacing:2px;font-weight:500;">SKILLS & TOOLS</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span style="border:1px solid #27272a;color:#a1a1aa;font-size:11px;padding:4px 10px;border-radius:4px;">TypeScript</span>
+            <span style="border:1px solid #27272a;color:#a1a1aa;font-size:11px;padding:4px 10px;border-radius:4px;">React</span>
+            <span style="border:1px solid #27272a;color:#a1a1aa;font-size:11px;padding:4px 10px;border-radius:4px;">Next.js</span>
+            <span style="border:1px solid #27272a;color:#a1a1aa;font-size:11px;padding:4px 10px;border-radius:4px;">FastAPI</span>
+            <span style="border:1px solid #27272a;color:#a1a1aa;font-size:11px;padding:4px 10px;border-radius:4px;">Python</span>
+            <span style="border:1px solid #27272a;color:#a1a1aa;font-size:11px;padding:4px 10px;border-radius:4px;">Tailwind</span>
+            <span style="border:1px solid #27272a;color:#a1a1aa;font-size:11px;padding:4px 10px;border-radius:4px;">PostgreSQL</span>
+            <span style="border:1px solid #27272a;color:#a1a1aa;font-size:11px;padding:4px 10px;border-radius:4px;">Docker</span>
+            <span style="border:1px solid #27272a;color:#a1a1aa;font-size:11px;padding:4px 10px;border-radius:4px;">MongoDB</span>
+            <span style="border:1px solid #27272a;color:#a1a1aa;font-size:11px;padding:4px 10px;border-radius:4px;">Git</span>
+          </div>
+        </div>
+
+        <!-- ===== CONTACT FOOTER ===== -->
+        <div style="padding-top:32px;border-top:1px solid #18181b;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <p style="color:#fafafa;font-size:14px;margin:0 0 4px 0;font-weight:500;">Let's work together</p>
+            <p style="color:#71717a;font-size:12px;margin:0;">aghimire074@gmail.com</p>
+          </div>
+          <div style="display:flex;gap:12px;">
+            <span style="color:#a1a1aa;font-size:12px;">GitHub ↗</span>
+            <span style="color:#a1a1aa;font-size:12px;">Email ↗</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Minimal + Timeline — Full Page Layout</h3>
+      <p>Clean minimal aesthetic throughout. Timeline used for Experience and Education. Bordered cards for Projects. Badge pills for Skills. Sticky navbar with dark/light toggle. Click to approve this design.</p>
+    </div>
+  </div>
+</div>
