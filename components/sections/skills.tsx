@@ -1,4 +1,4 @@
-import { skillCategories } from "@/lib/data";
+import { skillCategories } from "@/constants/data";
 import { Section } from "@/components/layout/section";
 
 export function SkillsSection() {

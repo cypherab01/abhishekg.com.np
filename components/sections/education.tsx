@@ -1,4 +1,4 @@
-import { education } from "@/lib/data";
+import { education } from "@/constants/data";
 import { Section } from "@/components/layout/section";
 import { Timeline, TimelineItem } from "@/components/ui/timeline";
 
@@ -11,7 +11,7 @@ export function EducationSection() {
             key={edu.institution}
             title={edu.degree}
             subtitle={edu.institution}
-            date={edu.date}
+            date={`${edu.startDate} – ${edu.endDate}`}
             isLast={i === education.length - 1}
           />
         ))}

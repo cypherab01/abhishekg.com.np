@@ -1,6 +1,6 @@
 import { Mail } from "lucide-react";
 import { GithubIcon } from "@/components/ui/icons";
-import { personalInfo } from "@/lib/data";
+import { personalInfo } from "@/constants/data";
 
 export function Footer() {
   return (
@@ -41,7 +41,7 @@ export function Footer() {
           </div>
         </div>
         <p className="text-xs text-muted-foreground/60 mt-12 flex items-center gap-1">
-          <span className="font-mono text-xl">&copy;</span>{" "}
+          <span className="font-mono text-base">&copy;</span>{" "}
           <span>
             {new Date().getFullYear()} {personalInfo.name}
           </span>

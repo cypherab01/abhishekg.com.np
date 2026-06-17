@@ -1,4 +1,4 @@
-import { experiences } from "@/lib/data";
+import { experiences } from "@/constants/data";
 import { Section } from "@/components/layout/section";
 import { Timeline, TimelineItem } from "@/components/ui/timeline";
 
@@ -11,9 +11,9 @@ export function ExperienceSection() {
             key={exp.company}
             title={exp.title}
             subtitle={`${exp.company} · ${exp.location}`}
-            date={exp.date}
-            description={exp.description}
-            tags={exp.skills}
+            date={`${exp.startDate}${exp.endDate ? ` – ${exp.endDate}` : ""}`}
+            description={exp.responsibilities.join(" • ")}
+            tags={exp.technologies}
             isLast={i === experiences.length - 1}
           />
         ))}

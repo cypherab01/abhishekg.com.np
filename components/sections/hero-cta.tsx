@@ -2,7 +2,7 @@
 
 import { Mail } from "lucide-react";
 import { GithubIcon } from "@/components/ui/icons";
-import { personalInfo } from "@/lib/data";
+import { personalInfo } from "@/constants/data";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
