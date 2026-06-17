@@ -18,8 +18,8 @@ export const websiteData = {
       title: "Software Developer",
       company: "Kathmandu Metropolitan City",
       location: "Kathmandu, Nepal",
-      startDate: "2026-01",
-      endDate: null,
+      startDate: "Jan 2026",
+      endDate: "Present",
       current: true,
       responsibilities: [
         "Developing the official Kathmandu Metropolitan City website with responsive, accessible UI/UX and the BID Management System with role-based access control for managing BID publications on Gorkhapatra.",
@@ -32,8 +32,8 @@ export const websiteData = {
       title: "Next.js & React Native Developer",
       company: "Mantra IT Solution Pvt. Ltd.",
       location: "Lalitpur, Nepal",
-      startDate: "2024-12",
-      endDate: "2026-01",
+      startDate: "Dec 2024",
+      endDate: "Jan 2026",
       current: false,
       responsibilities: [
         "Built the UI for Harvestmoon, an international flight booking web application.",
@@ -54,8 +54,8 @@ export const websiteData = {
       title: "Frontend Developer",
       company: "Aatharwa Media and Advertising Pvt. Ltd.",
       location: "Lalitpur, Nepal",
-      startDate: "2024-06",
-      endDate: "2025-08",
+      startDate: "Jun 2024",
+      endDate: "Aug 2025",
       current: false,
       responsibilities: [
         "Developed frontend interfaces for e-commerce and trading platforms.",
@@ -68,8 +68,8 @@ export const websiteData = {
       title: "CloudWorker",
       company: "CloudFactory",
       location: "Lalitpur, Nepal",
-      startDate: "2023-12",
-      endDate: "2026-01",
+      startDate: "Dec 2023",
+      endDate: "Jan 2026",
       current: false,
       responsibilities: [
         "Contributed to data annotation and curation projects supporting machine learning model training.",
@@ -81,8 +81,8 @@ export const websiteData = {
   teaching: [
     {
       title: "Full Stack Development Instructor",
-      startDate: "2026-04",
-      endDate: "2026-05",
+      startDate: "Apr 2026",
+      endDate: "May 2026",
       responsibilities: [
         "Designed and taught a 30-session full-stack development course.",
         "Covered React 18, Vite, Tailwind CSS, React Router, FastAPI, PostgreSQL, SQLAlchemy 2.0, Alembic, JWT Authentication, and RBAC.",
@@ -92,8 +92,8 @@ export const websiteData = {
     },
     {
       title: "Instructor (CTEVT)",
-      startDate: "2023-03",
-      endDate: "2024-01",
+      startDate: "Mar 2023",
+      endDate: "Jan 2024",
       responsibilities: [
         "Taught C programming, C++, and Web Technology.",
         "Delivered structured lessons and hands-on practical sessions.",
