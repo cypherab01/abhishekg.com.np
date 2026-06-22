@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Reveal } from "@/components/ui/reveal";
 
 interface SectionProps {
   id: string;
@@ -10,9 +11,11 @@ interface SectionProps {
 export function Section({ id, title, children, className }: SectionProps) {
   return (
     <section id={id} className={cn("py-16 md:py-24", className)}>
-      <p className="text-xs font-medium tracking-[0.2em] text-primary mb-6 md:mb-8">
-        {title.toUpperCase()}
-      </p>
+      <Reveal>
+        <p className="text-xs font-medium tracking-[0.2em] text-primary mb-6 md:mb-8">
+          {title.toUpperCase()}
+        </p>
+      </Reveal>
       {children}
     </section>
   );

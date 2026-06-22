@@ -6,7 +6,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({ title, description, skills }: ProjectCardProps) {
   return (
-    <div className="group rounded-lg border border-border p-5 transition-colors hover:border-primary/30 hover:bg-muted/30">
+    <div className="group h-full rounded-lg border border-border p-5 transition-[colors,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-muted/30 hover:shadow-sm motion-reduce:hover:translate-y-0">
       <h3 className="font-medium text-foreground mb-1.5">{title}</h3>
       <p className="text-sm text-muted-foreground leading-relaxed mb-3">
         {description}
