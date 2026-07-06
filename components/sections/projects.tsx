@@ -1,22 +1,46 @@
-import { projects } from "@/constants/data";
+import Link from "next/link";
+import type { Project } from "@/db/schema";
 import { Section } from "@/components/layout/section";
 import { ProjectCard } from "@/components/ui/project-card";
 import { Reveal } from "@/components/ui/reveal";
 
-export function ProjectsSection() {
+export function ProjectsSection({
+  projects,
+  title = "Projects",
+  showAllLink = false,
+}: {
+  projects: Project[];
+  title?: string;
+  showAllLink?: boolean;
+}) {
+  if (projects.length === 0) return null;
+
   return (
-    <Section id="projects" title="Projects">
+    <Section id="projects" title={title}>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {projects.map((project, i) => (
-          <Reveal key={project.name} delay={i * 80} className="h-full">
+          <Reveal key={project.id} delay={i * 80} className="h-full">
             <ProjectCard
               title={project.name}
+              category={project.category}
+              coverImage={project.coverImage}
               description={project.description.join(" ")}
               skills={project.technologies}
+              href={`/projects/${project.slug}`}
             />
           </Reveal>
         ))}
       </div>
+      {showAllLink && (
+        <div className="mt-6">
+          <Link
+            href="/projects"
+            className="text-sm text-primary hover:underline underline-offset-4"
+          >
+            View all projects →
+          </Link>
+        </div>
+      )}
     </Section>
   );
 }

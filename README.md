@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# abhishekg.com.np
+
+A dynamic, database-backed personal portfolio built with **Next.js 16**, **Drizzle ORM**, **Neon PostgreSQL**, and **UploadThing**. All content — profile, experience, teaching, projects, education, skills, and contact messages — is stored in Postgres and managed through a password-protected admin dashboard.
+
+## Tech Stack
+
+- **Next.js 16** (App Router, Server Components, Server Actions)
+- **Drizzle ORM** + **Neon** (serverless PostgreSQL)
+- **UploadThing** for resume (PDF) and image uploads
+- **Tailwind CSS v4** + shadcn-style UI
+- **jose** for a signed session-cookie based single-admin login
 
 ## Getting Started
 
-First, run the development server:
+### 1. Environment variables
+
+Copy `.env.sample` to `.env` and fill in the values:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+DATABASE_URL='postgresql://...'      # Neon connection string
+UPLOADTHING_TOKEN='...'              # UploadThing app token
+ADMIN_PASSWORD='your-strong-password' # password for the /admin dashboard
+AUTH_SECRET='...'                    # random 32+ byte hex (openssl rand -hex 32)
+NEXT_PUBLIC_APP_URL='http://localhost:3000'
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Database
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm db:generate   # generate SQL migrations from db/schema.ts
+pnpm db:migrate    # apply migrations to Neon
+pnpm db:seed       # seed initial content (idempotent — wipes & re-inserts)
+pnpm db:studio     # (optional) open Drizzle Studio to browse/edit data
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Run
 
-## Learn More
+```bash
+pnpm dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Open [http://localhost:3000](http://localhost:3000). The admin dashboard lives at
+[http://localhost:3000/admin](http://localhost:3000/admin) (redirects to `/admin/login`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+app/
+  (site)/            # public site (shares Navbar + Footer layout)
+    page.tsx         # home — hero, experience, projects, education, skills, contact
+    about/           # full about page (bio, experience, teaching, education, skills)
+    projects/        # projects index + [slug] detail pages
+  admin/             # password-protected dashboard (CRUD + uploads)
+    login/           # login page + server action
+    profile|experience|projects|education|skills|messages/
+  api/uploadthing/   # UploadThing file router (resume + images)
+  actions/contact.ts # public contact-form server action
+db/
+  schema.ts          # Drizzle tables
+  queries.ts         # read helpers used by public pages
+  seed.ts            # seed script
+lib/
+  auth.ts            # session create/verify (jose)
+  uploadthing.ts     # client upload helpers
+middleware.ts        # protects /admin/*
+```
+
+## Admin
+
+- Sign in at `/admin/login` with `ADMIN_PASSWORD`.
+- Manage every section, upload a resume PDF and images (project covers, avatar).
+- Edits call `revalidatePath('/', 'layout')`, so the public site updates immediately.
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Set all `.env` variables in the Vercel project settings, then deploy. Run
+`pnpm db:migrate` against your production database before the first deploy.

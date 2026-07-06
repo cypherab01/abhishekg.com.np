@@ -1,8 +1,18 @@
-import { skillCategories } from "@/constants/data";
 import { Section } from "@/components/layout/section";
 import { Reveal } from "@/components/ui/reveal";
 
-export function SkillsSection() {
+interface SkillCategory {
+  label: string;
+  items: string[];
+}
+
+export function SkillsSection({
+  skillCategories,
+}: {
+  skillCategories: SkillCategory[];
+}) {
+  if (skillCategories.length === 0) return null;
+
   return (
     <Section id="skills" title="Skills & Tools">
       <div className="space-y-6">
