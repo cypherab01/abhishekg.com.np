@@ -7,11 +7,13 @@ export const navLinks = [
 ] as const;
 
 export const adminNavLinks = [
-  { label: "Dashboard", href: "/admin" },
-  { label: "Profile", href: "/admin/profile" },
-  { label: "Experience", href: "/admin/experience" },
-  { label: "Projects", href: "/admin/projects" },
-  { label: "Education", href: "/admin/education" },
-  { label: "Skills", href: "/admin/skills" },
-  { label: "Messages", href: "/admin/messages" },
+  { label: "Dashboard", href: "/admin", icon: "dashboard" },
+  { label: "Profile", href: "/admin/profile", icon: "profile" },
+  { label: "Experience", href: "/admin/experience", icon: "experience" },
+  { label: "Projects", href: "/admin/projects", icon: "projects" },
+  { label: "Education", href: "/admin/education", icon: "education" },
+  { label: "Skills", href: "/admin/skills", icon: "skills" },
+  { label: "Messages", href: "/admin/messages", icon: "messages" },
 ] as const;
+
+export type AdminNavIcon = (typeof adminNavLinks)[number]["icon"];

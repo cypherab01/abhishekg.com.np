@@ -3,6 +3,7 @@ import { Mail, MailOpen } from "lucide-react";
 import { getMessages } from "@/db/queries";
 import { toggleMessageRead, deleteMessage } from "../actions";
 import { DeleteButton } from "../_components/delete-button";
+import { PageHeader, Pill } from "../_components/ui";
 import { cn } from "@/lib/utils";
 
 type MessageFilter = "all" | "unread" | "read";
@@ -35,12 +36,12 @@ export default async function AdminMessagesPage({
 
   return (
     <div>
-      <h1 className="text-2xl font-light text-foreground">Messages</h1>
-      <p className="mt-1 mb-8 text-sm text-muted-foreground">
-        Submissions from the contact form.
-      </p>
+      <PageHeader
+        title="Messages"
+        description="Submissions from the contact form."
+      />
 
-      <div className="mb-6 flex flex-wrap gap-2 rounded-xl border border-border bg-muted/20 p-1">
+      <div className="mb-6 inline-flex flex-wrap gap-1 rounded-xl border border-border bg-muted/40 p-1">
         {tabs.map((tabItem) => {
           const active = activeTab === tabItem.value;
           return (
@@ -52,14 +53,21 @@ export default async function AdminMessagesPage({
                   : `/admin/messages?tab=${tabItem.value}`
               }
               className={cn(
-                "inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                "inline-flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-sm font-medium transition-colors",
                 active
-                  ? "bg-background text-foreground shadow-sm"
+                  ? "bg-card text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground",
               )}
             >
               <span>{tabItem.label}</span>
-              <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+              <span
+                className={cn(
+                  "rounded-full px-2 py-0.5 text-xs font-semibold",
+                  active
+                    ? "bg-primary/10 text-primary"
+                    : "bg-muted text-muted-foreground",
+                )}
+              >
                 {tabItem.count}
               </span>
             </Link>
@@ -67,7 +75,7 @@ export default async function AdminMessagesPage({
         })}
       </div>
 
-      <div className="space-y-3">
+      <div className="grid gap-4 lg:grid-cols-2">
         {visibleMessages.length === 0 && (
           <p className="text-sm text-muted-foreground">No messages yet.</p>
         )}
@@ -75,13 +83,18 @@ export default async function AdminMessagesPage({
           <div
             key={msg.id}
             className={cn(
-              "rounded-lg border p-4",
-              msg.read ? "border-border" : "border-primary/40 bg-primary/5",
+              "card-elevated rounded-2xl border p-5",
+              msg.read
+                ? "border-border bg-card"
+                : "border-primary/30 bg-primary/[0.03]",
             )}
           >
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <p className="font-medium text-foreground">{msg.name}</p>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium text-foreground">{msg.name}</p>
+                  {!msg.read && <Pill tone="accent">New</Pill>}
+                </div>
                 <a
                   href={`mailto:${msg.email}`}
                   className="text-sm text-muted-foreground hover:text-foreground"

@@ -4,6 +4,7 @@ import { updateProfile } from "../actions";
 import { Field, TextArea } from "../_components/fields";
 import { UploadField } from "../_components/upload-field";
 import { SubmitButton } from "../_components/submit-button";
+import { PageHeader } from "../_components/ui";
 
 export default async function AdminProfilePage({
   searchParams,
@@ -15,14 +16,14 @@ export default async function AdminProfilePage({
 
   return (
     <div>
-      <h1 className="text-2xl font-light text-foreground">Profile</h1>
-      <p className="mt-1 mb-8 text-sm text-muted-foreground">
-        Your personal information, resume, and social links.
-      </p>
+      <PageHeader
+        title="Profile"
+        description="Your personal information, resume, and social links."
+      />
 
       {sp.saved && (
-        <div className="mb-6 flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm text-foreground">
-          <CheckCircle2 className="size-4 text-primary" />
+        <div className="mb-6 flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm text-emerald-700 dark:text-emerald-400">
+          <CheckCircle2 className="size-4" />
           Profile saved.
         </div>
       )}
@@ -64,7 +65,7 @@ export default async function AdminProfilePage({
             />
           </div>
 
-          <div className="h-full space-y-5 rounded-2xl border border-border/70 bg-muted/20 p-4 sm:p-5">
+          <div className="card-elevated h-full space-y-5 rounded-2xl border border-border bg-card p-4 sm:p-5">
             <p className="text-sm font-medium text-foreground">Quick details</p>
             <div className="grid grid-cols-1 gap-5">
               <Field

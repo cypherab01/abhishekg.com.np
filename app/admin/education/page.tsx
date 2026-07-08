@@ -3,6 +3,7 @@ import { Plus, Pencil } from "lucide-react";
 import { getEducation } from "@/db/queries";
 import { deleteEducation } from "../actions";
 import { DeleteButton } from "../_components/delete-button";
+import { PageHeader } from "../_components/ui";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
@@ -11,28 +12,28 @@ export default async function AdminEducationPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-light text-foreground">Education</h1>
-        <Link
-          href="/admin/education/new"
-          className={cn(buttonVariants({ variant: "default" }))}
-        >
-          <Plus className="size-4 mr-1.5" />
-          Add
-        </Link>
-      </div>
-      <p className="mt-1 mb-8 text-sm text-muted-foreground">
-        Academic background.
-      </p>
+      <PageHeader
+        title="Education"
+        description="Academic background."
+        action={
+          <Link
+            href="/admin/education/new"
+            className={cn(buttonVariants({ variant: "default" }))}
+          >
+            <Plus className="size-4 mr-1.5" />
+            Add
+          </Link>
+        }
+      />
 
-      <div className="space-y-2">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {items.length === 0 && (
           <p className="text-sm text-muted-foreground">No entries yet.</p>
         )}
         {items.map((edu) => (
           <div
             key={edu.id}
-            className="flex items-center justify-between gap-3 rounded-lg border border-border p-4"
+            className="card-elevated flex items-center justify-between gap-3 rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary/30"
           >
             <div className="min-w-0">
               <p className="truncate font-medium text-foreground">

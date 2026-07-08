@@ -2,9 +2,7 @@ import type { Skill, SkillCategory } from "@/db/schema";
 import { getSkillCategoryList } from "@/db/queries";
 import { saveSkill } from "../actions";
 import { SubmitButton } from "../_components/submit-button";
-
-const inputClass =
-  "w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary/50";
+import { inputClass } from "../_components/ui";
 
 export async function SkillForm({
   skill,

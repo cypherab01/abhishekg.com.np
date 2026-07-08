@@ -181,14 +181,29 @@ export async function saveExperienceKind(formData: FormData) {
   }
   revalidateSite();
   revalidatePath("/admin/experience");
+  revalidatePath("/admin/experience/types");
 }
 
 export async function deleteExperienceKind(formData: FormData) {
   await assertAuth();
   const id = Number(str(formData.get("id")));
+
+  const inUse = await db
+    .select({ id: experiences.id })
+    .from(experiences)
+    .where(eq(experiences.kindId, id))
+    .limit(1);
+  if (inUse.length > 0) {
+    redirect(
+      `/admin/experience/types?error=${encodeURIComponent(
+        "This type still has experience entries. Reassign or delete those entries before removing the type.",
+      )}`,
+    );
+  }
+
   await db.delete(experienceKinds).where(eq(experienceKinds.id, id));
   revalidateSite();
-  revalidatePath("/admin/experience");
+  redirect("/admin/experience/types");
 }
 
 /* ------------------------------ Projects ------------------------------ */
@@ -261,14 +276,29 @@ export async function saveProjectCategory(formData: FormData) {
   }
   revalidateSite();
   revalidatePath("/admin/projects");
+  revalidatePath("/admin/projects/categories");
 }
 
 export async function deleteProjectCategory(formData: FormData) {
   await assertAuth();
   const id = Number(str(formData.get("id")));
+
+  const inUse = await db
+    .select({ id: projects.id })
+    .from(projects)
+    .where(eq(projects.categoryId, id))
+    .limit(1);
+  if (inUse.length > 0) {
+    redirect(
+      `/admin/projects/categories?error=${encodeURIComponent(
+        "This category still has projects assigned to it. Move or delete those projects before removing the category.",
+      )}`,
+    );
+  }
+
   await db.delete(projectCategories).where(eq(projectCategories.id, id));
   revalidateSite();
-  revalidatePath("/admin/projects");
+  redirect("/admin/projects/categories");
 }
 
 /* ----------------------------- Education ------------------------------ */
@@ -344,7 +374,8 @@ export async function saveSkillCategory(formData: FormData) {
   }
   revalidateSite();
   revalidatePath("/admin/skills");
-  redirect("/admin/skills");
+  revalidatePath("/admin/skills/categories");
+  redirect("/admin/skills/categories");
 }
 
 export async function deleteSkillCategory(formData: FormData) {
@@ -353,6 +384,7 @@ export async function deleteSkillCategory(formData: FormData) {
   await db.delete(skillCategories).where(eq(skillCategories.id, id));
   revalidateSite();
   revalidatePath("/admin/skills");
+  revalidatePath("/admin/skills/categories");
 }
 
 export async function deleteSkill(formData: FormData) {

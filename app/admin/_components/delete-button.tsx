@@ -19,8 +19,9 @@ export function DeleteButton({
       onClick={(e) => {
         if (!confirm(confirmLabel)) e.preventDefault();
       }}
+      aria-label="Delete"
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-md text-sm text-destructive transition-colors hover:bg-destructive/10 disabled:opacity-50",
+        "inline-flex items-center gap-1.5 rounded-md text-sm text-destructive transition-colors hover:bg-destructive/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40 disabled:opacity-50",
         compact ? "px-2 py-1" : "px-3 py-2",
       )}
     >

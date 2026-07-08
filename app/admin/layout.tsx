@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 import { isAuthenticated } from "@/lib/auth";
-import { getUnreadMessageCount } from "@/db/queries";
+import { getUnreadMessageCount, getProfile } from "@/db/queries";
 import { AdminSidebar } from "./admin-sidebar";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 
@@ -19,26 +20,49 @@ export default async function AdminLayout({
 
   // Unauthenticated users only ever see the login page (middleware enforces).
   if (!authed) {
-    return <>{children}</>;
+    return <div className="admin-scope min-h-dvh bg-background">{children}</div>;
   }
 
-  const unread = await getUnreadMessageCount();
+  const [unread, profile] = await Promise.all([
+    getUnreadMessageCount(),
+    getProfile(),
+  ]);
 
   return (
-    <div className="flex min-h-dvh flex-col md:flex-row">
-      <AdminSidebar unread={unread} />
-      <div className="flex-1 min-w-0">
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-background/80 px-6 backdrop-blur-md md:justify-end">
-          <Link
-            href="/"
-            target="_blank"
-            className="text-sm text-muted-foreground hover:text-foreground transition-colors md:mr-4"
-          >
-            View site ↗
-          </Link>
-          <ThemeToggle />
+    <div className="admin-scope flex min-h-dvh flex-col bg-background md:flex-row">
+      <AdminSidebar
+        unread={unread}
+        profile={{
+          name: profile?.name ?? null,
+          role: profile?.role ?? null,
+          initials: profile?.initials ?? null,
+          avatarUrl: profile?.avatarUrl ?? null,
+        }}
+      />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-border bg-background/80 px-6 backdrop-blur-md">
+          <p className="text-sm text-muted-foreground">
+            Welcome back
+            {profile?.name ? (
+              <span className="font-medium text-foreground">
+                , {profile.name.split(" ")[0]}
+              </span>
+            ) : null}{" "}
+            👋
+          </p>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/"
+              target="_blank"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground hover:border-primary/30"
+            >
+              View site
+              <ExternalLink className="size-3.5" />
+            </Link>
+            <ThemeToggle />
+          </div>
         </header>
-        <main className="mx-auto w-full max-w-3xl px-6 py-8">{children}</main>
+        <main className="w-full flex-1 px-6 py-8 lg:px-10">{children}</main>
       </div>
     </div>
   );

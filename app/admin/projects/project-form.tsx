@@ -29,7 +29,7 @@ export async function ProjectForm({ project }: { project?: Project }) {
             id="category"
             name="category"
             defaultValue={defaultCategoryId}
-            className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary/50"
+            className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground shadow-sm outline-none transition-all focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
           >
             {categories.map((category) => (
               <option key={category.id} value={category.name}>

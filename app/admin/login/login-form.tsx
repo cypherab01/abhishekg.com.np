@@ -13,7 +13,7 @@ export function LoginForm() {
   return (
     <form action={formAction} className="space-y-4">
       <div className="space-y-1.5">
-        <label htmlFor="password" className="text-sm text-foreground">
+        <label htmlFor="password" className="text-sm font-medium text-foreground">
           Password
         </label>
         <input
@@ -22,7 +22,7 @@ export function LoginForm() {
           type="password"
           autoFocus
           required
-          className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary/50"
+          className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground shadow-sm outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
           placeholder="••••••••"
         />
       </div>
