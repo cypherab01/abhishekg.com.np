@@ -19,9 +19,15 @@ Copy `.env.sample` to `.env` and fill in the values:
 ```bash
 DATABASE_URL='postgresql://...'      # Neon connection string
 UPLOADTHING_TOKEN='...'              # UploadThing app token
-ADMIN_PASSWORD='your-strong-password' # password for the /admin dashboard
+ADMIN_PASSWORD='<sha-256 hex>'       # SHA-256 hash of the /admin password (never the plain password)
 AUTH_SECRET='...'                    # random 32+ byte hex (openssl rand -hex 32)
 NEXT_PUBLIC_APP_URL='http://localhost:3000'
+```
+
+`ADMIN_PASSWORD` stores a **SHA-256 hex digest**, not the password itself. Generate it on Linux with:
+
+```bash
+printf '%s' 'your-strong-password' | sha256sum | awk '{print $1}'
 ```
 
 ### 2. Database
@@ -62,12 +68,12 @@ db/
 lib/
   auth.ts            # session create/verify (jose)
   uploadthing.ts     # client upload helpers
-middleware.ts        # protects /admin/*
+  proxy.ts        # protects /admin/*
 ```
 
 ## Admin
 
-- Sign in at `/admin/login` with `ADMIN_PASSWORD`.
+- Sign in at `/admin/login` with the password whose SHA-256 hash is stored in `ADMIN_PASSWORD`.
 - Manage every section, upload a resume PDF and images (project covers, avatar).
 - Edits call `revalidatePath('/', 'layout')`, so the public site updates immediately.
 
