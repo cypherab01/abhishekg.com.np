@@ -79,6 +79,7 @@ export default function ResumeDocument({
     headerRow: {
       flexDirection: "row",
       justifyContent: "space-between",
+      alignItems: "flex-end",
     },
     headerName: {
       fontSize: t.nameFontSize,
@@ -364,7 +365,7 @@ export default function ResumeDocument({
           {headerRows.map((row, i) => (
             <View
               key={i}
-              style={[styles.headerRow, i === 0 ? { marginBottom: 2 } : {}]}
+              style={[styles.headerRow, i === 0 ? { marginBottom: -2 } : {}]}
             >
 
               <Text style={i === 0 ? styles.headerName : styles.headerLeft}>
