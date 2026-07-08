@@ -19,6 +19,7 @@ async function main() {
   console.log("🌱 Seeding database...");
 
   // Clear existing rows (idempotent seed)
+  await db.delete(schema.resumeConfig);
   await db.delete(schema.skills);
   await db.delete(schema.skillCategories);
   await db.delete(schema.experiences);
@@ -28,7 +29,7 @@ async function main() {
   await db.delete(schema.profile);
 
   // ---- Profile ----
-  await db.insert(schema.profile).values({
+  const seedProfile = {
     id: 1,
     name: "Abhishek Ghimire",
     initials: "AG",
@@ -44,7 +45,8 @@ async function main() {
       "Software Developer with hands-on experience building full-stack web and mobile applications across frontend, backend, and database layers. Passionate about problem-solving and turning real-world inefficiencies into clean, scalable software. Comfortable shipping production features with React, Next.js, React Native, and FastAPI.",
     about:
       "I'm a Software Developer based in Kathmandu, Nepal, with hands-on experience building full-stack web and mobile applications across frontend, backend, and database layers. I enjoy turning real-world inefficiencies into clean, scalable software and shipping production features end to end. My core stack revolves around React, Next.js, React Native, and FastAPI, backed by PostgreSQL. I've delivered public-facing government platforms, international flight-booking UIs, and open-source mobile apps, and I've also taught full-stack development to the next generation of developers.",
-  });
+  };
+  await db.insert(schema.profile).values(seedProfile);
 
   // ---- Experience kinds ----
   const experienceKindRows = await db
@@ -134,25 +136,28 @@ async function main() {
     },
   ];
 
-  await db.insert(schema.experiences).values([
-    ...work.map((e, i) => ({
-      ...e,
-      kindId: experienceKindIdByName.get("work")!,
-      sortOrder: i,
-    })),
-    ...teaching.map((e, i) => ({
-      kindId: experienceKindIdByName.get("teaching")!,
-      title: e.title,
-      company: "",
-      location: "",
-      startDate: e.startDate,
-      endDate: e.endDate,
-      current: false,
-      responsibilities: e.responsibilities,
-      technologies: [] as string[],
-      sortOrder: i,
-    })),
-  ]);
+  const insertedExperiences = await db
+    .insert(schema.experiences)
+    .values([
+      ...work.map((e, i) => ({
+        ...e,
+        kindId: experienceKindIdByName.get("work")!,
+        sortOrder: i,
+      })),
+      ...teaching.map((e, i) => ({
+        kindId: experienceKindIdByName.get("teaching")!,
+        title: e.title,
+        company: "",
+        location: "",
+        startDate: e.startDate,
+        endDate: e.endDate,
+        current: false,
+        responsibilities: e.responsibilities,
+        technologies: [] as string[],
+        sortOrder: i,
+      })),
+    ])
+    .returning();
 
   // ---- Projects ----
   const projectCategories = [
@@ -227,14 +232,17 @@ async function main() {
     },
   ];
 
-  await db.insert(schema.projects).values(
-    projects.map((p, i) => ({
-      ...p,
-      categoryId: projectCategoryIdByName.get(p.name === "bitinfonepal.com" ? "Academic Resource Platform" : p.name === "Baraabar: Split Bills" ? "Open Source Mobile Application" : "Full Stack Application")!,
-      slug: slugify(p.name),
-      sortOrder: i,
-    })),
-  );
+  const insertedProjects = await db
+    .insert(schema.projects)
+    .values(
+      projects.map((p, i) => ({
+        ...p,
+        categoryId: projectCategoryIdByName.get(p.name === "bitinfonepal.com" ? "Academic Resource Platform" : p.name === "Baraabar: Split Bills" ? "Open Source Mobile Application" : "Full Stack Application")!,
+        slug: slugify(p.name),
+        sortOrder: i,
+      })),
+    )
+    .returning();
 
   // ---- Education ----
   const education = [
@@ -278,9 +286,10 @@ async function main() {
     },
   ];
 
-  await db
+  const insertedEducation = await db
     .insert(schema.education)
-    .values(education.map((e, i) => ({ ...e, sortOrder: i })));
+    .values(education.map((e, i) => ({ ...e, sortOrder: i })))
+    .returning();
 
   // ---- Skills ----
   const skillGroups: Record<string, string[]> = {
@@ -326,7 +335,24 @@ async function main() {
       sortOrder: i,
     })),
   );
-  await db.insert(schema.skills).values(skillRows);
+  const insertedSkills = await db
+    .insert(schema.skills)
+    .values(skillRows)
+    .returning();
+
+  // ---- Resume config ----
+  // Defaults to everything selected, matching ensureResumeConfig()'s
+  // first-run behavior — the admin can then trim it down in /admin/resume.
+  await db.insert(schema.resumeConfig).values({
+    id: 1,
+    summary: seedProfile.summary,
+    sections: schema.DEFAULT_RESUME_SECTIONS,
+    headerFields: schema.DEFAULT_RESUME_HEADER_FIELDS,
+    experienceIds: insertedExperiences.map((row) => row.id),
+    educationIds: insertedEducation.map((row) => row.id),
+    skillIds: insertedSkills.map((row) => row.id),
+    projectIds: insertedProjects.map((row) => row.id),
+  });
 
   console.log("✅ Seed complete");
   process.exit(0);
