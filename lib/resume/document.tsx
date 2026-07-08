@@ -23,6 +23,14 @@ function formatDateRange(start: string, end: string, current: boolean) {
 
 type HeaderLine = { text: string; href?: string };
 
+/**
+ * The left column (socials/website) and right column (email/phone/location)
+ * are rendered as two independent vertical stacks rather than row-paired —
+ * that keeps every gap within the right column uniform (same font, same
+ * line-height throughout), since it's no longer sharing row boxes with the
+ * much-taller name text. The right column gets a top offset so its first
+ * line lines up with the bottom of the name instead of its top.
+ */
 function buildHeaderColumns(view: ResumeView) {
   const { profile, headerFields } = view;
 
@@ -31,30 +39,24 @@ function buildHeaderColumns(view: ResumeView) {
     headerFields.linkedin && profile.linkedin ? profile.linkedin : null,
   ].filter((v): v is string => Boolean(v));
 
-  const left: HeaderLine[] = [{ text: profile.name }];
-  if (socials.length > 0) left.push({ text: socials.join("  |  ") });
+  const leftLines: HeaderLine[] = [];
+  if (socials.length > 0) leftLines.push({ text: socials.join("  |  ") });
   if (headerFields.website && profile.website) {
-    left.push({ text: profile.website, href: profile.website });
+    leftLines.push({ text: profile.website, href: profile.website });
   }
 
-  const right: HeaderLine[] = [];
+  const rightLines: HeaderLine[] = [];
   if (headerFields.email && profile.email) {
-    right.push({ text: `Email: ${profile.email}`, href: `mailto:${profile.email}` });
+    rightLines.push({ text: `Email: ${profile.email}`, href: `mailto:${profile.email}` });
   }
   if (headerFields.phone && profile.phone) {
-    right.push({ text: `Phone: ${profile.phone}` });
+    rightLines.push({ text: `Phone: ${profile.phone}` });
   }
   if (headerFields.location && profile.location) {
-    right.push({ text: profile.location });
+    rightLines.push({ text: profile.location });
   }
 
-  const rowCount = Math.max(left.length, right.length, 1);
-  const rows = Array.from({ length: rowCount }, (_, i) => ({
-    left: left[i] ?? null,
-    right: right[i] ?? null,
-  }));
-
-  return rows;
+  return { leftLines, rightLines };
 }
 
 export default function ResumeDocument({
@@ -79,12 +81,20 @@ export default function ResumeDocument({
     headerRow: {
       flexDirection: "row",
       justifyContent: "space-between",
-      alignItems: "flex-end",
+      alignItems: "flex-start",
     },
     headerName: {
       fontSize: t.nameFontSize,
       fontWeight: 700,
-      lineHeight: 1.2,
+      lineHeight: 1.1,
+    },
+    headerLeftColumn: {
+      flexShrink: 1,
+    },
+    headerRightColumn: {
+      // Offsets the right column so its first line lines up with the
+      // bottom of the (much taller) name, instead of its top.
+      marginTop: t.nameFontSize * 1.1 - t.baseFontSize * t.lineHeight - 1,
     },
     headerLeft: {
       fontSize: t.baseFontSize,
@@ -356,38 +366,39 @@ export default function ResumeDocument({
     projects: renderProjects,
   };
 
-  const headerRows = buildHeaderColumns(view);
+  const { leftLines, rightLines } = buildHeaderColumns(view);
 
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <View style={{ marginBottom: t.sectionGap }}>
-          {headerRows.map((row, i) => (
-            <View
-              key={i}
-              style={[styles.headerRow, i === 0 ? { marginBottom: -2 } : {}]}
-            >
-
-              <Text style={i === 0 ? styles.headerName : styles.headerLeft}>
-                {row.left?.href ? (
-                  <Link src={row.left.href} style={styles.headerLink}>
-                    {row.left.text}
+        <View style={[styles.headerRow, { marginBottom: t.sectionGap }]}>
+          <View style={styles.headerLeftColumn}>
+            <Text style={styles.headerName}>{view.profile.name}</Text>
+            {leftLines.map((line, i) => (
+              <Text key={i} style={styles.headerLeft}>
+                {line.href ? (
+                  <Link src={line.href} style={styles.headerLink}>
+                    {line.text}
                   </Link>
                 ) : (
-                  row.left?.text ?? ""
+                  line.text
                 )}
               </Text>
-              <Text style={styles.headerRight}>
-                {row.right?.href ? (
-                  <Link src={row.right.href} style={styles.headerLink}>
-                    {row.right.text}
+            ))}
+          </View>
+          <View style={styles.headerRightColumn}>
+            {rightLines.map((line, i) => (
+              <Text key={i} style={styles.headerRight}>
+                {line.href ? (
+                  <Link src={line.href} style={styles.headerLink}>
+                    {line.text}
                   </Link>
                 ) : (
-                  row.right?.text ?? ""
+                  line.text
                 )}
               </Text>
-            </View>
-          ))}
+            ))}
+          </View>
         </View>
         {view.sectionOrder.map((key) => sectionRenderers[key]())}
       </Page>
