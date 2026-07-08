@@ -39,6 +39,7 @@ type ExperienceGroup = {
     startDate: string;
     endDate: string;
     current: boolean;
+    responsibilities: string[];
   }[];
 };
 
@@ -74,6 +75,73 @@ function experienceLabel(item: ExperienceGroup["items"][number]) {
 
 function educationLabel(item: Education) {
   return `${item.degree} — ${item.institution} (${item.startDate}–${item.endDate})`;
+}
+
+function initLineSelections<T extends { id: number }>(
+  items: T[],
+  getLines: (item: T) => string[],
+  saved: Record<string, number[]>,
+): Map<number, Set<number>> {
+  const map = new Map<number, Set<number>>();
+  for (const item of items) {
+    const savedIndices = saved[String(item.id)];
+    const allIndices = getLines(item).map((_, i) => i);
+    map.set(item.id, new Set(savedIndices ?? allIndices));
+  }
+  return map;
+}
+
+/**
+ * Omits ids where every line is still selected, so a resume config saved
+ * before a new bullet was added keeps including that new bullet by default
+ * — only explicit deselections get persisted.
+ */
+function serializeLineSelections<T extends { id: number }>(
+  items: T[],
+  getLines: (item: T) => string[],
+  selections: Map<number, Set<number>>,
+): Record<string, number[]> {
+  const result: Record<string, number[]> = {};
+  for (const item of items) {
+    const total = getLines(item).length;
+    const selected = selections.get(item.id) ?? new Set(getLines(item).map((_, i) => i));
+    if (selected.size >= total) continue;
+    result[String(item.id)] = Array.from(selected).sort((a, b) => a - b);
+  }
+  return result;
+}
+
+function LineChecklist({
+  itemId,
+  lines,
+  selections,
+  onToggle,
+}: {
+  itemId: number;
+  lines: string[];
+  selections: Map<number, Set<number>>;
+  onToggle: (itemId: number, lineIndex: number) => void;
+}) {
+  if (lines.length === 0) return null;
+  const selected = selections.get(itemId);
+  return (
+    <div className="ml-6 space-y-1 border-l border-border pl-3">
+      {lines.map((line, i) => (
+        <label
+          key={i}
+          className="flex items-start gap-2 text-xs text-muted-foreground"
+        >
+          <input
+            type="checkbox"
+            className="mt-0.5 size-3.5 shrink-0 accent-primary"
+            checked={selected?.has(i) ?? true}
+            onChange={() => onToggle(itemId, i)}
+          />
+          <span>{line}</span>
+        </label>
+      ))}
+    </div>
+  );
 }
 
 function SortableSectionRow({
@@ -143,6 +211,24 @@ export function ResumeBuilder({
   const [projectIds, setProjectIds] = useState(
     new Set<number>(config.projectIds),
   );
+  const allExperienceItems = useMemo(
+    () => experienceGroups.flatMap((g) => g.items),
+    [experienceGroups],
+  );
+  const [experienceLines, setExperienceLines] = useState(() =>
+    initLineSelections(
+      allExperienceItems,
+      (item) => item.responsibilities,
+      config.experienceLineIndices,
+    ),
+  );
+  const [projectLines, setProjectLines] = useState(() =>
+    initLineSelections(
+      projects,
+      (project) => project.description,
+      config.projectLineIndices,
+    ),
+  );
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isPreviewing, setIsPreviewing] = useState(false);
   const [previewError, setPreviewError] = useState<string | null>(null);
@@ -158,8 +244,30 @@ export function ResumeBuilder({
       educationIds: Array.from(educationIds),
       skillIds: Array.from(skillIds),
       projectIds: Array.from(projectIds),
+      experienceLineIndices: serializeLineSelections(
+        allExperienceItems,
+        (item) => item.responsibilities,
+        experienceLines,
+      ),
+      projectLineIndices: serializeLineSelections(
+        projects,
+        (project) => project.description,
+        projectLines,
+      ),
     }),
-    [summary, sections, headerFields, experienceIds, educationIds, skillIds, projectIds],
+    [
+      summary,
+      sections,
+      headerFields,
+      experienceIds,
+      educationIds,
+      skillIds,
+      projectIds,
+      experienceLines,
+      projectLines,
+      allExperienceItems,
+      projects,
+    ],
   );
 
   function toggleSet(
@@ -172,6 +280,44 @@ export function ResumeBuilder({
     else next.add(id);
     setter(next);
   }
+
+  function toggleLine(
+    map: Map<number, Set<number>>,
+    setter: (next: Map<number, Set<number>>) => void,
+    totalLinesByItemId: Map<number, number>,
+  ) {
+    return (itemId: number, lineIndex: number) => {
+      const next = new Map(map);
+      const total = totalLinesByItemId.get(itemId) ?? 0;
+      const current = new Set(
+        next.get(itemId) ?? Array.from({ length: total }, (_, i) => i),
+      );
+      if (current.has(lineIndex)) current.delete(lineIndex);
+      else current.add(lineIndex);
+      next.set(itemId, current);
+      setter(next);
+    };
+  }
+
+  const experienceLineTotals = useMemo(
+    () =>
+      new Map(allExperienceItems.map((item) => [item.id, item.responsibilities.length])),
+    [allExperienceItems],
+  );
+  const projectLineTotals = useMemo(
+    () => new Map(projects.map((project) => [project.id, project.description.length])),
+    [projects],
+  );
+  const handleToggleExperienceLine = toggleLine(
+    experienceLines,
+    setExperienceLines,
+    experienceLineTotals,
+  );
+  const handleToggleProjectLine = toggleLine(
+    projectLines,
+    setProjectLines,
+    projectLineTotals,
+  );
 
   function toggleSection(key: ResumeSectionKey) {
     setSections((prev) =>
@@ -286,20 +432,25 @@ export function ResumeBuilder({
                 {group.label}
               </p>
               {group.items.map((item) => (
-                <label
-                  key={item.id}
-                  className="flex items-center gap-2 text-sm text-foreground"
-                >
-                  <input
-                    type="checkbox"
-                    className="size-4 accent-primary"
-                    checked={experienceIds.has(item.id)}
-                    onChange={() =>
-                      toggleSet(experienceIds, item.id, setExperienceIds)
-                    }
+                <div key={item.id} className="space-y-1">
+                  <label className="flex items-center gap-2 text-sm text-foreground">
+                    <input
+                      type="checkbox"
+                      className="size-4 accent-primary"
+                      checked={experienceIds.has(item.id)}
+                      onChange={() =>
+                        toggleSet(experienceIds, item.id, setExperienceIds)
+                      }
+                    />
+                    {experienceLabel(item)}
+                  </label>
+                  <LineChecklist
+                    itemId={item.id}
+                    lines={item.responsibilities}
+                    selections={experienceLines}
+                    onToggle={handleToggleExperienceLine}
                   />
-                  {experienceLabel(item)}
-                </label>
+                </div>
               ))}
             </div>
           ))}
@@ -353,18 +504,23 @@ export function ResumeBuilder({
         <Card className="p-5 space-y-3">
           <p className="text-sm font-medium text-foreground">Projects</p>
           {projects.map((project) => (
-            <label
-              key={project.id}
-              className="flex items-center gap-2 text-sm text-foreground"
-            >
-              <input
-                type="checkbox"
-                className="size-4 accent-primary"
-                checked={projectIds.has(project.id)}
-                onChange={() => toggleSet(projectIds, project.id, setProjectIds)}
+            <div key={project.id} className="space-y-1">
+              <label className="flex items-center gap-2 text-sm text-foreground">
+                <input
+                  type="checkbox"
+                  className="size-4 accent-primary"
+                  checked={projectIds.has(project.id)}
+                  onChange={() => toggleSet(projectIds, project.id, setProjectIds)}
+                />
+                {project.name}
+              </label>
+              <LineChecklist
+                itemId={project.id}
+                lines={project.description}
+                selections={projectLines}
+                onToggle={handleToggleProjectLine}
               />
-              {project.name}
-            </label>
+            </div>
           ))}
         </Card>
 

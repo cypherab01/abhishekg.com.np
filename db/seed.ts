@@ -352,6 +352,8 @@ async function main() {
     educationIds: insertedEducation.map((row) => row.id),
     skillIds: insertedSkills.map((row) => row.id),
     projectIds: insertedProjects.map((row) => row.id),
+    experienceLineIndices: {},
+    projectLineIndices: {},
   });
 
   console.log("✅ Seed complete");

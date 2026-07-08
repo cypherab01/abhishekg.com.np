@@ -448,6 +448,8 @@ export async function saveResumeConfig(formData: FormData) {
       educationIds: parsed.educationIds,
       skillIds: parsed.skillIds,
       projectIds: parsed.projectIds,
+      experienceLineIndices: parsed.experienceLineIndices,
+      projectLineIndices: parsed.projectLineIndices,
       updatedAt: new Date(),
     })
     .onConflictDoUpdate({
@@ -460,6 +462,8 @@ export async function saveResumeConfig(formData: FormData) {
         educationIds: parsed.educationIds,
         skillIds: parsed.skillIds,
         projectIds: parsed.projectIds,
+        experienceLineIndices: parsed.experienceLineIndices,
+        projectLineIndices: parsed.projectLineIndices,
         updatedAt: new Date(),
       },
     });

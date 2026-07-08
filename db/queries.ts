@@ -295,6 +295,8 @@ export async function ensureResumeConfig() {
       educationIds: allEducation.map((row) => row.id),
       skillIds: allSkills.map((row) => row.id),
       projectIds: allProjects.map((row) => row.id),
+      experienceLineIndices: {},
+      projectLineIndices: {},
       updatedAt: new Date(),
     })
     .onConflictDoNothing();

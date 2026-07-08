@@ -168,6 +168,14 @@ export const DEFAULT_RESUME_HEADER_FIELDS: ResumeHeaderFields = {
  * Singleton row (id = 1) holding the admin's resume export selection —
  * which sections/items appear in the generated PDF, and in what order.
  */
+/**
+ * Maps a row id (as a string, since JSON object keys are strings) to the
+ * indices of its description/responsibility lines that should be included.
+ * A row id absent from the map means "include every line" (the default) —
+ * this is only populated once an admin excludes at least one line.
+ */
+export type ResumeLineIndices = Record<string, number[]>;
+
 export const resumeConfig = pgTable("resume_config", {
   id: integer("id").primaryKey().default(1),
   summary: text("summary").notNull().default(""),
@@ -183,6 +191,14 @@ export const resumeConfig = pgTable("resume_config", {
   educationIds: jsonb("education_ids").$type<number[]>().notNull().default([]),
   skillIds: jsonb("skill_ids").$type<number[]>().notNull().default([]),
   projectIds: jsonb("project_ids").$type<number[]>().notNull().default([]),
+  experienceLineIndices: jsonb("experience_line_indices")
+    .$type<ResumeLineIndices>()
+    .notNull()
+    .default({}),
+  projectLineIndices: jsonb("project_line_indices")
+    .$type<ResumeLineIndices>()
+    .notNull()
+    .default({}),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 

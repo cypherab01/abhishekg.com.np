@@ -21,6 +21,8 @@ export async function GET() {
     educationIds: config.educationIds,
     skillIds: config.skillIds,
     projectIds: config.projectIds,
+    experienceLineIndices: config.experienceLineIndices,
+    projectLineIndices: config.projectLineIndices,
   };
 
   const buffer = await buildResumePdfBuffer(input, data);

@@ -84,9 +84,13 @@ export const resumeConfigInputSchema = z.object({
   educationIds: z.array(z.number().int()),
   skillIds: z.array(z.number().int()),
   projectIds: z.array(z.number().int()),
+  experienceLineIndices: z.record(z.string(), z.array(z.number().int())),
+  projectLineIndices: z.record(z.string(), z.array(z.number().int())),
 });
 
 export type ResumeConfigInput = z.infer<typeof resumeConfigInputSchema>;
+
+export type ResumeLineIndicesInput = ResumeConfigInput["experienceLineIndices"];
 
 export type ResumeData = {
   profile: Profile;

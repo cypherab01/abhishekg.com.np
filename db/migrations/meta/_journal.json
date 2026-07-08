@@ -36,6 +36,13 @@
       "when": 1783318196325,
       "tag": "0004_resume_config",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1783318196326,
+      "tag": "0005_resume_line_selection",
+      "breakpoints": true
     }
   ]
 }
