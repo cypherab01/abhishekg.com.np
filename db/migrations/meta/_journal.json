@@ -29,6 +29,13 @@
       "when": 1783318196324,
       "tag": "0003_project_categories",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1783318196325,
+      "tag": "0004_resume_config",
+      "breakpoints": true
     }
   ]
 }

@@ -11,6 +11,9 @@ import {
   skillCategories as skillCategoriesTable,
   skills as skillsTable,
   messages as messagesTable,
+  resumeConfig as resumeConfigTable,
+  DEFAULT_RESUME_SECTIONS,
+  DEFAULT_RESUME_HEADER_FIELDS,
 } from "./schema";
 
 export async function getProfile() {
@@ -43,7 +46,6 @@ export async function ensureProfile() {
       summary: "",
       about: "",
       avatarUrl: null,
-      resumeUrl: null,
       updatedAt: new Date(),
     })
     .onConflictDoNothing();
@@ -258,4 +260,44 @@ export async function getUnreadMessageCount() {
     .from(messagesTable)
     .where(eq(messagesTable.read, false));
   return rows.length;
+}
+
+export async function getResumeConfig() {
+  const rows = await db
+    .select()
+    .from(resumeConfigTable)
+    .where(eq(resumeConfigTable.id, 1))
+    .limit(1);
+  return rows[0] ?? null;
+}
+
+export async function ensureResumeConfig() {
+  const existing = await getResumeConfig();
+  if (existing) return existing;
+
+  const [profileRow, allExperiences, allEducation, allSkills, allProjects] =
+    await Promise.all([
+      getProfile(),
+      getAllExperiences(),
+      getEducation(),
+      getSkills(),
+      getProjects(),
+    ]);
+
+  await db
+    .insert(resumeConfigTable)
+    .values({
+      id: 1,
+      summary: profileRow?.summary ?? "",
+      sections: DEFAULT_RESUME_SECTIONS,
+      headerFields: DEFAULT_RESUME_HEADER_FIELDS,
+      experienceIds: allExperiences.map((row) => row.id),
+      educationIds: allEducation.map((row) => row.id),
+      skillIds: allSkills.map((row) => row.id),
+      projectIds: allProjects.map((row) => row.id),
+      updatedAt: new Date(),
+    })
+    .onConflictDoNothing();
+
+  return getResumeConfig();
 }

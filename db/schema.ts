@@ -11,7 +11,7 @@ import {
 
 /**
  * Singleton row (id = 1) holding all personal / profile information,
- * plus the uploaded avatar and resume file URLs (UploadThing).
+ * plus the uploaded avatar URL (UploadThing).
  */
 export const profile = pgTable("profile", {
   id: integer("id").primaryKey().default(1),
@@ -28,7 +28,6 @@ export const profile = pgTable("profile", {
   summary: text("summary").notNull().default(""),
   about: text("about").notNull().default(""),
   avatarUrl: text("avatar_url"),
-  resumeUrl: text("resume_url"),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
@@ -126,6 +125,67 @@ export const messages = pgTable("messages", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+export const RESUME_SECTION_KEYS = [
+  "summary",
+  "experience",
+  "education",
+  "skills",
+  "projects",
+] as const;
+export type ResumeSectionKey = (typeof RESUME_SECTION_KEYS)[number];
+
+export type ResumeSection = {
+  key: ResumeSectionKey;
+  visible: boolean;
+};
+
+export const RESUME_HEADER_FIELD_KEYS = [
+  "phone",
+  "email",
+  "website",
+  "github",
+  "linkedin",
+  "location",
+] as const;
+export type ResumeHeaderField = (typeof RESUME_HEADER_FIELD_KEYS)[number];
+
+export type ResumeHeaderFields = Record<ResumeHeaderField, boolean>;
+
+export const DEFAULT_RESUME_SECTIONS: ResumeSection[] = RESUME_SECTION_KEYS.map(
+  (key) => ({ key, visible: true }),
+);
+
+export const DEFAULT_RESUME_HEADER_FIELDS: ResumeHeaderFields = {
+  phone: true,
+  email: true,
+  website: true,
+  github: true,
+  linkedin: true,
+  location: true,
+};
+
+/**
+ * Singleton row (id = 1) holding the admin's resume export selection —
+ * which sections/items appear in the generated PDF, and in what order.
+ */
+export const resumeConfig = pgTable("resume_config", {
+  id: integer("id").primaryKey().default(1),
+  summary: text("summary").notNull().default(""),
+  sections: jsonb("sections")
+    .$type<ResumeSection[]>()
+    .notNull()
+    .default(DEFAULT_RESUME_SECTIONS),
+  headerFields: jsonb("header_fields")
+    .$type<ResumeHeaderFields>()
+    .notNull()
+    .default(DEFAULT_RESUME_HEADER_FIELDS),
+  experienceIds: jsonb("experience_ids").$type<number[]>().notNull().default([]),
+  educationIds: jsonb("education_ids").$type<number[]>().notNull().default([]),
+  skillIds: jsonb("skill_ids").$type<number[]>().notNull().default([]),
+  projectIds: jsonb("project_ids").$type<number[]>().notNull().default([]),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
 export type Profile = typeof profile.$inferSelect;
 export type Experience = typeof experiences.$inferSelect;
 export type ExperienceKind = typeof experienceKinds.$inferSelect;
@@ -135,3 +195,4 @@ export type Education = typeof education.$inferSelect;
 export type SkillCategory = typeof skillCategories.$inferSelect;
 export type Skill = typeof skills.$inferSelect;
 export type Message = typeof messages.$inferSelect;
+export type ResumeConfig = typeof resumeConfig.$inferSelect;
