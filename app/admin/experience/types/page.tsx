@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { ArrowLeft, AlertTriangle } from "lucide-react";
+import { ArrowLeft, AlertTriangle, Tag, Plus } from "lucide-react";
 import { getExperienceKindList, getExperienceGroups } from "@/db/queries";
 import { deleteExperienceKind, saveExperienceKind } from "../../actions";
 import { DeleteButton } from "../../_components/delete-button";
-import { PageHeader, Alert, Pill, inputClass } from "../../_components/ui";
+import { PageHeader, Alert, Pill, inputClass, rowInputClass } from "../../_components/ui";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
@@ -34,7 +34,7 @@ export default async function ExperienceTypesPage({
 
       <PageHeader
         title="Experience types"
-        description="The categories in the experience form's dropdown. Types with entries can't be deleted until those entries are moved or removed."
+        description="The categories in the experience form's dropdown. A type with entries in it can't be deleted until those entries are moved or removed."
       />
 
       {error && (
@@ -43,11 +43,14 @@ export default async function ExperienceTypesPage({
         </Alert>
       )}
 
-      <div className="card-elevated space-y-5 rounded-2xl border border-border bg-card p-5">
-        <form action={saveExperienceKind} className="flex flex-col gap-3 sm:flex-row">
+      <div className="card-elevated overflow-hidden rounded-2xl border border-border bg-card">
+        <form
+          action={saveExperienceKind}
+          className="flex flex-col gap-3 border-b border-border bg-muted/30 p-5 sm:flex-row sm:items-end"
+        >
           <div className="flex-1 space-y-1.5">
             <label className="text-sm font-medium text-foreground" htmlFor="new-experience-kind">
-              New type
+              Add a type
             </label>
             <input
               id="new-experience-kind"
@@ -56,7 +59,7 @@ export default async function ExperienceTypesPage({
               className={inputClass}
             />
           </div>
-          <div className="space-y-1.5 sm:w-28">
+          <div className="space-y-1.5 sm:w-24">
             <label className="text-sm font-medium text-foreground" htmlFor="new-experience-kind-order">
               Order
             </label>
@@ -72,33 +75,41 @@ export default async function ExperienceTypesPage({
             type="submit"
             className={cn(buttonVariants({ variant: "default" }), "sm:self-end")}
           >
+            <Plus className="mr-1.5 size-4" />
             Add type
           </button>
         </form>
 
-        <div className="space-y-2 border-t border-border pt-5">
-          {kinds.map((kind) => {
-            const count = countByKindId.get(kind.id) ?? 0;
-            return (
-              <div
-                key={kind.id}
-                className="flex flex-col gap-2 rounded-xl border border-border bg-background/50 p-3 sm:flex-row sm:items-end"
-              >
-                <form action={saveExperienceKind} className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-end">
-                  <input type="hidden" name="id" value={kind.id} />
-                  <div className="flex-1 space-y-1.5">
-                    <label className="text-sm font-medium text-foreground" htmlFor={`experience-kind-${kind.id}`}>
+        <div className="p-3 sm:p-4">
+          <p className="px-1 pb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            {kinds.length} {kinds.length === 1 ? "type" : "types"}
+          </p>
+          <div className="space-y-1.5">
+            {kinds.map((kind) => {
+              const count = countByKindId.get(kind.id) ?? 0;
+              return (
+                <div
+                  key={kind.id}
+                  className="group flex flex-col gap-2 rounded-xl border border-transparent p-2 transition-colors hover:border-border hover:bg-background/60 sm:flex-row sm:items-center sm:gap-3"
+                >
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <Tag className="size-4" aria-hidden />
+                  </span>
+                  <form
+                    action={saveExperienceKind}
+                    className="flex flex-1 items-center gap-2"
+                  >
+                    <input type="hidden" name="id" value={kind.id} />
+                    <label className="sr-only" htmlFor={`experience-kind-${kind.id}`}>
                       Type name
                     </label>
                     <input
                       id={`experience-kind-${kind.id}`}
                       name="name"
                       defaultValue={kind.name}
-                      className={inputClass}
+                      className={rowInputClass}
                     />
-                  </div>
-                  <div className="space-y-1.5 sm:w-28">
-                    <label className="text-sm font-medium text-foreground" htmlFor={`experience-kind-order-${kind.id}`}>
+                    <label className="sr-only" htmlFor={`experience-kind-order-${kind.id}`}>
                       Order
                     </label>
                     <input
@@ -106,31 +117,34 @@ export default async function ExperienceTypesPage({
                       name="sortOrder"
                       type="number"
                       defaultValue={kind.sortOrder}
-                      className={inputClass}
+                      title="Sort order"
+                      className={cn(rowInputClass, "w-16 text-center tabular-nums")}
                     />
-                  </div>
-                  <button
-                    type="submit"
-                    className={cn(buttonVariants({ variant: "outline" }), "sm:self-end")}
-                  >
-                    Save
-                  </button>
-                </form>
-                <div className="flex items-center gap-2 sm:justify-end sm:pb-0.5">
-                  <Pill tone={count > 0 ? "accent" : "neutral"}>
-                    {count} {count === 1 ? "entry" : "entries"}
-                  </Pill>
-                  <form action={deleteExperienceKind}>
-                    <input type="hidden" name="id" value={kind.id} />
-                    <DeleteButton compact confirmLabel={`Delete type "${kind.name}"?`} />
+                    <button
+                      type="submit"
+                      className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+                    >
+                      Save
+                    </button>
                   </form>
+                  <div className="flex items-center gap-2 pl-10 sm:pl-0">
+                    <Pill tone={count > 0 ? "accent" : "neutral"}>
+                      {count} {count === 1 ? "entry" : "entries"}
+                    </Pill>
+                    <form action={deleteExperienceKind}>
+                      <input type="hidden" name="id" value={kind.id} />
+                      <DeleteButton compact confirmLabel={`Delete type "${kind.name}"?`} />
+                    </form>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-          {kinds.length === 0 && (
-            <p className="text-sm text-muted-foreground">No types yet.</p>
-          )}
+              );
+            })}
+            {kinds.length === 0 && (
+              <p className="px-1 py-6 text-center text-sm text-muted-foreground">
+                No types yet. Add your first one above.
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>

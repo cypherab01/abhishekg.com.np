@@ -109,7 +109,7 @@ export const skills = pgTable("skills", {
   id: serial("id").primaryKey(),
   categoryId: integer("category_id")
     .notNull()
-    .references(() => skillCategories.id, { onDelete: "cascade" }),
+    .references(() => skillCategories.id, { onDelete: "restrict" }),
   name: text("name").notNull(),
   sortOrder: integer("sort_order").notNull().default(0),
 });

@@ -4,6 +4,13 @@ import { cn } from "@/lib/utils";
 export const inputClass =
   "w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground shadow-sm outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary/60 focus:ring-4 focus:ring-primary/10";
 
+/**
+ * Compact, inline-edit input used inside list rows — borderless at rest,
+ * revealing a border and ring on hover/focus for a lightweight editable feel.
+ */
+export const rowInputClass =
+  "w-full min-w-0 rounded-lg border border-transparent bg-transparent px-2.5 py-1.5 text-sm font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 hover:border-border hover:bg-card focus:border-primary/60 focus:bg-card focus:ring-4 focus:ring-primary/10";
+
 export function PageHeader({
   title,
   description,

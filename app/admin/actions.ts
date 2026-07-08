@@ -381,10 +381,24 @@ export async function saveSkillCategory(formData: FormData) {
 export async function deleteSkillCategory(formData: FormData) {
   await assertAuth();
   const id = Number(str(formData.get("id")));
+
+  const inUse = await db
+    .select({ id: skills.id })
+    .from(skills)
+    .where(eq(skills.categoryId, id))
+    .limit(1);
+  if (inUse.length > 0) {
+    redirect(
+      `/admin/skills/categories?error=${encodeURIComponent(
+        "This category still has skills in it. Move or delete those skills before removing the category.",
+      )}`,
+    );
+  }
+
   await db.delete(skillCategories).where(eq(skillCategories.id, id));
   revalidateSite();
   revalidatePath("/admin/skills");
-  revalidatePath("/admin/skills/categories");
+  redirect("/admin/skills/categories");
 }
 
 export async function deleteSkill(formData: FormData) {
