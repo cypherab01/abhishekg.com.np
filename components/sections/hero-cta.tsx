@@ -1,4 +1,4 @@
-import { Mail } from "lucide-react";
+import { Mail, Download } from "lucide-react";
 import { GithubIcon } from "@/components/ui/icons";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
@@ -22,6 +22,14 @@ export function HeroCta({ github, email }: HeroCtaProps) {
           GitHub
         </a>
       )}
+      <a
+        href="/api/resume"
+        download
+        className={cn(buttonVariants({ variant: "outline" }))}
+      >
+        <Download className="size-4 mr-2" />
+        Download Resume
+      </a>
       <a
         href={`mailto:${email}`}
         className={cn(buttonVariants({ variant: "default" }))}
