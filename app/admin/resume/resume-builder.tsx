@@ -527,7 +527,7 @@ export function ResumeBuilder({
         <SubmitButton label="Save settings" />
       </form>
 
-      <div className="lg:sticky lg:top-6 space-y-3">
+      <div className="lg:sticky lg:top-20 space-y-3">
         <button
           type="button"
           onClick={handlePreview}
@@ -544,7 +544,7 @@ export function ResumeBuilder({
         {previewError && (
           <p className="text-sm text-destructive">{previewError}</p>
         )}
-        <Card className="h-[80vh] overflow-hidden">
+        <Card className="h-[70vh] overflow-hidden">
           {previewUrl ? (
             <iframe src={previewUrl} className="h-full w-full" title="Resume preview" />
           ) : (
