@@ -12,6 +12,7 @@ import {
   GraduationCap,
   Wrench,
   MessageSquare,
+  FileText,
   type LucideIcon,
 } from "lucide-react";
 import { adminNavLinks, type AdminNavIcon } from "@/lib/nav";
@@ -25,6 +26,7 @@ const icons: Record<AdminNavIcon, LucideIcon> = {
   projects: FolderGit2,
   education: GraduationCap,
   skills: Wrench,
+  resume: FileText,
   messages: MessageSquare,
 };
 

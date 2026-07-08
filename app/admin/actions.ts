@@ -14,7 +14,9 @@ import {
   skillCategories,
   skills,
   messages,
+  resumeConfig,
 } from "@/db/schema";
+import { resumeConfigInputSchema } from "@/lib/resume/types";
 import {
   createSession,
   destroySession,
@@ -426,4 +428,42 @@ export async function deleteMessage(formData: FormData) {
   await db.delete(messages).where(eq(messages.id, id));
   revalidatePath("/admin/messages");
   revalidatePath("/admin");
+}
+
+/* ------------------------------- Resume -------------------------------- */
+
+export async function saveResumeConfig(formData: FormData) {
+  await assertAuth();
+  const raw = str(formData.get("config"));
+  const parsed = resumeConfigInputSchema.parse(JSON.parse(raw));
+
+  await db
+    .insert(resumeConfig)
+    .values({
+      id: 1,
+      summary: parsed.summary,
+      sections: parsed.sections,
+      headerFields: parsed.headerFields,
+      experienceIds: parsed.experienceIds,
+      educationIds: parsed.educationIds,
+      skillIds: parsed.skillIds,
+      projectIds: parsed.projectIds,
+      updatedAt: new Date(),
+    })
+    .onConflictDoUpdate({
+      target: resumeConfig.id,
+      set: {
+        summary: parsed.summary,
+        sections: parsed.sections,
+        headerFields: parsed.headerFields,
+        experienceIds: parsed.experienceIds,
+        educationIds: parsed.educationIds,
+        skillIds: parsed.skillIds,
+        projectIds: parsed.projectIds,
+        updatedAt: new Date(),
+      },
+    });
+
+  revalidatePath("/admin/resume");
+  redirect("/admin/resume?saved=1");
 }

@@ -13,6 +13,7 @@ export const adminNavLinks = [
   { label: "Projects", href: "/admin/projects", icon: "projects" },
   { label: "Education", href: "/admin/education", icon: "education" },
   { label: "Skills", href: "/admin/skills", icon: "skills" },
+  { label: "Resume", href: "/admin/resume", icon: "resume" },
   { label: "Messages", href: "/admin/messages", icon: "messages" },
 ] as const;
 
