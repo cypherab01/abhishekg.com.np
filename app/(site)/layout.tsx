@@ -40,7 +40,7 @@ export default async function SiteLayout({
 
   return (
     <>
-      <Navbar initials={profile.initials} resumeUrl={profile.resumeUrl} />
+      <Navbar initials={profile.initials} />
       <main className="mx-auto w-full max-w-3xl flex-1 px-6">{children}</main>
       <Footer profile={profile} />
     </>

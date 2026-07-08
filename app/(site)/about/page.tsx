@@ -1,18 +1,17 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { MapPin, Mail, Phone, FileDown } from "lucide-react";
+import { MapPin, Mail, Phone } from "lucide-react";
 import { ExperienceSection } from "@/components/sections/experience";
 import { EducationSection } from "@/components/sections/education";
 import { SkillsSection } from "@/components/sections/skills";
 import { Reveal } from "@/components/ui/reveal";
 import { Separator } from "@/components/ui/separator";
-import { buttonVariants } from "@/components/ui/button-variants";
-import { cn } from "@/lib/utils";
+import { Fragment } from "react";
 import {
   getProfile,
-  getExperiences,
+  getExperienceGroups,
   getEducation,
-  getSkillCategories,
+  getSkillGroups,
 } from "@/db/queries";
 
 export const metadata: Metadata = {
@@ -20,12 +19,11 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const [profile, work, teaching, education, skills] = await Promise.all([
+  const [profile, experienceGroups, education, skills] = await Promise.all([
     getProfile(),
-    getExperiences("work"),
-    getExperiences("teaching"),
+    getExperienceGroups(),
     getEducation(),
-    getSkillCategories(),
+    getSkillGroups(),
   ]);
 
   if (!profile) return null;
@@ -77,31 +75,18 @@ export default async function AboutPage() {
               </span>
             )}
           </div>
-          {profile.resumeUrl && (
-            <a
-              href={profile.resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(buttonVariants({ variant: "outline" }), "mt-6")}
-            >
-              <FileDown className="size-4 mr-2" />
-              Download Resume
-            </a>
-          )}
         </Reveal>
       </section>
-      <Separator />
-      <ExperienceSection experiences={work} />
-      {teaching.length > 0 && (
-        <>
+      {experienceGroups.map((group, index) => (
+        <Fragment key={group.kind}>
           <Separator />
           <ExperienceSection
-            experiences={teaching}
-            title="Teaching"
-            id="teaching"
+            experiences={group.items}
+            title={group.label}
+            id={index === 0 ? "experience" : group.kind}
           />
-        </>
-      )}
+        </Fragment>
+      ))}
       <Separator />
       <EducationSection education={education} />
       <Separator />

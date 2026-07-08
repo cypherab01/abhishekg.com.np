@@ -20,9 +20,11 @@ async function main() {
 
   // Clear existing rows (idempotent seed)
   await db.delete(schema.skills);
-  await db.delete(schema.education);
-  await db.delete(schema.projects);
+  await db.delete(schema.skillCategories);
   await db.delete(schema.experiences);
+  await db.delete(schema.experienceKinds);
+  await db.delete(schema.projects);
+  await db.delete(schema.education);
   await db.delete(schema.profile);
 
   // ---- Profile ----
@@ -43,6 +45,18 @@ async function main() {
     about:
       "I'm a Software Developer based in Kathmandu, Nepal, with hands-on experience building full-stack web and mobile applications across frontend, backend, and database layers. I enjoy turning real-world inefficiencies into clean, scalable software and shipping production features end to end. My core stack revolves around React, Next.js, React Native, and FastAPI, backed by PostgreSQL. I've delivered public-facing government platforms, international flight-booking UIs, and open-source mobile apps, and I've also taught full-stack development to the next generation of developers.",
   });
+
+  // ---- Experience kinds ----
+  const experienceKindRows = await db
+    .insert(schema.experienceKinds)
+    .values([
+      { name: "work", sortOrder: 0 },
+      { name: "teaching", sortOrder: 1 },
+    ])
+    .returning();
+  const experienceKindIdByName = new Map(
+    experienceKindRows.map((kind) => [kind.name, kind.id]),
+  );
 
   // ---- Experience (work + teaching) ----
   const work = [
@@ -121,9 +135,13 @@ async function main() {
   ];
 
   await db.insert(schema.experiences).values([
-    ...work.map((e, i) => ({ ...e, kind: "work", sortOrder: i })),
+    ...work.map((e, i) => ({
+      ...e,
+      kindId: experienceKindIdByName.get("work")!,
+      sortOrder: i,
+    })),
     ...teaching.map((e, i) => ({
-      kind: "teaching",
+      kindId: experienceKindIdByName.get("teaching")!,
       title: e.title,
       company: "",
       location: "",
@@ -137,10 +155,24 @@ async function main() {
   ]);
 
   // ---- Projects ----
+  const projectCategories = [
+    "Academic Resource Platform",
+    "Open Source Mobile Application",
+    "Full Stack Application",
+  ];
+  const insertedProjectCategories = await db
+    .insert(schema.projectCategories)
+    .values(
+      projectCategories.map((name, sortOrder) => ({ name, sortOrder })),
+    )
+    .returning();
+  const projectCategoryIdByName = new Map(
+    insertedProjectCategories.map((category) => [category.name, category.id]),
+  );
+
   const projects = [
     {
       name: "bitinfonepal.com",
-      category: "Academic Resource Platform",
       status: "Active",
       website: "https://bitinfonepal.com",
       playStore: null as string | null,
@@ -156,7 +188,6 @@ async function main() {
     },
     {
       name: "Baraabar: Split Bills",
-      category: "Open Source Mobile Application",
       status: "",
       website: null,
       playStore:
@@ -174,7 +205,6 @@ async function main() {
     },
     {
       name: "Driving Center Management System",
-      category: "Full Stack Application",
       status: "",
       website: null,
       playStore: null,
@@ -200,6 +230,7 @@ async function main() {
   await db.insert(schema.projects).values(
     projects.map((p, i) => ({
       ...p,
+      categoryId: projectCategoryIdByName.get(p.name === "bitinfonepal.com" ? "Academic Resource Platform" : p.name === "Baraabar: Split Bills" ? "Open Source Mobile Application" : "Full Stack Application")!,
       slug: slugify(p.name),
       sortOrder: i,
     })),
@@ -277,8 +308,23 @@ async function main() {
     ],
   };
 
+  const insertedCategories = await db
+    .insert(schema.skillCategories)
+    .values(
+      Object.keys(skillGroups).map((name, sortOrder) => ({ name, sortOrder })),
+    )
+    .returning();
+
+  const categoryIdByName = new Map(
+    insertedCategories.map((category) => [category.name, category.id]),
+  );
+
   const skillRows = Object.entries(skillGroups).flatMap(([category, items]) =>
-    items.map((name, i) => ({ category, name, sortOrder: i })),
+    items.map((name, i) => ({
+      categoryId: categoryIdByName.get(category)!,
+      name,
+      sortOrder: i,
+    })),
   );
   await db.insert(schema.skills).values(skillRows);
 

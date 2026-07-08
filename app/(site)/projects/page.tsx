@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
 import { ProjectCard } from "@/components/ui/project-card";
 import { Reveal } from "@/components/ui/reveal";
-import { getProjects } from "@/db/queries";
+import { getProjects, getProjectCategories } from "@/db/queries";
 
 export const metadata: Metadata = {
   title: "Projects",
 };
 
 export default async function ProjectsPage() {
-  const projects = await getProjects();
+  const [projects, categories] = await Promise.all([
+    getProjects(),
+    getProjectCategories(),
+  ]);
+  const categoryNameById = new Map(categories.map((category) => [category.id, category.name]));
 
   return (
     <section className="py-20 md:py-28">
@@ -32,7 +36,7 @@ export default async function ProjectsPage() {
             <Reveal key={project.id} delay={i * 70} className="h-full">
               <ProjectCard
                 title={project.name}
-                category={project.category}
+                category={categoryNameById.get(project.categoryId)}
                 coverImage={project.coverImage}
                 description={project.description.join(" ")}
                 skills={project.technologies}

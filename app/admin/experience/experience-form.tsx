@@ -1,9 +1,20 @@
 import type { Experience } from "@/db/schema";
+import { getExperienceKindList } from "@/db/queries";
 import { saveExperience } from "../actions";
 import { Field, TextArea, Checkbox } from "../_components/fields";
 import { SubmitButton } from "../_components/submit-button";
 
-export function ExperienceForm({ experience }: { experience?: Experience }) {
+export async function ExperienceForm({
+  experience,
+}: {
+  experience?: Experience;
+}) {
+  const kinds = await getExperienceKindList();
+  const defaultKind =
+    kinds.find((kind) => kind.id === experience?.kindId)?.name ??
+    kinds[0]?.name ??
+    "work";
+
   return (
     <form action={saveExperience} className="space-y-5">
       {experience && <input type="hidden" name="id" value={experience.id} />}
@@ -15,12 +26,18 @@ export function ExperienceForm({ experience }: { experience?: Experience }) {
         <select
           id="kind"
           name="kind"
-          defaultValue={experience?.kind ?? "work"}
+          defaultValue={defaultKind}
           className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary/50"
         >
-          <option value="work">Work</option>
-          <option value="teaching">Teaching</option>
+          {kinds.map((kind) => (
+            <option key={kind.id} value={kind.name}>
+              {kind.name}
+            </option>
+          ))}
         </select>
+        <p className="text-xs text-muted-foreground">
+          Add a new type from the field below the list, or select an existing one.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">

@@ -1,13 +1,28 @@
-import type { Skill } from "@/db/schema";
+import type { Skill, SkillCategory } from "@/db/schema";
+import { getSkillCategoryList } from "@/db/queries";
 import { saveSkill } from "../actions";
 import { SubmitButton } from "../_components/submit-button";
 
 const inputClass =
   "w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary/50";
 
-const CATEGORIES = ["Languages", "Frontend", "Backend", "Databases", "Tools"];
+export async function SkillForm({
+  skill,
+  categories: categoriesProp,
+}: {
+  skill?: Skill;
+  categories?: SkillCategory[];
+}) {
+  const categories = categoriesProp ?? (await getSkillCategoryList());
 
-export function SkillForm({ skill }: { skill?: Skill }) {
+  if (categories.length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground">
+        Create a skill category first, then add skills here.
+      </p>
+    );
+  }
+
   return (
     <form
       action={saveSkill}
@@ -36,13 +51,13 @@ export function SkillForm({ skill }: { skill?: Skill }) {
         </label>
         <select
           id="category"
-          name="category"
-          defaultValue={skill?.category ?? "Languages"}
+          name="categoryId"
+          defaultValue={String(skill?.categoryId ?? categories[0]?.id)}
           className={inputClass}
         >
-          {CATEGORIES.map((c) => (
-            <option key={c} value={c}>
-              {c}
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
             </option>
           ))}
         </select>

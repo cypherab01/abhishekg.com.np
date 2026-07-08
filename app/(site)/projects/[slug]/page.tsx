@@ -7,7 +7,7 @@ import { GithubIcon } from "@/components/ui/icons";
 import { Reveal } from "@/components/ui/reveal";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
-import { getProjectBySlug, getProjects } from "@/db/queries";
+import { getProjectBySlug, getProjects, getProjectCategories } from "@/db/queries";
 
 export async function generateStaticParams() {
   const projects = await getProjects();
@@ -31,6 +31,7 @@ export default async function ProjectDetailPage({
 }) {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
+  const categories = await getProjectCategories();
 
   if (!project) notFound();
 
@@ -69,9 +70,11 @@ export default async function ProjectDetailPage({
       </Reveal>
 
       <Reveal delay={80}>
-        {project.category && (
+        {categories.find((category) => category.id === project.categoryId)?.name && (
           <p className="text-sm font-medium tracking-[0.15em] text-primary mb-3">
-            {project.category.toUpperCase()}
+            {categories
+              .find((category) => category.id === project.categoryId)
+              ?.name.toUpperCase()}
           </p>
         )}
         <div className="flex flex-wrap items-center gap-3 mb-6">

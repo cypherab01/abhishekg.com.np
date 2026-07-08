@@ -1,9 +1,9 @@
 import {
   pgTable,
+  integer,
   serial,
   text,
   boolean,
-  integer,
   real,
   jsonb,
   timestamp,
@@ -14,7 +14,7 @@ import {
  * plus the uploaded avatar and resume file URLs (UploadThing).
  */
 export const profile = pgTable("profile", {
-  id: serial("id").primaryKey(),
+  id: integer("id").primaryKey().default(1),
   name: text("name").notNull(),
   initials: text("initials").notNull(),
   role: text("role").notNull(),
@@ -32,12 +32,26 @@ export const profile = pgTable("profile", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
+export const experienceKinds = pgTable("experience_kinds", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull().unique(),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
+export const projectCategories = pgTable("project_categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull().unique(),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
 /**
  * Work experience and teaching, distinguished by `kind`.
  */
 export const experiences = pgTable("experiences", {
   id: serial("id").primaryKey(),
-  kind: text("kind").notNull().default("work"), // "work" | "teaching"
+  kindId: integer("kind_id")
+    .notNull()
+    .references(() => experienceKinds.id, { onDelete: "restrict" }),
   title: text("title").notNull(),
   company: text("company").notNull().default(""),
   location: text("location").notNull().default(""),
@@ -56,7 +70,9 @@ export const projects = pgTable("projects", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
-  category: text("category").notNull().default(""),
+  categoryId: integer("category_id")
+    .notNull()
+    .references(() => projectCategories.id, { onDelete: "restrict" }),
   status: text("status").notNull().default(""),
   website: text("website"),
   playStore: text("play_store"),
@@ -83,9 +99,17 @@ export const education = pgTable("education", {
   sortOrder: integer("sort_order").notNull().default(0),
 });
 
+export const skillCategories = pgTable("skill_categories", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull().unique(),
+  sortOrder: integer("sort_order").notNull().default(0),
+});
+
 export const skills = pgTable("skills", {
   id: serial("id").primaryKey(),
-  category: text("category").notNull(), // Languages, Frontend, Backend, Databases, Tools
+  categoryId: integer("category_id")
+    .notNull()
+    .references(() => skillCategories.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   sortOrder: integer("sort_order").notNull().default(0),
 });
@@ -104,7 +128,10 @@ export const messages = pgTable("messages", {
 
 export type Profile = typeof profile.$inferSelect;
 export type Experience = typeof experiences.$inferSelect;
+export type ExperienceKind = typeof experienceKinds.$inferSelect;
+export type ProjectCategory = typeof projectCategories.$inferSelect;
 export type Project = typeof projects.$inferSelect;
 export type Education = typeof education.$inferSelect;
+export type SkillCategory = typeof skillCategories.$inferSelect;
 export type Skill = typeof skills.$inferSelect;
 export type Message = typeof messages.$inferSelect;

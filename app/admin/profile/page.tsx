@@ -1,5 +1,5 @@
 import { CheckCircle2 } from "lucide-react";
-import { getProfile } from "@/db/queries";
+import { ensureProfile } from "@/db/queries";
 import { updateProfile } from "../actions";
 import { Field, TextArea } from "../_components/fields";
 import { UploadField } from "../_components/upload-field";
@@ -10,8 +10,8 @@ export default async function AdminProfilePage({
 }: {
   searchParams: Promise<{ saved?: string }>;
 }) {
-  const [profile, sp] = await Promise.all([getProfile(), searchParams]);
-  if (!profile) return <p>No profile row found. Run the seed script.</p>;
+  const [profile, sp] = await Promise.all([ensureProfile(), searchParams]);
+  if (!profile) return <p>Unable to load profile.</p>;
 
   return (
     <div>
@@ -28,78 +28,79 @@ export default async function AdminProfilePage({
       )}
 
       <form action={updateProfile} className="space-y-5">
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <Field label="Name" name="name" defaultValue={profile.name} required />
-          <Field
-            label="Initials"
-            name="initials"
-            defaultValue={profile.initials}
-            required
-          />
-          <Field label="Role" name="role" defaultValue={profile.role} />
-          <Field
-            label="Headline"
-            name="headline"
-            defaultValue={profile.headline}
-          />
-          <Field
-            label="Location"
-            name="location"
-            defaultValue={profile.location}
-          />
-          <Field label="Phone" name="phone" defaultValue={profile.phone} />
-          <Field
-            label="Email"
-            name="email"
-            type="email"
-            defaultValue={profile.email}
-            required
-          />
-          <Field
-            label="Website"
-            name="website"
-            defaultValue={profile.website}
-          />
-          <Field label="GitHub" name="github" defaultValue={profile.github} />
-          <Field
-            label="LinkedIn"
-            name="linkedin"
-            defaultValue={profile.linkedin}
-          />
-        </div>
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.9fr)] lg:items-stretch">
+          <div className="space-y-5">
+            <Field
+              label="Name"
+              name="name"
+              defaultValue={profile.name}
+              required
+            />
+            <Field
+              label="Initials"
+              name="initials"
+              defaultValue={profile.initials}
+              required
+            />
+            <Field label="Role" name="role" defaultValue={profile.role} />
+            <Field
+              label="Headline"
+              name="headline"
+              defaultValue={profile.headline}
+            />
+            <TextArea
+              label="Summary"
+              name="summary"
+              defaultValue={profile.summary}
+              rows={5}
+              hint="Short intro shown in the hero section."
+            />
+            <TextArea
+              label="About"
+              name="about"
+              defaultValue={profile.about}
+              rows={10}
+              hint="Longer bio shown on the About page. Line breaks are preserved."
+            />
+          </div>
 
-        <TextArea
-          label="Summary"
-          name="summary"
-          defaultValue={profile.summary}
-          rows={3}
-          hint="Short intro shown in the hero section."
-        />
-        <TextArea
-          label="About"
-          name="about"
-          defaultValue={profile.about}
-          rows={6}
-          hint="Longer bio shown on the About page. Line breaks are preserved."
-        />
-
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <UploadField
-            label="Avatar"
-            name="avatarUrl"
-            endpoint="imageUploader"
-            defaultUrl={profile.avatarUrl}
-            kind="image"
-            hint="Optional profile image."
-          />
-          <UploadField
-            label="Resume (PDF)"
-            name="resumeUrl"
-            endpoint="resumeUploader"
-            defaultUrl={profile.resumeUrl}
-            kind="file"
-            hint="Linked from the Download Resume buttons."
-          />
+          <div className="h-full space-y-5 rounded-2xl border border-border/70 bg-muted/20 p-4 sm:p-5">
+            <p className="text-sm font-medium text-foreground">Quick details</p>
+            <div className="grid grid-cols-1 gap-5">
+              <Field
+                label="Location"
+                name="location"
+                defaultValue={profile.location}
+              />
+              <Field label="Phone" name="phone" defaultValue={profile.phone} />
+              <Field
+                label="Email"
+                name="email"
+                type="email"
+                defaultValue={profile.email}
+                required
+              />
+              <Field
+                label="Website"
+                name="website"
+                defaultValue={profile.website}
+              />
+              <Field label="GitHub" name="github" defaultValue={profile.github} />
+              <Field
+                label="LinkedIn"
+                name="linkedin"
+                defaultValue={profile.linkedin}
+              />
+              <UploadField
+                label="Avatar"
+                name="avatarUrl"
+                endpoint="imageUploader"
+                defaultUrl={profile.avatarUrl}
+                kind="image"
+                hint="Drop a square image or click to browse."
+              />
+            </div>
+          </div>
         </div>
 
         <SubmitButton label="Save profile" />

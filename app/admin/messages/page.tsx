@@ -1,11 +1,37 @@
+import Link from "next/link";
 import { Mail, MailOpen } from "lucide-react";
 import { getMessages } from "@/db/queries";
 import { toggleMessageRead, deleteMessage } from "../actions";
 import { DeleteButton } from "../_components/delete-button";
 import { cn } from "@/lib/utils";
 
-export default async function AdminMessagesPage() {
-  const messages = await getMessages();
+type MessageFilter = "all" | "unread" | "read";
+
+function normalizeFilter(value?: string): MessageFilter {
+  return value === "unread" || value === "read" ? value : "all";
+}
+
+export default async function AdminMessagesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string }>;
+}) {
+  const [{ tab }, messages] = await Promise.all([searchParams, getMessages()]);
+  const activeTab = normalizeFilter(tab);
+  const unreadCount = messages.filter((msg) => !msg.read).length;
+  const readCount = messages.length - unreadCount;
+
+  const visibleMessages = messages.filter((msg) => {
+    if (activeTab === "unread") return !msg.read;
+    if (activeTab === "read") return msg.read;
+    return true;
+  });
+
+  const tabs = [
+    { label: "All", value: "all" as const, count: messages.length },
+    { label: "Unread", value: "unread" as const, count: unreadCount },
+    { label: "Read", value: "read" as const, count: readCount },
+  ];
 
   return (
     <div>
@@ -14,11 +40,38 @@ export default async function AdminMessagesPage() {
         Submissions from the contact form.
       </p>
 
+      <div className="mb-6 flex flex-wrap gap-2 rounded-xl border border-border bg-muted/20 p-1">
+        {tabs.map((tabItem) => {
+          const active = activeTab === tabItem.value;
+          return (
+            <Link
+              key={tabItem.value}
+              href={
+                tabItem.value === "all"
+                  ? "/admin/messages"
+                  : `/admin/messages?tab=${tabItem.value}`
+              }
+              className={cn(
+                "inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                active
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <span>{tabItem.label}</span>
+              <span className="rounded-full bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                {tabItem.count}
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+
       <div className="space-y-3">
-        {messages.length === 0 && (
+        {visibleMessages.length === 0 && (
           <p className="text-sm text-muted-foreground">No messages yet.</p>
         )}
-        {messages.map((msg) => (
+        {visibleMessages.map((msg) => (
           <div
             key={msg.id}
             className={cn(

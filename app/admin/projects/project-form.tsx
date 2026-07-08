@@ -1,10 +1,14 @@
 import type { Project } from "@/db/schema";
+import { getProjectCategoryList } from "@/db/queries";
 import { saveProject } from "../actions";
 import { Field, TextArea, Checkbox } from "../_components/fields";
 import { UploadField } from "../_components/upload-field";
 import { SubmitButton } from "../_components/submit-button";
 
-export function ProjectForm({ project }: { project?: Project }) {
+export async function ProjectForm({ project }: { project?: Project }) {
+  const categories = await getProjectCategoryList();
+  const defaultCategoryId = project?.categoryId ?? categories[0]?.id;
+
   return (
     <form action={saveProject} className="space-y-5">
       {project && <input type="hidden" name="id" value={project.id} />}
@@ -17,12 +21,26 @@ export function ProjectForm({ project }: { project?: Project }) {
           defaultValue={project?.slug}
           hint="Leave blank to auto-generate from name."
         />
-        <Field
-          label="Category"
-          name="category"
-          defaultValue={project?.category}
-          placeholder="Full Stack Application"
-        />
+        <div className="space-y-1.5">
+          <label htmlFor="category" className="text-sm font-medium text-foreground">
+            Category
+          </label>
+          <select
+            id="category"
+            name="category"
+            defaultValue={defaultCategoryId}
+            className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary/50"
+          >
+            {categories.map((category) => (
+              <option key={category.id} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          <p className="text-xs text-muted-foreground">
+            Choose a project category from the dropdown.
+          </p>
+        </div>
         <Field
           label="Status"
           name="status"

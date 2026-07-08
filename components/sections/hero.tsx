@@ -36,11 +36,7 @@ export function Hero({ profile }: { profile: Profile }) {
         {profile.summary}
       </p>
       <div className="animate-fade-up" style={{ animationDelay: "400ms" }}>
-        <HeroCta
-          github={profile.github}
-          email={profile.email}
-          resumeUrl={profile.resumeUrl}
-        />
+        <HeroCta github={profile.github} email={profile.email} />
       </div>
     </section>
   );

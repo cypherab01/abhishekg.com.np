@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, FileDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { navLinks } from "@/lib/nav";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
@@ -10,10 +10,9 @@ import { cn } from "@/lib/utils";
 
 interface NavbarProps {
   initials: string;
-  resumeUrl?: string | null;
 }
 
-export function Navbar({ initials, resumeUrl }: NavbarProps) {
+export function Navbar({ initials }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -35,17 +34,6 @@ export function Navbar({ initials, resumeUrl }: NavbarProps) {
               <span className="absolute -bottom-1 left-0 h-px w-0 bg-foreground transition-all duration-300 ease-out group-hover:w-full motion-reduce:transition-none" />
             </Link>
           ))}
-          {resumeUrl && (
-            <a
-              href={resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <FileDown className="size-4" />
-              Resume
-            </a>
-          )}
           <ThemeToggle />
         </div>
 
@@ -81,18 +69,6 @@ export function Navbar({ initials, resumeUrl }: NavbarProps) {
               {link.label}
             </Link>
           ))}
-          {resumeUrl && (
-            <a
-              href={resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setMobileOpen(false)}
-              className="inline-flex items-center gap-1.5 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <FileDown className="size-4" />
-              Resume
-            </a>
-          )}
         </div>
       </div>
     </header>

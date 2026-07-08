@@ -7,8 +7,11 @@ import { db } from "@/db";
 import {
   profile,
   experiences,
+  experienceKinds,
+  projectCategories,
   projects,
   education,
+  skillCategories,
   skills,
   messages,
 } from "@/db/schema";
@@ -18,6 +21,7 @@ import {
   isAuthenticated,
   verifyPassword,
 } from "@/lib/auth";
+import { ensureProfile } from "@/db/queries";
 
 async function assertAuth() {
   if (!(await isAuthenticated())) {
@@ -84,6 +88,7 @@ export async function logout() {
 
 export async function updateProfile(formData: FormData) {
   await assertAuth();
+  await ensureProfile();
   await db
     .update(profile)
     .set({
@@ -100,7 +105,6 @@ export async function updateProfile(formData: FormData) {
       summary: str(formData.get("summary")),
       about: str(formData.get("about")),
       avatarUrl: optStr(formData.get("avatarUrl")),
-      resumeUrl: optStr(formData.get("resumeUrl")),
       updatedAt: new Date(),
     })
     .where(eq(profile.id, 1));
@@ -113,8 +117,23 @@ export async function updateProfile(formData: FormData) {
 export async function saveExperience(formData: FormData) {
   await assertAuth();
   const id = optStr(formData.get("id"));
+  const kindName = str(formData.get("kind")) || "work";
+  let kindRow = await db
+    .select()
+    .from(experienceKinds)
+    .where(eq(experienceKinds.name, kindName))
+    .limit(1);
+
+  if (!kindRow[0]) {
+    const inserted = await db
+      .insert(experienceKinds)
+      .values({ name: kindName })
+      .returning();
+    kindRow = inserted;
+  }
+
   const values = {
-    kind: str(formData.get("kind")) || "work",
+    kindId: kindRow[0].id,
     title: str(formData.get("title")),
     company: str(formData.get("company")),
     location: str(formData.get("location")),
@@ -145,6 +164,33 @@ export async function deleteExperience(formData: FormData) {
   revalidatePath("/admin/experience");
 }
 
+export async function saveExperienceKind(formData: FormData) {
+  await assertAuth();
+  const id = optStr(formData.get("id"));
+  const values = {
+    name: str(formData.get("name")),
+    sortOrder: Number(str(formData.get("sortOrder"))) || 0,
+  };
+  if (id) {
+    await db
+      .update(experienceKinds)
+      .set(values)
+      .where(eq(experienceKinds.id, Number(id)));
+  } else {
+    await db.insert(experienceKinds).values(values);
+  }
+  revalidateSite();
+  revalidatePath("/admin/experience");
+}
+
+export async function deleteExperienceKind(formData: FormData) {
+  await assertAuth();
+  const id = Number(str(formData.get("id")));
+  await db.delete(experienceKinds).where(eq(experienceKinds.id, id));
+  revalidateSite();
+  revalidatePath("/admin/experience");
+}
+
 /* ------------------------------ Projects ------------------------------ */
 
 export async function saveProject(formData: FormData) {
@@ -152,10 +198,25 @@ export async function saveProject(formData: FormData) {
   const id = optStr(formData.get("id"));
   const name = str(formData.get("name"));
   const slug = str(formData.get("slug")) || slugify(name);
+  const categoryName = str(formData.get("category")) || "Uncategorized";
+  let categoryRow = await db
+    .select()
+    .from(projectCategories)
+    .where(eq(projectCategories.name, categoryName))
+    .limit(1);
+
+  if (!categoryRow[0]) {
+    const inserted = await db
+      .insert(projectCategories)
+      .values({ name: categoryName })
+      .returning();
+    categoryRow = inserted;
+  }
+
   const values = {
     name,
     slug,
-    category: str(formData.get("category")),
+    categoryId: categoryRow[0].id,
     status: str(formData.get("status")),
     website: optStr(formData.get("website")),
     playStore: optStr(formData.get("playStore")),
@@ -179,6 +240,33 @@ export async function deleteProject(formData: FormData) {
   await assertAuth();
   const id = Number(str(formData.get("id")));
   await db.delete(projects).where(eq(projects.id, id));
+  revalidateSite();
+  revalidatePath("/admin/projects");
+}
+
+export async function saveProjectCategory(formData: FormData) {
+  await assertAuth();
+  const id = optStr(formData.get("id"));
+  const values = {
+    name: str(formData.get("name")),
+    sortOrder: Number(str(formData.get("sortOrder"))) || 0,
+  };
+  if (id) {
+    await db
+      .update(projectCategories)
+      .set(values)
+      .where(eq(projectCategories.id, Number(id)));
+  } else {
+    await db.insert(projectCategories).values(values);
+  }
+  revalidateSite();
+  revalidatePath("/admin/projects");
+}
+
+export async function deleteProjectCategory(formData: FormData) {
+  await assertAuth();
+  const id = Number(str(formData.get("id")));
+  await db.delete(projectCategories).where(eq(projectCategories.id, id));
   revalidateSite();
   revalidatePath("/admin/projects");
 }
@@ -226,7 +314,7 @@ export async function saveSkill(formData: FormData) {
   await assertAuth();
   const id = optStr(formData.get("id"));
   const values = {
-    category: str(formData.get("category")),
+    categoryId: Number(str(formData.get("categoryId"))),
     name: str(formData.get("name")),
     sortOrder: Number(str(formData.get("sortOrder"))) || 0,
   };
@@ -237,6 +325,34 @@ export async function saveSkill(formData: FormData) {
   }
   revalidateSite();
   redirect("/admin/skills");
+}
+
+export async function saveSkillCategory(formData: FormData) {
+  await assertAuth();
+  const id = optStr(formData.get("id"));
+  const values = {
+    name: str(formData.get("name")),
+    sortOrder: Number(str(formData.get("sortOrder"))) || 0,
+  };
+  if (id) {
+    await db
+      .update(skillCategories)
+      .set(values)
+      .where(eq(skillCategories.id, Number(id)));
+  } else {
+    await db.insert(skillCategories).values(values);
+  }
+  revalidateSite();
+  revalidatePath("/admin/skills");
+  redirect("/admin/skills");
+}
+
+export async function deleteSkillCategory(formData: FormData) {
+  await assertAuth();
+  const id = Number(str(formData.get("id")));
+  await db.delete(skillCategories).where(eq(skillCategories.id, id));
+  revalidateSite();
+  revalidatePath("/admin/skills");
 }
 
 export async function deleteSkill(formData: FormData) {

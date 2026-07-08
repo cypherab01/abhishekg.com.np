@@ -6,24 +6,25 @@ import { SkillsSection } from "@/components/sections/skills";
 import { Section } from "@/components/layout/section";
 import { ContactForm } from "@/components/sections/contact-form";
 import { Separator } from "@/components/ui/separator";
+import { Fragment } from "react";
 import {
   getProfile,
-  getExperiences,
+  getExperienceGroups,
   getFeaturedProjects,
   getProjects,
   getEducation,
-  getSkillCategories,
+  getSkillGroups,
 } from "@/db/queries";
 
 export default async function Home() {
-  const [profile, experiences, featured, allProjects, education, skills] =
+  const [profile, experienceGroups, featured, allProjects, education, skills] =
     await Promise.all([
       getProfile(),
-      getExperiences("work"),
+      getExperienceGroups(),
       getFeaturedProjects(),
       getProjects(),
       getEducation(),
-      getSkillCategories(),
+      getSkillGroups(),
     ]);
 
   if (!profile) return null;
@@ -35,7 +36,16 @@ export default async function Home() {
     <>
       <Hero profile={profile} />
       <Separator />
-      <ExperienceSection experiences={experiences} />
+      {experienceGroups.map((group, index) => (
+        <Fragment key={group.kind}>
+          <ExperienceSection
+            experiences={group.items}
+            title={group.label}
+            id={index === 0 ? "experience" : group.kind}
+          />
+          {index < experienceGroups.length - 1 && <Separator />}
+        </Fragment>
+      ))}
       <Separator />
       <ProjectsSection
         projects={projects}

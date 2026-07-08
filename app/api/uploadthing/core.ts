@@ -12,15 +12,6 @@ const requireAdmin = async () => {
 };
 
 export const ourFileRouter = {
-  // Resume PDF (and common doc types)
-  resumeUploader: f({
-    pdf: { maxFileSize: "16MB", maxFileCount: 1 },
-  })
-    .middleware(requireAdmin)
-    .onUploadComplete(async ({ file }) => {
-      return { url: file.ufsUrl };
-    }),
-
   // Images: project covers + avatar
   imageUploader: f({
     image: { maxFileSize: "8MB", maxFileCount: 1 },
