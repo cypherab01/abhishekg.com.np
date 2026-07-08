@@ -83,6 +83,7 @@ export default function ResumeDocument({
     headerName: {
       fontSize: t.nameFontSize,
       fontWeight: 700,
+      lineHeight: 1.5,
     },
     headerLeft: {
       fontSize: t.baseFontSize,
@@ -304,7 +305,11 @@ export default function ResumeDocument({
       <View style={styles.section} key="projects">
         <SectionTitle sectionKey="projects" />
         {view.projects.map((project) => {
-          const link = project.website || project.github || project.playStore;
+          const links = [
+            project.website ? { label: "Website", href: project.website } : null,
+            project.github ? { label: "GitHub", href: project.github } : null,
+            project.playStore ? { label: "Play Store", href: project.playStore } : null,
+          ].filter((l): l is { label: string; href: string } => l !== null);
           return (
             <View key={project.id} style={styles.item}>
               <View style={styles.itemHeaderRow}>
@@ -317,10 +322,17 @@ export default function ResumeDocument({
                     </Text>
                   )}
                 </Text>
-                {link && (
-                  <Link src={link} style={styles.headerLink}>
-                    <Text style={styles.itemMainRight}>{link}</Text>
-                  </Link>
+                {links.length > 0 && (
+                  <Text style={styles.itemMainRight}>
+                    {links.map((l, i) => (
+                      <Text key={l.label}>
+                        {i > 0 ? "  |  " : ""}
+                        <Link src={l.href} style={styles.headerLink}>
+                          {l.label}
+                        </Link>
+                      </Text>
+                    ))}
+                  </Text>
                 )}
               </View>
               {project.description.map((line, i) => (
@@ -352,7 +364,7 @@ export default function ResumeDocument({
           {headerRows.map((row, i) => (
             <View
               key={i}
-              style={[styles.headerRow, i === 0 ? { marginBottom: 3 } : {}]}
+              style={[styles.headerRow, i === 0 ? { marginBottom: 6 } : {}]}
             >
 
               <Text style={i === 0 ? styles.headerName : styles.headerLeft}>
