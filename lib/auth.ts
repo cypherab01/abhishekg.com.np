@@ -1,5 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
+import { createHash, timingSafeEqual } from "node:crypto";
 import { SignJWT, jwtVerify } from "jose";
 
 const COOKIE_NAME = "admin_session";
@@ -49,10 +50,20 @@ export async function isAuthenticated() {
   return (await getSession()) !== null;
 }
 
+/**
+ * `ADMIN_PASSWORD` holds a SHA-256 hex digest of the password, never the
+ * password itself. We hash the submitted password and compare digests in
+ * constant time. Generate the hash with:
+ *   printf '%s' 'your-password' | sha256sum | awk '{print $1}'
+ */
 export function verifyPassword(password: string) {
-  const expected = process.env.ADMIN_PASSWORD;
+  const expected = process.env.ADMIN_PASSWORD?.trim().toLowerCase();
   if (!expected) throw new Error("ADMIN_PASSWORD is not set");
-  return password === expected;
+
+  const actual = createHash("sha256").update(password).digest("hex");
+  const a = Buffer.from(actual);
+  const b = Buffer.from(expected);
+  return a.length === b.length && timingSafeEqual(a, b);
 }
 
 export const SESSION_COOKIE_NAME = COOKIE_NAME;
