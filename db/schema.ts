@@ -127,8 +127,8 @@ export const messages = pgTable("messages", {
 
 export const RESUME_SECTION_KEYS = [
   "summary",
-  "experience",
   "education",
+  "experience",
   "skills",
   "projects",
 ] as const;
