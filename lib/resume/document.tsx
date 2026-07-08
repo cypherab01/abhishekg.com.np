@@ -83,7 +83,7 @@ export default function ResumeDocument({
     headerName: {
       fontSize: t.nameFontSize,
       fontWeight: 700,
-      lineHeight: 1.5,
+      lineHeight: 1.2,
     },
     headerLeft: {
       fontSize: t.baseFontSize,
@@ -364,7 +364,7 @@ export default function ResumeDocument({
           {headerRows.map((row, i) => (
             <View
               key={i}
-              style={[styles.headerRow, i === 0 ? { marginBottom: 6 } : {}]}
+              style={[styles.headerRow, i === 0 ? { marginBottom: 2 } : {}]}
             >
 
               <Text style={i === 0 ? styles.headerName : styles.headerLeft}>
