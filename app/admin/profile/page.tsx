@@ -97,7 +97,6 @@ export default async function AdminProfilePage({
                 name="avatarUrl"
                 endpoint="imageUploader"
                 defaultUrl={profile.avatarUrl}
-                kind="image"
                 hint="Drop a square image or click to browse."
               />
             </div>

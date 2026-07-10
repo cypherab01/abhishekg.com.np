@@ -261,6 +261,17 @@ export async function deleteProject(formData: FormData) {
   revalidatePath("/admin/projects");
 }
 
+export async function reorderProjects(ids: number[]) {
+  await assertAuth();
+  await Promise.all(
+    ids.map((id, index) =>
+      db.update(projects).set({ sortOrder: index }).where(eq(projects.id, id)),
+    ),
+  );
+  revalidateSite();
+  revalidatePath("/admin/projects");
+}
+
 export async function saveProjectCategory(formData: FormData) {
   await assertAuth();
   const id = optStr(formData.get("id"));
@@ -340,6 +351,20 @@ export async function deleteEducation(formData: FormData) {
   revalidatePath("/admin/education");
 }
 
+export async function reorderEducation(ids: number[]) {
+  await assertAuth();
+  await Promise.all(
+    ids.map((id, index) =>
+      db
+        .update(education)
+        .set({ sortOrder: index })
+        .where(eq(education.id, id)),
+    ),
+  );
+  revalidateSite();
+  revalidatePath("/admin/education");
+}
+
 /* ------------------------------- Skills ------------------------------- */
 
 export async function saveSkill(formData: FormData) {
@@ -407,6 +432,17 @@ export async function deleteSkill(formData: FormData) {
   await assertAuth();
   const id = Number(str(formData.get("id")));
   await db.delete(skills).where(eq(skills.id, id));
+  revalidateSite();
+  revalidatePath("/admin/skills");
+}
+
+export async function reorderSkills(ids: number[]) {
+  await assertAuth();
+  await Promise.all(
+    ids.map((id, index) =>
+      db.update(skills).set({ sortOrder: index }).where(eq(skills.id, id)),
+    ),
+  );
   revalidateSite();
   revalidatePath("/admin/skills");
 }

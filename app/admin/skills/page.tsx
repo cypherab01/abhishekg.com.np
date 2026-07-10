@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { Plus, Pencil, Settings2, Wrench } from "lucide-react";
+import { Plus, Settings2, Wrench } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { getSkillCategoryList, getSkillGroups } from "@/db/queries";
-import { deleteSkill } from "../actions";
-import { DeleteButton } from "../_components/delete-button";
 import { PageHeader } from "../_components/ui";
+import { SkillsList } from "./skills-list";
 
 export default async function AdminSkillsPage() {
   const [categories, skillGroups] = await Promise.all([
@@ -84,42 +83,7 @@ export default async function AdminSkillsPage() {
           </Link>
         </div>
       ) : (
-        <div className="space-y-6">
-          {skillGroups.map((group) => (
-            <section key={group.id}>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                {group.label}
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {group.items.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">
-                    No skills in this category.
-                  </p>
-                ) : (
-                  group.items.map((skill) => (
-                    <div
-                      key={skill.id}
-                      className="flex items-center gap-1 rounded-full border border-border bg-card py-1 pl-3.5 pr-1.5 text-sm text-foreground shadow-sm transition-colors hover:border-primary/40"
-                    >
-                      <span>{skill.name}</span>
-                      <Link
-                        href={`/admin/skills/${skill.id}`}
-                        className="rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
-                        aria-label={`Edit ${skill.name}`}
-                      >
-                        <Pencil className="size-3.5" />
-                      </Link>
-                      <form action={deleteSkill}>
-                        <input type="hidden" name="id" value={skill.id} />
-                        <DeleteButton compact confirmLabel={`Delete "${skill.name}"?`} />
-                      </form>
-                    </div>
-                  ))
-                )}
-              </div>
-            </section>
-          ))}
-        </div>
+        <SkillsList groups={skillGroups} />
       )}
     </div>
   );

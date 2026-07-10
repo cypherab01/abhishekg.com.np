@@ -89,7 +89,7 @@ export async function ProjectForm({ project }: { project?: Project }) {
         name="coverImage"
         endpoint="imageUploader"
         defaultUrl={project?.coverImage}
-        kind="image"
+        preview="rect"
       />
 
       <Checkbox

@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { Plus, Pencil } from "lucide-react";
+import { Plus } from "lucide-react";
 import { getEducation } from "@/db/queries";
-import { deleteEducation } from "../actions";
-import { DeleteButton } from "../_components/delete-button";
 import { PageHeader } from "../_components/ui";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
+import { EducationList } from "./education-list";
 
 export default async function AdminEducationPage() {
   const items = await getEducation();
@@ -26,41 +25,7 @@ export default async function AdminEducationPage() {
         }
       />
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {items.length === 0 && (
-          <p className="text-sm text-muted-foreground">No entries yet.</p>
-        )}
-        {items.map((edu) => (
-          <div
-            key={edu.id}
-            className="card-elevated flex items-center justify-between gap-3 rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary/30"
-          >
-            <div className="min-w-0">
-              <p className="truncate font-medium text-foreground">
-                {edu.degree}
-              </p>
-              <p className="truncate text-sm text-muted-foreground">
-                {[edu.institution, `${edu.startDate} – ${edu.endDate}`]
-                  .filter(Boolean)
-                  .join(" · ")}
-              </p>
-            </div>
-            <div className="flex shrink-0 items-center gap-1">
-              <Link
-                href={`/admin/education/${edu.id}`}
-                className="rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
-                aria-label="Edit"
-              >
-                <Pencil className="size-4" />
-              </Link>
-              <form action={deleteEducation}>
-                <input type="hidden" name="id" value={edu.id} />
-                <DeleteButton compact confirmLabel={`Delete "${edu.degree}"?`} />
-              </form>
-            </div>
-          </div>
-        ))}
-      </div>
+      <EducationList items={items} />
     </div>
   );
 }
