@@ -5,6 +5,7 @@ import { isAuthenticated } from "@/lib/auth";
 import { getUnreadMessageCount, getProfile } from "@/db/queries";
 import { AdminSidebar } from "./admin-sidebar";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: { default: "Admin", template: "%s · Admin" },
@@ -20,7 +21,12 @@ export default async function AdminLayout({
 
   // Unauthenticated users only ever see the login page (middleware enforces).
   if (!authed) {
-    return <div className="admin-scope min-h-dvh bg-background">{children}</div>;
+    return (
+      <div className="admin-scope min-h-dvh bg-background">
+        {children}
+        <Toaster />
+      </div>
+    );
   }
 
   const [unread, profile] = await Promise.all([
@@ -64,6 +70,7 @@ export default async function AdminLayout({
         </header>
         <main className="w-full flex-1 px-6 py-8 lg:px-10">{children}</main>
       </div>
+      <Toaster />
     </div>
   );
 }

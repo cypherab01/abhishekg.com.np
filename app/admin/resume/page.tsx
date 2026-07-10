@@ -1,4 +1,3 @@
-import { CheckCircle2 } from "lucide-react";
 import {
   ensureProfile,
   ensureResumeConfig,
@@ -9,6 +8,7 @@ import {
 } from "@/db/queries";
 import { PageHeader } from "../_components/ui";
 import { ResumeBuilder } from "./resume-builder";
+import { FlashToast } from "../_components/flash-toast";
 
 export default async function AdminResumePage({
   searchParams,
@@ -34,12 +34,7 @@ export default async function AdminResumePage({
         title="Resume"
         description="Choose what appears on the downloadable resume PDF."
       />
-      {sp.saved && (
-        <div className="mb-6 flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm text-emerald-700 dark:text-emerald-400">
-          <CheckCircle2 className="size-4" />
-          Resume settings saved.
-        </div>
-      )}
+      {sp.saved && <FlashToast message="Resume settings saved" />}
       <ResumeBuilder
         config={config}
         experienceGroups={experienceGroups}

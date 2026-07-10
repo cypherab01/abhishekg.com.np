@@ -250,7 +250,7 @@ export async function saveProject(formData: FormData) {
     await db.insert(projects).values(values);
   }
   revalidateSite();
-  redirect("/admin/projects");
+  redirect("/admin/projects?saved=1");
 }
 
 export async function deleteProject(formData: FormData) {
@@ -340,7 +340,7 @@ export async function saveEducation(formData: FormData) {
     await db.insert(education).values(values);
   }
   revalidateSite();
-  redirect("/admin/education");
+  redirect("/admin/education?saved=1");
 }
 
 export async function deleteEducation(formData: FormData) {
@@ -381,7 +381,7 @@ export async function saveSkill(formData: FormData) {
     await db.insert(skills).values(values);
   }
   revalidateSite();
-  redirect("/admin/skills");
+  redirect("/admin/skills?saved=1");
 }
 
 export async function saveSkillCategory(formData: FormData) {

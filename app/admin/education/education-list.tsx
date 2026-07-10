@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Pencil, GripVertical } from "lucide-react";
+import { toast } from "sonner";
 import type { Education } from "@/db/schema";
 import { deleteEducation, reorderEducation } from "../actions";
 import { DeleteButton } from "../_components/delete-button";
@@ -13,10 +14,29 @@ export function EducationList({ items }: { items: Education[] }) {
     return <p className="text-sm text-muted-foreground">No entries yet.</p>;
   }
 
+  async function handleReorder(ids: number[]) {
+    try {
+      await reorderEducation(ids);
+      toast.success("Order updated");
+    } catch {
+      toast.error("Couldn't save the new order");
+    }
+  }
+
+  async function handleDelete(formData: FormData) {
+    const degree = String(formData.get("degree") ?? "");
+    try {
+      await deleteEducation(formData);
+      toast.success(degree ? `Deleted "${degree}"` : "Entry deleted");
+    } catch {
+      toast.error("Couldn't delete the entry");
+    }
+  }
+
   return (
     <SortableList
       items={items}
-      onReorder={reorderEducation}
+      onReorder={handleReorder}
       className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
     >
       {(edu, handleProps, isDragging) => (
@@ -50,8 +70,9 @@ export function EducationList({ items }: { items: Education[] }) {
             >
               <Pencil className="size-4" />
             </Link>
-            <form action={deleteEducation}>
+            <form action={handleDelete}>
               <input type="hidden" name="id" value={edu.id} />
+              <input type="hidden" name="degree" value={edu.degree} />
               <DeleteButton compact confirmLabel={`Delete "${edu.degree}"?`} />
             </form>
           </div>

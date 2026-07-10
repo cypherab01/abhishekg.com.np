@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { X, ExternalLink, UploadCloud } from "lucide-react";
+import { toast } from "sonner";
 import { UploadDropzone } from "@/lib/uploadthing";
 import { cn } from "@/lib/utils";
 
@@ -101,12 +102,15 @@ export function UploadField({
           onUploadBegin={() => setIsUploading(true)}
           onClientUploadComplete={(res) => {
             const uploaded = res?.[0]?.serverData?.url ?? res?.[0]?.ufsUrl;
-            if (uploaded) setUrl(uploaded);
+            if (uploaded) {
+              setUrl(uploaded);
+              toast.success(`${label} uploaded`);
+            }
             setIsUploading(false);
           }}
           onUploadError={(e: Error) => {
             setIsUploading(false);
-            alert(`Upload failed: ${e.message}`);
+            toast.error(`Upload failed: ${e.message}`);
           }}
           disabled={isUploading}
         />

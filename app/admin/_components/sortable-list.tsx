@@ -1,23 +1,78 @@
 "use client";
 
-import { useState, type ReactNode, type HTMLAttributes } from "react";
+import { useState, type ReactNode } from "react";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  rectSortingStrategy,
+  sortableKeyboardCoordinates,
+  useSortable,
+  arrayMove,
+  type SortingStrategy,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
-export type DragHandleProps = HTMLAttributes<HTMLElement>;
+/** Props to spread onto the drag-handle element (from @dnd-kit's useSortable). */
+export type DragHandleProps = ReturnType<typeof useSortable>["attributes"] &
+  NonNullable<ReturnType<typeof useSortable>["listeners"]>;
+
+function SortableItem({
+  id,
+  children,
+}: {
+  id: number;
+  children: (handleProps: DragHandleProps, isDragging: boolean) => ReactNode;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    zIndex: isDragging ? 10 : undefined,
+    position: "relative" as const,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      {children(
+        { ...attributes, ...(listeners ?? {}) } as DragHandleProps,
+        isDragging,
+      )}
+    </div>
+  );
+}
 
 /**
- * Generic drag-to-reorder list backed by native HTML5 drag and drop.
- * Reordering is optimistic; `onReorder` is called with the new id order
- * once a drag completes and the order actually changed.
+ * Generic drag-to-reorder list backed by @dnd-kit (same library the resume
+ * builder uses). Reordering is optimistic; `onReorder` is called with the new
+ * id order once a drag completes and the order actually changed.
  */
 export function SortableList<T extends { id: number }>({
   items,
   onReorder,
   className,
+  strategy = rectSortingStrategy,
   children,
 }: {
   items: T[];
   onReorder: (ids: number[]) => void | Promise<void>;
   className?: string;
+  strategy?: SortingStrategy;
   children: (
     item: T,
     dragHandleProps: DragHandleProps,
@@ -25,7 +80,6 @@ export function SortableList<T extends { id: number }>({
   ) => ReactNode;
 }) {
   const [order, setOrder] = useState<T[]>(items);
-  const [dragId, setDragId] = useState<number | null>(null);
 
   // Sync local state when the server sends a new list (add/delete/reorder).
   // Official React pattern for adjusting state on prop change during render.
@@ -35,54 +89,41 @@ export function SortableList<T extends { id: number }>({
     setOrder(items);
   }
 
-  const move = (fromId: number, toId: number) => {
-    if (fromId === toId) return;
-    setOrder((prev) => {
-      const from = prev.findIndex((i) => i.id === fromId);
-      const to = prev.findIndex((i) => i.id === toId);
-      if (from === -1 || to === -1) return prev;
-      const next = [...prev];
-      const [moved] = next.splice(from, 1);
-      next.splice(to, 0, moved);
-      return next;
-    });
-  };
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
 
-  const handleDragEnd = () => {
-    setDragId(null);
-    const before = items.map((i) => i.id).join(",");
-    const after = order.map((i) => i.id).join(",");
-    if (before !== after) {
-      void onReorder(order.map((i) => i.id));
-    }
-  };
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = order.findIndex((i) => i.id === active.id);
+    const newIndex = order.findIndex((i) => i.id === over.id);
+    if (oldIndex === -1 || newIndex === -1) return;
+    const next = arrayMove(order, oldIndex, newIndex);
+    setOrder(next);
+    void onReorder(next.map((i) => i.id));
+  }
 
   return (
-    <div className={className}>
-      {order.map((item) => {
-        const isDragging = dragId === item.id;
-        const handleProps: DragHandleProps = {
-          draggable: true,
-          onDragStart: (e) => {
-            setDragId(item.id);
-            e.dataTransfer.effectAllowed = "move";
-          },
-          onDragEnd: handleDragEnd,
-        };
-        return (
-          <div
-            key={item.id}
-            onDragOver={(e) => {
-              if (dragId === null || dragId === item.id) return;
-              e.preventDefault();
-              move(dragId, item.id);
-            }}
-            onDrop={(e) => e.preventDefault()}
-          >
-            {children(item, handleProps, isDragging)}
-          </div>
-        );
-      })}
-    </div>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      <SortableContext items={order.map((i) => i.id)} strategy={strategy}>
+        <div className={className}>
+          {order.map((item) => (
+            <SortableItem key={item.id} id={item.id}>
+              {(handleProps, isDragging) =>
+                children(item, handleProps, isDragging)
+              }
+            </SortableItem>
+          ))}
+        </div>
+      </SortableContext>
+    </DndContext>
   );
 }

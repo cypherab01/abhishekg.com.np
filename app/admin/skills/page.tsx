@@ -5,11 +5,17 @@ import { buttonVariants } from "@/components/ui/button-variants";
 import { getSkillCategoryList, getSkillGroups } from "@/db/queries";
 import { PageHeader } from "../_components/ui";
 import { SkillsList } from "./skills-list";
+import { FlashToast } from "../_components/flash-toast";
 
-export default async function AdminSkillsPage() {
-  const [categories, skillGroups] = await Promise.all([
+export default async function AdminSkillsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string }>;
+}) {
+  const [categories, skillGroups, sp] = await Promise.all([
     getSkillCategoryList(),
     getSkillGroups(),
+    searchParams,
   ]);
 
   const hasCategories = categories.length > 0;
@@ -17,6 +23,7 @@ export default async function AdminSkillsPage() {
 
   return (
     <div>
+      {sp.saved && <FlashToast message="Skill saved" />}
       <PageHeader
         title="Skills & Tools"
         description="Your skills, grouped by category."

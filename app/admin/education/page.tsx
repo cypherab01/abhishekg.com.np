@@ -5,12 +5,18 @@ import { PageHeader } from "../_components/ui";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 import { EducationList } from "./education-list";
+import { FlashToast } from "../_components/flash-toast";
 
-export default async function AdminEducationPage() {
-  const items = await getEducation();
+export default async function AdminEducationPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string }>;
+}) {
+  const [items, sp] = await Promise.all([getEducation(), searchParams]);
 
   return (
     <div>
+      {sp.saved && <FlashToast message="Education saved" />}
       <PageHeader
         title="Education"
         description="Academic background."

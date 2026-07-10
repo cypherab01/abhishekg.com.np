@@ -5,12 +5,18 @@ import { PageHeader } from "../_components/ui";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 import { ProjectsList } from "./projects-list";
+import { FlashToast } from "../_components/flash-toast";
 
-export default async function AdminProjectsPage() {
-  const projects = await getProjects();
+export default async function AdminProjectsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string }>;
+}) {
+  const [projects, sp] = await Promise.all([getProjects(), searchParams]);
 
   return (
     <div>
+      {sp.saved && <FlashToast message="Project saved" />}
       <PageHeader
         title="Projects"
         description="Your portfolio projects. Featured ones appear on the home page."

@@ -1,10 +1,10 @@
-import { CheckCircle2 } from "lucide-react";
 import { ensureProfile } from "@/db/queries";
 import { updateProfile } from "../actions";
 import { Field, TextArea } from "../_components/fields";
 import { UploadField } from "../_components/upload-field";
 import { SubmitButton } from "../_components/submit-button";
 import { PageHeader } from "../_components/ui";
+import { FlashToast } from "../_components/flash-toast";
 
 export default async function AdminProfilePage({
   searchParams,
@@ -21,12 +21,7 @@ export default async function AdminProfilePage({
         description="Your personal information, resume, and social links."
       />
 
-      {sp.saved && (
-        <div className="mb-6 flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm text-emerald-700 dark:text-emerald-400">
-          <CheckCircle2 className="size-4" />
-          Profile saved.
-        </div>
-      )}
+      {sp.saved && <FlashToast message="Profile saved" />}
 
       <form action={updateProfile} className="space-y-5">
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1.4fr)_minmax(320px,0.9fr)] lg:items-stretch">

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Pencil, GripVertical } from "lucide-react";
+import { toast } from "sonner";
 import type { Skill } from "@/db/schema";
 import { deleteSkill, reorderSkills } from "../actions";
 import { DeleteButton } from "../_components/delete-button";
@@ -15,6 +16,25 @@ type SkillGroup = {
 };
 
 export function SkillsList({ groups }: { groups: SkillGroup[] }) {
+  async function handleReorder(ids: number[]) {
+    try {
+      await reorderSkills(ids);
+      toast.success("Order updated");
+    } catch {
+      toast.error("Couldn't save the new order");
+    }
+  }
+
+  async function handleDelete(formData: FormData) {
+    const name = String(formData.get("name") ?? "");
+    try {
+      await deleteSkill(formData);
+      toast.success(name ? `Deleted "${name}"` : "Skill deleted");
+    } catch {
+      toast.error("Couldn't delete the skill");
+    }
+  }
+
   return (
     <div className="space-y-6">
       {groups.map((group) => (
@@ -24,7 +44,7 @@ export function SkillsList({ groups }: { groups: SkillGroup[] }) {
           </p>
           <SortableList
             items={group.items}
-            onReorder={reorderSkills}
+            onReorder={handleReorder}
             className="flex flex-wrap gap-2"
           >
             {(skill, handleProps, isDragging) => (
@@ -50,8 +70,9 @@ export function SkillsList({ groups }: { groups: SkillGroup[] }) {
                 >
                   <Pencil className="size-3.5" />
                 </Link>
-                <form action={deleteSkill}>
+                <form action={handleDelete}>
                   <input type="hidden" name="id" value={skill.id} />
+                  <input type="hidden" name="name" value={skill.name} />
                   <DeleteButton compact confirmLabel={`Delete "${skill.name}"?`} />
                 </form>
               </div>

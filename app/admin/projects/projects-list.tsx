@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Pencil, Star, GripVertical } from "lucide-react";
+import { toast } from "sonner";
 import type { Project } from "@/db/schema";
 import { deleteProject, reorderProjects } from "../actions";
 import { DeleteButton } from "../_components/delete-button";
@@ -10,10 +11,29 @@ import { Pill } from "../_components/ui";
 import { cn } from "@/lib/utils";
 
 export function ProjectsList({ projects }: { projects: Project[] }) {
+  async function handleReorder(ids: number[]) {
+    try {
+      await reorderProjects(ids);
+      toast.success("Order updated");
+    } catch {
+      toast.error("Couldn't save the new order");
+    }
+  }
+
+  async function handleDelete(formData: FormData) {
+    const name = String(formData.get("name") ?? "");
+    try {
+      await deleteProject(formData);
+      toast.success(name ? `Deleted "${name}"` : "Project deleted");
+    } catch {
+      toast.error("Couldn't delete the project");
+    }
+  }
+
   return (
     <SortableList
       items={projects}
-      onReorder={reorderProjects}
+      onReorder={handleReorder}
       className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
     >
       {(project, handleProps, isDragging) => (
@@ -55,8 +75,9 @@ export function ProjectsList({ projects }: { projects: Project[] }) {
             >
               <Pencil className="size-4" />
             </Link>
-            <form action={deleteProject}>
+            <form action={handleDelete}>
               <input type="hidden" name="id" value={project.id} />
+              <input type="hidden" name="name" value={project.name} />
               <DeleteButton compact confirmLabel={`Delete "${project.name}"?`} />
             </form>
           </div>
