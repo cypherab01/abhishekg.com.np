@@ -92,8 +92,9 @@ export const education = pgTable("education", {
   location: text("location").notNull().default(""),
   startDate: text("start_date").notNull().default(""),
   endDate: text("end_date").notNull().default(""),
-  cgpa: real("cgpa"),
-  cgpaScale: real("cgpa_scale"),
+  gradeValue: real("grade_value"),
+  gradeScale: real("grade_scale"),
+  isPercentage: boolean("is_percentage").notNull().default(false),
   description: text("description").notNull().default(""),
   sortOrder: integer("sort_order").notNull().default(0),
 });
