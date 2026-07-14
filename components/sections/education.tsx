@@ -14,14 +14,13 @@ export function EducationSection({
     <Section id="education" title="Education">
       <Timeline>
         {education.map((edu, i) => {
-          const meta = [
-            edu.university,
-            edu.cgpa != null
-              ? `CGPA ${edu.cgpa}${edu.cgpaScale ? `/${edu.cgpaScale}` : ""}`
-              : null,
-          ]
-            .filter(Boolean)
-            .join(" · ");
+          const grade =
+            edu.gradeValue != null
+              ? edu.isPercentage
+                ? `${edu.gradeValue}%`
+                : `CGPA ${edu.gradeValue}${edu.gradeScale ? `/${edu.gradeScale}` : ""}`
+              : null;
+          const meta = [edu.university, grade].filter(Boolean).join(" · ");
           return (
             <Reveal key={edu.id} delay={i * 90}>
               <TimelineItem

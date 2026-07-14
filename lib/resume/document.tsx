@@ -273,8 +273,10 @@ export default function ResumeDocument({
             .join(", ");
           const dateRange = formatDateRange(edu.startDate, edu.endDate, false);
           const cgpaText =
-            edu.cgpa != null
-              ? ` | CGPA: ${edu.cgpa}${edu.cgpaScale != null ? ` / ${edu.cgpaScale}` : ""}`
+            edu.gradeValue != null
+              ? edu.isPercentage
+                ? ` | ${edu.gradeValue}%`
+                : ` | CGPA: ${edu.gradeValue}${edu.gradeScale != null ? ` / ${edu.gradeScale}` : ""}`
               : "";
           return (
             <View key={edu.id} style={styles.item}>
