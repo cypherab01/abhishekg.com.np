@@ -304,8 +304,9 @@ export async function deleteProjectCategory(formData: FormData) {
 export async function saveEducation(formData: FormData) {
   await assertAuth();
   const id = optStr(formData.get("id"));
-  const cgpa = str(formData.get("cgpa"));
-  const cgpaScale = str(formData.get("cgpaScale"));
+  const isPercentage = str(formData.get("gradingSystem")) === "percentage";
+  const gradeValue = str(formData.get("gradeValue"));
+  const gradeScale = str(formData.get("gradeScale"));
   const values = {
     degree: str(formData.get("degree")),
     institution: str(formData.get("institution")),
@@ -314,8 +315,9 @@ export async function saveEducation(formData: FormData) {
     location: str(formData.get("location")),
     startDate: str(formData.get("startDate")),
     endDate: str(formData.get("endDate")),
-    cgpa: cgpa ? Number(cgpa) : null,
-    cgpaScale: cgpaScale ? Number(cgpaScale) : null,
+    gradeValue: gradeValue ? Number(gradeValue) : null,
+    gradeScale: !isPercentage && gradeScale ? Number(gradeScale) : null,
+    isPercentage,
     description: str(formData.get("description")),
     sortOrder: Number(str(formData.get("sortOrder"))) || 0,
   };
