@@ -119,23 +119,8 @@ export async function updateProfile(formData: FormData) {
 export async function saveExperience(formData: FormData) {
   await assertAuth();
   const id = optStr(formData.get("id"));
-  const kindName = str(formData.get("kind")) || "work";
-  let kindRow = await db
-    .select()
-    .from(experienceKinds)
-    .where(eq(experienceKinds.name, kindName))
-    .limit(1);
-
-  if (!kindRow[0]) {
-    const inserted = await db
-      .insert(experienceKinds)
-      .values({ name: kindName })
-      .returning();
-    kindRow = inserted;
-  }
-
   const values = {
-    kindId: kindRow[0].id,
+    kindId: Number(str(formData.get("kind"))),
     title: str(formData.get("title")),
     company: str(formData.get("company")),
     location: str(formData.get("location")),

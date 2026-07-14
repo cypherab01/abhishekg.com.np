@@ -10,10 +10,16 @@ export async function ExperienceForm({
   experience?: Experience;
 }) {
   const kinds = await getExperienceKindList();
-  const defaultKind =
-    kinds.find((kind) => kind.id === experience?.kindId)?.name ??
-    kinds[0]?.name ??
-    "work";
+
+  if (kinds.length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground">
+        Create an experience type first, then add experience here.
+      </p>
+    );
+  }
+
+  const defaultKindId = experience?.kindId ?? kinds[0].id;
 
   return (
     <form action={saveExperience} className="space-y-5">
@@ -26,17 +32,17 @@ export async function ExperienceForm({
         <select
           id="kind"
           name="kind"
-          defaultValue={defaultKind}
+          defaultValue={defaultKindId}
           className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground shadow-sm outline-none transition-all focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
         >
           {kinds.map((kind) => (
-            <option key={kind.id} value={kind.name}>
+            <option key={kind.id} value={kind.id}>
               {kind.name}
             </option>
           ))}
         </select>
         <p className="text-xs text-muted-foreground">
-          Add a new type from the field below the list, or select an existing one.
+          Manage available types from the &quot;Manage types&quot; page.
         </p>
       </div>
 

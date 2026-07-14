@@ -1,5 +1,5 @@
 {
-  "name": "abhishekg.info.np",
+  "name": "portfolio",
   "version": "1.0.0",
   "private": false,
   "scripts": {
@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push",
     "db:migrate": "tsx db/migrate.ts",
     "db:studio": "drizzle-kit studio",
