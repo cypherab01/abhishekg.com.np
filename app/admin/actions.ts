@@ -158,6 +158,11 @@ export async function saveExperienceKind(formData: FormData) {
     name: str(formData.get("name")),
     sortOrder: Number(str(formData.get("sortOrder"))) || 0,
   };
+  if (!values.name) {
+    redirect(
+      `/admin/experience/types?error=${encodeURIComponent("Name is required.")}`,
+    );
+  }
   if (id) {
     await db
       .update(experienceKinds)
@@ -264,6 +269,11 @@ export async function saveProjectCategory(formData: FormData) {
     name: str(formData.get("name")),
     sortOrder: Number(str(formData.get("sortOrder"))) || 0,
   };
+  if (!values.name) {
+    redirect(
+      `/admin/projects/categories?error=${encodeURIComponent("Name is required.")}`,
+    );
+  }
   if (id) {
     await db
       .update(projectCategories)
@@ -378,6 +388,11 @@ export async function saveSkillCategory(formData: FormData) {
     name: str(formData.get("name")),
     sortOrder: Number(str(formData.get("sortOrder"))) || 0,
   };
+  if (!values.name) {
+    redirect(
+      `/admin/skills/categories?error=${encodeURIComponent("Name is required.")}`,
+    );
+  }
   if (id) {
     await db
       .update(skillCategories)

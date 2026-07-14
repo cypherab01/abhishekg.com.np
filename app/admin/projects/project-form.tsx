@@ -1,5 +1,5 @@
 import type { Project } from "@/db/schema";
-import { getProjectCategoryList } from "@/db/queries";
+import { getProjectCategoryList, getProjects } from "@/db/queries";
 import { saveProject } from "../actions";
 import { Field, TextArea, Checkbox } from "../_components/fields";
 import { UploadField } from "../_components/upload-field";
@@ -8,6 +8,9 @@ import { SubmitButton } from "../_components/submit-button";
 export async function ProjectForm({ project }: { project?: Project }) {
   const categories = await getProjectCategoryList();
   const defaultCategoryId = project?.categoryId ?? categories[0]?.id;
+  const defaultSortOrder = project
+    ? project.sortOrder
+    : (await getProjects()).length + 1;
 
   return (
     <form action={saveProject} className="space-y-5">
@@ -66,7 +69,7 @@ export async function ProjectForm({ project }: { project?: Project }) {
           label="Sort order"
           name="sortOrder"
           type="number"
-          defaultValue={project?.sortOrder ?? 0}
+          defaultValue={defaultSortOrder}
         />
       </div>
 

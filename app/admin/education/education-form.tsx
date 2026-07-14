@@ -1,9 +1,14 @@
 import type { Education } from "@/db/schema";
+import { getEducation } from "@/db/queries";
 import { saveEducation } from "../actions";
 import { Field, TextArea } from "../_components/fields";
 import { SubmitButton } from "../_components/submit-button";
 
-export function EducationForm({ education }: { education?: Education }) {
+export async function EducationForm({ education }: { education?: Education }) {
+  const defaultSortOrder = education
+    ? education.sortOrder
+    : (await getEducation()).length + 1;
+
   return (
     <form action={saveEducation} className="space-y-5">
       {education && <input type="hidden" name="id" value={education.id} />}
@@ -40,7 +45,7 @@ export function EducationForm({ education }: { education?: Education }) {
           label="Sort order"
           name="sortOrder"
           type="number"
-          defaultValue={education?.sortOrder ?? 0}
+          defaultValue={defaultSortOrder}
         />
         <Field
           label="Start date"

@@ -1,5 +1,5 @@
 import type { Experience } from "@/db/schema";
-import { getExperienceKindList } from "@/db/queries";
+import { getExperienceKindList, getAllExperiences } from "@/db/queries";
 import { saveExperience } from "../actions";
 import { Field, TextArea, Checkbox } from "../_components/fields";
 import { SubmitButton } from "../_components/submit-button";
@@ -20,6 +20,9 @@ export async function ExperienceForm({
   }
 
   const defaultKindId = experience?.kindId ?? kinds[0].id;
+  const defaultSortOrder = experience
+    ? experience.sortOrder
+    : (await getAllExperiences()).length + 1;
 
   return (
     <form action={saveExperience} className="space-y-5">
@@ -67,7 +70,7 @@ export async function ExperienceForm({
           label="Sort order"
           name="sortOrder"
           type="number"
-          defaultValue={experience?.sortOrder ?? 0}
+          defaultValue={defaultSortOrder}
         />
         <Field
           label="Start date"

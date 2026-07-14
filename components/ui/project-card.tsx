@@ -19,6 +19,10 @@ export function ProjectCard({
   coverImage,
   href,
 }: ProjectCardProps) {
+  const MAX_SKILLS = 6;
+  const visibleSkills = skills.slice(0, MAX_SKILLS);
+  const hiddenCount = skills.length - visibleSkills.length;
+
   const inner = (
     <div className="group h-full rounded-lg border border-border overflow-hidden transition-[colors,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-muted/30 hover:shadow-sm motion-reduce:hover:translate-y-0">
       {coverImage && (
@@ -50,14 +54,19 @@ export function ProjectCard({
           {description}
         </p>
         <div className="flex flex-wrap gap-1.5">
-          {skills.map((skill) => (
+          {visibleSkills.map((skill, i) => (
             <span
-              key={skill}
+              key={`${skill}-${i}`}
               className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground"
             >
               {skill}
             </span>
           ))}
+          {hiddenCount > 0 && (
+            <span className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground">
+              +{hiddenCount}
+            </span>
+          )}
         </div>
       </div>
     </div>

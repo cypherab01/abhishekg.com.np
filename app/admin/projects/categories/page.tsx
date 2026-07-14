@@ -59,6 +59,7 @@ export default async function ProjectCategoriesPage({
             <input
               id="new-project-category"
               name="name"
+              required
               placeholder="Mobile App"
               className={inputClass}
             />
@@ -110,6 +111,7 @@ export default async function ProjectCategoriesPage({
                     <input
                       id={`project-category-${category.id}`}
                       name="name"
+                      required
                       defaultValue={category.name}
                       className={rowInputClass}
                     />

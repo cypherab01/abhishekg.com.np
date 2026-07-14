@@ -122,9 +122,9 @@ export default async function ProjectDetailPage({
         <Reveal delay={200}>
           <p className="text-sm font-medium text-foreground mb-2">Built with</p>
           <div className="flex flex-wrap gap-1.5 mb-8">
-            {project.technologies.map((tech) => (
+            {project.technologies.map((tech, i) => (
               <span
-                key={tech}
+                key={`${tech}-${i}`}
                 className="text-sm px-3 py-1 rounded-md border border-border text-muted-foreground"
               >
                 {tech}

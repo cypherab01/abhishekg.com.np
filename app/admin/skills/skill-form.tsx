@@ -1,5 +1,5 @@
 import type { Skill, SkillCategory } from "@/db/schema";
-import { getSkillCategoryList } from "@/db/queries";
+import { getSkillCategoryList, getSkills } from "@/db/queries";
 import { saveSkill } from "../actions";
 import { SubmitButton } from "../_components/submit-button";
 import { inputClass } from "../_components/ui";
@@ -20,6 +20,10 @@ export async function SkillForm({
       </p>
     );
   }
+
+  const defaultSortOrder = skill
+    ? skill.sortOrder
+    : (await getSkills()).length + 1;
 
   return (
     <form
@@ -71,7 +75,7 @@ export async function SkillForm({
           id="sortOrder"
           name="sortOrder"
           type="number"
-          defaultValue={skill?.sortOrder ?? 0}
+          defaultValue={defaultSortOrder}
           className={`${inputClass} sm:w-20`}
         />
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import {
   DndContext,
   closestCenter,
@@ -198,6 +198,7 @@ export function ResumeBuilder({
   skillGroups: SkillGroup[];
   projects: Project[];
 }) {
+  const sectionsDndId = useId();
   const [summary, setSummary] = useState(config.summary);
   const [sections, setSections] = useState<ResumeSection[]>(config.sections);
   const [headerFields, setHeaderFields] = useState(config.headerFields);
@@ -403,6 +404,7 @@ export function ResumeBuilder({
         <Card className="p-5 space-y-3">
           <p className="text-sm font-medium text-foreground">Sections</p>
           <DndContext
+            id={sectionsDndId}
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragEnd={handleDragEnd}

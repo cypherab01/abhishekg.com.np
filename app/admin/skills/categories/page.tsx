@@ -55,6 +55,7 @@ export default async function SkillCategoriesPage({
             <input
               id="new-category-name"
               name="name"
+              required
               placeholder="Design Systems"
               className={inputClass}
             />
@@ -95,6 +96,7 @@ export default async function SkillCategoriesPage({
                     <input
                       id={`category-${category.id}`}
                       name="name"
+                      required
                       defaultValue={category.name}
                       className={rowInputClass}
                     />

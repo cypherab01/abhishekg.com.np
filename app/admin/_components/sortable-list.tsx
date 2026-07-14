@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useId, useState, type ReactNode } from "react";
 import {
   DndContext,
   closestCenter,
@@ -79,6 +79,7 @@ export function SortableList<T extends { id: number }>({
     isDragging: boolean,
   ) => ReactNode;
 }) {
+  const dndId = useId();
   const [order, setOrder] = useState<T[]>(items);
 
   // Sync local state when the server sends a new list (add/delete/reorder).
@@ -109,6 +110,7 @@ export function SortableList<T extends { id: number }>({
 
   return (
     <DndContext
+      id={dndId}
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={handleDragEnd}

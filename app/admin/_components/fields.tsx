@@ -8,6 +8,7 @@ export function Field({
   name,
   defaultValue,
   type = "text",
+  step,
   required,
   placeholder,
   hint,
@@ -16,6 +17,7 @@ export function Field({
   name: string;
   defaultValue?: string | number | null;
   type?: string;
+  step?: string | number;
   required?: boolean;
   placeholder?: string;
   hint?: string;
@@ -29,6 +31,7 @@ export function Field({
         id={name}
         name={name}
         type={type}
+        step={type === "number" ? step ?? "any" : undefined}
         required={required}
         placeholder={placeholder}
         defaultValue={defaultValue ?? undefined}

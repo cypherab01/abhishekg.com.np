@@ -55,6 +55,7 @@ export default async function ExperienceTypesPage({
             <input
               id="new-experience-kind"
               name="name"
+              required
               placeholder="volunteering"
               className={inputClass}
             />
@@ -106,6 +107,7 @@ export default async function ExperienceTypesPage({
                     <input
                       id={`experience-kind-${kind.id}`}
                       name="name"
+                      required
                       defaultValue={kind.name}
                       className={rowInputClass}
                     />
