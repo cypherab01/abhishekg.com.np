@@ -54,19 +54,37 @@ export function EducationForm({ education }: { education?: Education }) {
           defaultValue={education?.endDate}
           placeholder="2025-06"
         />
+        <div className="space-y-1.5">
+          <label
+            htmlFor="gradingSystem"
+            className="text-sm font-medium text-foreground"
+          >
+            Grading system
+          </label>
+          <select
+            id="gradingSystem"
+            name="gradingSystem"
+            defaultValue={education?.isPercentage ? "percentage" : "gpa"}
+            className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground shadow-sm outline-none transition-all focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
+          >
+            <option value="gpa">GPA</option>
+            <option value="percentage">Percentage</option>
+          </select>
+        </div>
         <Field
-          label="CGPA"
-          name="cgpa"
+          label="Score"
+          name="gradeValue"
           type="number"
-          defaultValue={education?.cgpa}
-          placeholder="3.51"
+          defaultValue={education?.gradeValue}
+          placeholder="3.51 or 85"
         />
         <Field
-          label="CGPA scale"
-          name="cgpaScale"
+          label="Scale"
+          name="gradeScale"
           type="number"
-          defaultValue={education?.cgpaScale}
+          defaultValue={education?.gradeScale}
           placeholder="4.0"
+          hint="Only used for GPA."
         />
       </div>
 
