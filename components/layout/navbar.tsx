@@ -1,74 +1,134 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { navLinks } from "@/lib/nav";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
 interface NavbarProps {
   initials: string;
+  name: string;
 }
 
-export function Navbar({ initials }: NavbarProps) {
+export function Navbar({ initials, name }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // At rest the bar is flat; a hairline appears once the page has moved.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // The mobile sheet is full-height; lock the page behind it.
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) =>
+      e.key === "Escape" && setMobileOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-md">
-      <nav className="mx-auto flex h-14 max-w-3xl items-center justify-between px-6">
-        <Link href="/" className="text-base font-semibold text-foreground">
-          {initials}
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full border-b bg-background transition-[border-color] duration-200 ease-standard",
+        scrolled ? "border-border" : "border-transparent",
+      )}
+    >
+      <nav
+        aria-label="Main"
+        className="gfs-container flex h-14 items-center justify-between gap-6 md:h-16"
+      >
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 text-base font-medium tracking-[-0.01em] text-foreground"
+        >
+          <span
+            aria-hidden
+            className="flex size-8 items-center justify-center rounded-full bg-accent text-sm font-medium text-accent-foreground"
+          >
+            {initials}
+          </span>
+          <span className="hidden sm:inline">{name}</span>
         </Link>
 
         {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="group relative text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm font-medium text-muted-foreground transition-colors duration-200 ease-standard hover:text-foreground"
             >
               {link.label}
-              <span className="absolute -bottom-1 left-0 h-px w-0 bg-foreground transition-all duration-300 ease-out group-hover:w-full motion-reduce:transition-none" />
             </Link>
           ))}
-          <ThemeToggle />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Link
+              href="/#contact-form"
+              className={cn(buttonVariants({ variant: "default" }))}
+            >
+              Get in touch
+            </Link>
+          </div>
         </div>
 
-        {/* Mobile toggle */}
-        <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle />
+        {/* Mobile controls — the primary CTA stays visible in the bar. */}
+        <div className="flex items-center gap-1 md:hidden">
+          <Link
+            href="/#contact-form"
+            className={cn(buttonVariants({ variant: "default", size: "sm" }))}
+          >
+            Get in touch
+          </Link>
           <Button
             variant="ghost"
             size="icon"
-            className="size-9"
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
             onClick={() => setMobileOpen(!mobileOpen)}
+            className="text-foreground"
           >
-            {mobileOpen ? <X className="size-4" /> : <Menu className="size-4" />}
+            {mobileOpen ? <X /> : <Menu />}
           </Button>
         </div>
       </nav>
 
-      {/* Mobile menu */}
+      {/* Mobile sheet */}
       <div
-        className={cn(
-          "md:hidden overflow-hidden transition-all duration-200 border-b border-border/50 bg-background",
-          mobileOpen ? "max-h-96" : "max-h-0 border-b-0",
-        )}
+        id="mobile-nav"
+        hidden={!mobileOpen}
+        className="fixed inset-x-0 bottom-0 top-14 z-50 overflow-y-auto bg-background md:hidden"
       >
-        <div className="flex flex-col gap-1 px-6 py-3">
+        <div className="gfs-container flex flex-col py-6">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setMobileOpen(false)}
-              className="py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="border-b border-outline-variant py-4 text-lg text-foreground"
             >
               {link.label}
             </Link>
           ))}
+          <div className="pt-6">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
     </header>

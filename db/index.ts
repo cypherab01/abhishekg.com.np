@@ -1,5 +1,5 @@
-import { neon, neonConfig } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { Pool } from "pg";
+import { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "./schema";
 
 if (!process.env.DATABASE_URL) {
@@ -7,50 +7,32 @@ if (!process.env.DATABASE_URL) {
 }
 
 /**
- * Neon's serverless endpoint occasionally rejects requests with a retryable
- * 500 ("Failed to acquire permit to connect… Too many database connection
- * attempts are currently ongoing") when many queries fan out at once — common
- * in dev with hot-reload, or on bursty page loads. Those responses carry a
- * `neon:retryable: true` flag, so we transparently retry them with exponential
- * backoff instead of surfacing the error to the page.
+ * A single pool is shared across the process. In dev, Next.js hot-reload
+ * re-evaluates this module on every change, so the pool is cached on
+ * `globalThis` — otherwise each reload would leak a fresh set of connections
+ * and quickly exhaust the database's `max_connections`.
  */
-const MAX_ATTEMPTS = 4;
+const globalForDb = globalThis as unknown as { pool?: Pool };
 
-async function retryingFetch(
-  input: Parameters<typeof fetch>[0],
-  init?: Parameters<typeof fetch>[1],
-): Promise<Response> {
-  let lastResponse: Response | undefined;
+const pool =
+  globalForDb.pool ??
+  new Pool({
+    connectionString: process.env.DATABASE_URL,
+    max: Number(process.env.DATABASE_POOL_MAX ?? 10),
+    idleTimeoutMillis: 30_000,
+    connectionTimeoutMillis: 10_000,
+  });
 
-  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-    const response = await fetch(input, init);
-    if (response.status !== 500) return response;
-
-    // Only retry Neon's explicitly-retryable connection errors.
-    let retryable = false;
-    try {
-      const body = await response.clone().json();
-      retryable = body?.["neon:retryable"] === true;
-    } catch {
-      retryable = false;
-    }
-    if (!retryable) return response;
-
-    lastResponse = response;
-    if (attempt < MAX_ATTEMPTS - 1) {
-      const delay = 120 * 2 ** attempt + Math.floor(Math.random() * 80);
-      await new Promise((resolve) => setTimeout(resolve, delay));
-    }
-  }
-
-  return lastResponse!;
+if (process.env.NODE_ENV !== "production") {
+  globalForDb.pool = pool;
 }
 
-// `fetchFunction` is a global-only Neon setting, applied to every HTTP query.
-neonConfig.fetchFunction = retryingFetch;
+// Idle clients can be dropped by the server or a proxy; without an `error`
+// listener the emitted event would take down the process.
+pool.on("error", (err) => {
+  console.error("Unexpected database pool error", err);
+});
 
-const sql = neon(process.env.DATABASE_URL);
-
-export const db = drizzle(sql, { schema });
+export const db = drizzle(pool, { schema });
 
 export * from "./schema";

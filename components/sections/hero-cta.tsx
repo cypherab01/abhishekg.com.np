@@ -1,5 +1,4 @@
-import { Mail, Download } from "lucide-react";
-import { GithubIcon } from "@/components/ui/icons";
+import { ChevronRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
@@ -8,35 +7,39 @@ interface HeroCtaProps {
   email: string;
 }
 
+/**
+ * Two pills at most: one filled primary, one outlined secondary. Anything
+ * further down the hierarchy becomes a text link with a chevron.
+ */
 export function HeroCta({ github, email }: HeroCtaProps) {
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex flex-col items-center gap-6">
+      <div className="flex flex-wrap items-center justify-center gap-3">
+        <a
+          href={`mailto:${email}`}
+          className={cn(buttonVariants({ variant: "default", size: "lg" }))}
+        >
+          Get in touch
+        </a>
+        <a
+          href="/api/resume"
+          download
+          className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
+        >
+          Download resume
+        </a>
+      </div>
       {github && (
         <a
           href={github}
           target="_blank"
           rel="noopener noreferrer"
-          className={cn(buttonVariants({ variant: "outline" }))}
+          className="link-cta text-sm"
         >
-          <GithubIcon className="size-4 mr-2" />
-          GitHub
+          See the code on GitHub
+          <ChevronRight className="size-5" aria-hidden />
         </a>
       )}
-      <a
-        href="/api/resume"
-        download
-        className={cn(buttonVariants({ variant: "outline" }))}
-      >
-        <Download className="size-4 mr-2" />
-        Download Resume
-      </a>
-      <a
-        href={`mailto:${email}`}
-        className={cn(buttonVariants({ variant: "default" }))}
-      >
-        <Mail className="size-4 mr-2" />
-        Get in Touch
-      </a>
     </div>
   );
 }

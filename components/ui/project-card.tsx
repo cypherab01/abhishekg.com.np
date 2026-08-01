@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ProjectCardProps {
   title: string;
@@ -9,8 +10,14 @@ interface ProjectCardProps {
   category?: string;
   coverImage?: string | null;
   href?: string;
+  className?: string;
 }
 
+/**
+ * Elevated marketing card: flat at rest, faint shadow on hover, media plated
+ * on a tint. Content order is fixed — media, eyebrow, title, body, CTA. The
+ * whole card is one link, so the "Learn more" affordance is decorative.
+ */
 export function ProjectCard({
   title,
   description,
@@ -18,63 +25,78 @@ export function ProjectCard({
   category,
   coverImage,
   href,
+  className,
 }: ProjectCardProps) {
-  const MAX_SKILLS = 6;
+  const MAX_SKILLS = 4;
   const visibleSkills = skills.slice(0, MAX_SKILLS);
   const hiddenCount = skills.length - visibleSkills.length;
 
   const inner = (
-    <div className="group h-full rounded-lg border border-border overflow-hidden transition-[colors,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:bg-muted/30 hover:shadow-sm motion-reduce:hover:translate-y-0">
-      {coverImage && (
-        <div className="relative aspect-video w-full overflow-hidden bg-muted">
+    <div
+      className={cn(
+        "group flex h-full flex-col overflow-hidden rounded-3xl bg-background p-4 transition-shadow duration-200 ease-standard hover:shadow-elev-2",
+        className,
+      )}
+    >
+      <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-surface-sunken">
+        {coverImage && (
           <Image
             src={coverImage}
-            alt={title}
+            alt=""
             fill
-            sizes="(max-width: 640px) 100vw, 400px"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
+            className="object-cover transition-transform duration-300 ease-standard group-hover:scale-[1.03] motion-reduce:transform-none"
           />
-        </div>
-      )}
-      <div className="p-5">
-        <div className="flex items-start justify-between gap-2 mb-1.5">
-          <div>
-            {category && (
-              <p className="text-xs font-medium tracking-wide text-primary mb-1">
-                {category}
-              </p>
+        )}
+      </div>
+
+      <div className="flex flex-1 flex-col px-2 pt-6 pb-2">
+        {category && (
+          <p className="mb-2 text-sm font-medium text-muted-foreground">
+            {category}
+          </p>
+        )}
+        <h3 className="text-card-title font-medium leading-[1.3] tracking-[-0.005em]">
+          {title}
+        </h3>
+        <p className="mt-3 line-clamp-2 text-muted-foreground">{description}</p>
+
+        {visibleSkills.length > 0 && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {visibleSkills.map((skill, i) => (
+              <span
+                key={`${skill}-${i}`}
+                className="rounded-full border border-border px-3 py-1 text-sm text-muted-foreground"
+              >
+                {skill}
+              </span>
+            ))}
+            {hiddenCount > 0 && (
+              <span className="rounded-full border border-border px-3 py-1 text-sm text-muted-foreground">
+                +{hiddenCount}
+              </span>
             )}
-            <h3 className="font-medium text-foreground">{title}</h3>
           </div>
-          {href && (
-            <ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          )}
-        </div>
-        <p className="text-sm text-muted-foreground leading-relaxed mb-3 line-clamp-3">
-          {description}
-        </p>
-        <div className="flex flex-wrap gap-1.5">
-          {visibleSkills.map((skill, i) => (
-            <span
-              key={`${skill}-${i}`}
-              className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground"
-            >
-              {skill}
-            </span>
-          ))}
-          {hiddenCount > 0 && (
-            <span className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground">
-              +{hiddenCount}
-            </span>
-          )}
-        </div>
+        )}
+
+        {href && (
+          <span
+            className="mt-auto inline-flex items-center gap-1 pt-6 font-medium text-link"
+            aria-hidden
+          >
+            Learn more
+            <ChevronRight className="size-5 transition-transform duration-200 ease-standard group-hover:translate-x-[3px] motion-reduce:transform-none" />
+          </span>
+        )}
       </div>
     </div>
   );
 
   if (href) {
     return (
-      <Link href={href} className="block h-full">
+      // No aria-label: the card's own heading and copy name the link, and an
+      // override would break voice control ("click Learn more").
+      <Link href={href} className="block h-full rounded-3xl">
         {inner}
       </Link>
     );

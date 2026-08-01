@@ -1,12 +1,16 @@
 "use client";
 
 import { useActionState } from "react";
-import { Send, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { submitContact, type ContactState } from "@/app/actions/contact";
 import { Button } from "@/components/ui/button";
 
 const initialState: ContactState = {};
 
+/**
+ * Three states, each with a job: idle, success ("You're all set."), and error
+ * with a retry. Errors are announced politely, never as an alert.
+ */
 export function ContactForm() {
   const [state, formAction, pending] = useActionState(
     submitContact,
@@ -15,12 +19,15 @@ export function ContactForm() {
 
   if (state.ok) {
     return (
-      <div className="flex items-center gap-3 rounded-lg border border-primary/30 bg-primary/5 p-5">
-        <CheckCircle2 className="size-5 text-primary" />
+      <div
+        role="status"
+        className="flex max-w-[60ch] items-start gap-3 rounded-2xl bg-success-container p-6 text-on-success-container"
+      >
+        <CheckCircle2 className="mt-0.5 size-5 shrink-0" aria-hidden />
         <div>
-          <p className="font-medium text-foreground">Message sent</p>
-          <p className="text-sm text-muted-foreground">
-            Thanks for reaching out — I&apos;ll get back to you soon.
+          <p className="font-medium">You&apos;re all set.</p>
+          <p className="mt-1 text-sm">
+            Your message is on its way. I&apos;ll reply within a couple of days.
           </p>
         </div>
       </div>
@@ -28,22 +35,23 @@ export function ContactForm() {
   }
 
   return (
-    <form action={formAction} className="space-y-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="space-y-1.5">
-          <label htmlFor="name" className="text-sm text-foreground">
+    <form action={formAction} className="max-w-[60ch] space-y-5">
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div className="space-y-2">
+          <label htmlFor="name" className="text-sm font-medium">
             Name
           </label>
           <input
             id="name"
             name="name"
             required
-            className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary/50"
+            autoComplete="name"
+            className="gfs-field"
             placeholder="Your name"
           />
         </div>
-        <div className="space-y-1.5">
-          <label htmlFor="email" className="text-sm text-foreground">
+        <div className="space-y-2">
+          <label htmlFor="email" className="text-sm font-medium">
             Email
           </label>
           <input
@@ -51,13 +59,16 @@ export function ContactForm() {
             name="email"
             type="email"
             required
-            className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary/50"
+            autoComplete="email"
+            aria-invalid={state.error ? true : undefined}
+            aria-describedby={state.error ? "contact-error" : undefined}
+            className="gfs-field"
             placeholder="you@example.com"
           />
         </div>
       </div>
-      <div className="space-y-1.5">
-        <label htmlFor="message" className="text-sm text-foreground">
+      <div className="space-y-2">
+        <label htmlFor="message" className="text-sm font-medium">
           Message
         </label>
         <textarea
@@ -65,16 +76,21 @@ export function ContactForm() {
           name="message"
           required
           rows={4}
-          className="w-full resize-none rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none transition-colors focus:border-primary/50"
+          className="gfs-field resize-y"
           placeholder="What would you like to talk about?"
         />
       </div>
-      {state.error && (
-        <p className="text-sm text-destructive">{state.error}</p>
-      )}
-      <Button type="submit" disabled={pending} size="lg">
-        <Send className="size-4 mr-2" />
-        {pending ? "Sending..." : "Send message"}
+
+      <p aria-live="polite" className="min-h-5">
+        {state.error && (
+          <span id="contact-error" className="text-sm text-destructive">
+            {state.error}
+          </span>
+        )}
+      </p>
+
+      <Button type="submit" size="lg" disabled={pending}>
+        {pending ? "Sending" : "Send message"}
       </Button>
     </form>
   );

@@ -1,15 +1,18 @@
 import { cn } from "@/lib/utils";
 
-/** Shared input styling used across admin forms. */
+/**
+ * Material 3 outlined text field: 8px radius, hairline outline, and a focus
+ * state made of border + inset shadow so the field never shifts by a pixel.
+ */
 export const inputClass =
-  "w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground shadow-sm outline-none transition-all placeholder:text-muted-foreground/60 focus:border-primary/60 focus:ring-4 focus:ring-primary/10";
+  "w-full rounded-lg border border-border bg-background px-4 py-2.5 text-sm text-foreground outline-none transition-[border-color,box-shadow] duration-150 ease-standard placeholder:text-subtle-foreground hover:border-foreground focus:border-primary focus:shadow-[inset_0_0_0_1px_var(--gfs-accent)]";
 
 /**
- * Compact, inline-edit input used inside list rows — borderless at rest,
- * revealing a border and ring on hover/focus for a lightweight editable feel.
+ * Compact inline-edit input for list rows — borderless at rest, revealing an
+ * outline on hover and focus.
  */
 export const rowInputClass =
-  "w-full min-w-0 rounded-lg border border-transparent bg-transparent px-2.5 py-1.5 text-sm font-medium text-foreground outline-none transition-all placeholder:text-muted-foreground/60 hover:border-border hover:bg-card focus:border-primary/60 focus:bg-card focus:ring-4 focus:ring-primary/10";
+  "w-full min-w-0 rounded-lg border border-transparent bg-transparent px-3 py-1.5 text-sm font-medium text-foreground outline-none transition-[border-color,box-shadow] duration-150 ease-standard placeholder:text-subtle-foreground hover:border-border focus:border-primary focus:shadow-[inset_0_0_0_1px_var(--gfs-accent)]";
 
 export function PageHeader({
   title,
@@ -22,20 +25,25 @@ export function PageHeader({
 }) {
   return (
     <div className="mb-8">
-      <div className="flex items-start justify-between gap-4">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          {title}
-        </h1>
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        {/* M3 headline-small: 24px, weight 400. */}
+        <h1 className="text-2xl leading-8">{title}</h1>
         {action}
       </div>
       {description && (
-        <p className="mt-1.5 text-sm text-muted-foreground">{description}</p>
+        <p className="mt-2 max-w-[60ch] text-sm text-muted-foreground">
+          {description}
+        </p>
       )}
     </div>
   );
 }
 
-/** Elevated surface card matching the CRM dashboard theme. */
+/**
+ * Tonal surface card. In M3 a "higher" surface is lighter, not shadowed —
+ * elevation comes from the surface-container ramp, so there is no resting
+ * shadow here.
+ */
 export function Card({
   className,
   children,
@@ -46,7 +54,7 @@ export function Card({
   return (
     <div
       className={cn(
-        "card-elevated rounded-2xl border border-border bg-card",
+        "surface-container rounded-2xl border border-outline-variant",
         className,
       )}
     >
@@ -58,11 +66,9 @@ export function Card({
 type AlertTone = "error" | "success" | "info";
 
 const alertTones: Record<AlertTone, string> = {
-  error:
-    "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-300",
-  success:
-    "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
-  info: "border-primary/30 bg-primary/5 text-foreground",
+  error: "bg-danger-container text-on-danger-container",
+  success: "bg-success-container text-on-success-container",
+  info: "bg-accent text-accent-foreground",
 };
 
 export function Alert({
@@ -78,7 +84,7 @@ export function Alert({
     <div
       role={tone === "error" ? "alert" : "status"}
       className={cn(
-        "mb-6 flex items-start gap-2.5 rounded-xl border p-3.5 text-sm",
+        "mb-6 flex items-start gap-3 rounded-xl p-4 text-sm",
         alertTones[tone],
       )}
     >
@@ -91,14 +97,13 @@ export function Alert({
 type PillTone = "neutral" | "success" | "danger" | "accent";
 
 const pillTones: Record<PillTone, string> = {
-  neutral: "bg-muted text-muted-foreground",
-  success:
-    "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20",
-  danger:
-    "bg-rose-500/10 text-rose-600 dark:text-rose-400 ring-1 ring-inset ring-rose-500/20",
-  accent: "bg-primary/10 text-primary ring-1 ring-inset ring-primary/20",
+  neutral: "bg-surface-sunken text-muted-foreground",
+  success: "bg-success-container text-on-success-container",
+  danger: "bg-danger-container text-on-danger-container",
+  accent: "bg-accent text-accent-foreground",
 };
 
+/** Suggestion chip: pill, 24px, label-medium. */
 export function Pill({
   children,
   tone = "neutral",
@@ -111,7 +116,7 @@ export function Pill({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium",
+        "inline-flex items-center gap-1 rounded-full px-3 py-0.5 text-xs font-medium",
         pillTones[tone],
         className,
       )}

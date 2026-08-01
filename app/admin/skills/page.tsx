@@ -50,8 +50,8 @@ export default async function AdminSkillsPage({
       />
 
       {!hasCategories ? (
-        <div className="card-elevated flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border bg-card px-6 py-16 text-center">
-          <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+        <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border bg-card px-6 py-16 text-center">
+          <span className="flex size-12 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
             <Wrench className="size-6" aria-hidden />
           </span>
           <div>
@@ -71,8 +71,8 @@ export default async function AdminSkillsPage({
           </Link>
         </div>
       ) : !hasSkills ? (
-        <div className="card-elevated flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border bg-card px-6 py-16 text-center">
-          <span className="flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+        <div className="flex flex-col items-center gap-3 rounded-2xl border border-dashed border-border bg-card px-6 py-16 text-center">
+          <span className="flex size-12 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
             <Wrench className="size-6" aria-hidden />
           </span>
           <div>

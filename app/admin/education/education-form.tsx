@@ -1,3 +1,4 @@
+import { inputClass } from "../_components/ui";
 import type { Education } from "@/db/schema";
 import { getEducation } from "@/db/queries";
 import { saveEducation } from "../actions";
@@ -70,7 +71,7 @@ export async function EducationForm({ education }: { education?: Education }) {
             id="gradingSystem"
             name="gradingSystem"
             defaultValue={education?.isPercentage ? "percentage" : "gpa"}
-            className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground shadow-sm outline-none transition-all focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
+            className={inputClass}
           >
             <option value="gpa">GPA</option>
             <option value="percentage">Percentage</option>

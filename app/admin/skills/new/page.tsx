@@ -19,7 +19,7 @@ export default function NewSkillPage() {
         description="Add a skill and assign it to a category."
       />
 
-      <div className="card-elevated rounded-2xl border border-border bg-card p-5">
+      <div className="rounded-2xl border border-border bg-card p-5">
         <SkillForm />
       </div>
     </div>

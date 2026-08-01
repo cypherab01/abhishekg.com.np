@@ -43,7 +43,7 @@ export default async function ExperienceTypesPage({
         </Alert>
       )}
 
-      <div className="card-elevated overflow-hidden rounded-2xl border border-border bg-card">
+      <div className="overflow-hidden rounded-2xl border border-border bg-card">
         <form
           action={saveExperienceKind}
           className="flex flex-col gap-3 border-b border-border bg-muted/30 p-5 sm:flex-row sm:items-end"
@@ -93,7 +93,7 @@ export default async function ExperienceTypesPage({
                   key={kind.id}
                   className="group flex flex-col gap-2 rounded-xl border border-transparent p-2 transition-colors hover:border-border hover:bg-background/60 sm:flex-row sm:items-center sm:gap-3"
                 >
-                  <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-accent text-accent-foreground">
                     <Tag className="size-4" aria-hidden />
                   </span>
                   <form

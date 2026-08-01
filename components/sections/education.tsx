@@ -1,17 +1,24 @@
 import type { Education } from "@/db/schema";
-import { Section } from "@/components/layout/section";
+import { Section, type SectionTone } from "@/components/layout/section";
 import { Timeline, TimelineItem } from "@/components/ui/timeline";
 import { Reveal } from "@/components/ui/reveal";
 
 export function EducationSection({
   education,
+  tone = "surface",
 }: {
   education: Education[];
+  tone?: SectionTone;
 }) {
   if (education.length === 0) return null;
 
   return (
-    <Section id="education" title="Education">
+    <Section
+      id="education"
+      eyebrow="Education"
+      title="Where it started."
+      tone={tone}
+    >
       <Timeline>
         {education.map((edu, i) => {
           const grade =
@@ -22,7 +29,7 @@ export function EducationSection({
               : null;
           const meta = [edu.university, grade].filter(Boolean).join(" · ");
           return (
-            <Reveal key={edu.id} delay={i * 90}>
+            <Reveal key={edu.id} delay={i * 60}>
               <TimelineItem
                 title={edu.degree}
                 subtitle={edu.institution}

@@ -5,8 +5,6 @@ import { EducationSection } from "@/components/sections/education";
 import { SkillsSection } from "@/components/sections/skills";
 import { Section } from "@/components/layout/section";
 import { ContactForm } from "@/components/sections/contact-form";
-import { Separator } from "@/components/ui/separator";
-import { Fragment } from "react";
 import {
   getProfile,
   getExperienceGroups,
@@ -30,33 +28,41 @@ export default async function Home() {
   if (!profile) return null;
 
   // Fall back to all projects if none are flagged as featured.
-  const projects = featured.length > 0 ? featured : allProjects.slice(0, 4);
+  const projects = featured.length > 0 ? featured : allProjects.slice(0, 3);
 
   return (
     <>
       <Hero profile={profile} />
-      <Separator />
+
+      {/* Bands alternate surface and tint; never two of the same in a row. */}
       {experienceGroups.map((group, index) => (
-        <Fragment key={group.kind}>
-          <ExperienceSection
-            experiences={group.items}
-            title={group.label}
-            id={index === 0 ? "experience" : group.kind}
-          />
-          {index < experienceGroups.length - 1 && <Separator />}
-        </Fragment>
+        <ExperienceSection
+          key={group.kind}
+          experiences={group.items}
+          title={group.label}
+          headline={index === 0 ? "Where the work happened." : `More ${group.label.toLowerCase()}.`}
+          id={index === 0 ? "experience" : group.kind}
+          tone={index % 2 === 0 ? "tinted" : "surface"}
+        />
       ))}
-      <Separator />
+
       <ProjectsSection
         projects={projects}
         showAllLink={allProjects.length > projects.length}
+        tone="tint-1"
       />
-      <Separator />
-      <EducationSection education={education} />
-      <Separator />
-      <SkillsSection skillCategories={skills} />
-      <Separator />
-      <Section id="contact-form" title="Get in Touch">
+
+      <EducationSection education={education} tone="surface" />
+
+      <SkillsSection skillCategories={skills} tone="tint-2" />
+
+      <Section
+        id="contact-form"
+        eyebrow="Contact"
+        title="Let's work together."
+        lead="Tell me what you're building and I'll get back to you."
+        tone="surface"
+      >
         <ContactForm />
       </Section>
     </>

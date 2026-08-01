@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // `pg` resolves its optional native binding (`pg-native`) at runtime, which
+  // the bundler cannot statically follow — keep it as a plain Node require.
+  serverExternalPackages: ["pg"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "*.ufs.sh" },

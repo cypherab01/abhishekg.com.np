@@ -12,40 +12,52 @@ export default async function ProjectsPage() {
     getProjects(),
     getProjectCategories(),
   ]);
-  const categoryNameById = new Map(categories.map((category) => [category.id, category.name]));
+  const categoryNameById = new Map(
+    categories.map((category) => [category.id, category.name]),
+  );
 
   return (
-    <section className="py-20 md:py-28">
-      <Reveal>
-        <p className="text-sm font-medium tracking-[0.15em] text-primary mb-3">
-          PROJECTS
-        </p>
-        <h1 className="text-4xl md:text-5xl font-light text-foreground leading-tight mb-4">
-          Things I&apos;ve built
-        </h1>
-        <p className="text-muted-foreground max-w-lg mb-12">
-          A selection of web and mobile applications, platforms, and
-          experiments.
-        </p>
-      </Reveal>
-      {projects.length === 0 ? (
-        <p className="text-muted-foreground">No projects yet.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {projects.map((project, i) => (
-            <Reveal key={project.id} delay={i * 70} className="h-full">
-              <ProjectCard
-                title={project.name}
-                category={categoryNameById.get(project.categoryId)}
-                coverImage={project.coverImage}
-                description={project.description.join(" ")}
-                skills={project.technologies}
-                href={`/projects/${project.slug}`}
-              />
-            </Reveal>
-          ))}
+    <>
+      <section className="gfs-hero bg-background">
+        <div className="gfs-container">
+          <Reveal>
+            <p className="mb-4 text-sm font-medium text-muted-foreground">
+              Projects
+            </p>
+            <h1 className="max-w-[20ch] text-hero leading-[1.08] tracking-[-0.02em]">
+              Things I&apos;ve built.
+            </h1>
+            <p className="mt-6 max-w-[60ch] text-lead text-muted-foreground">
+              Web and mobile applications, platforms, and the odd experiment.
+            </p>
+          </Reveal>
         </div>
-      )}
-    </section>
+      </section>
+
+      <section aria-label="All projects" className="gfs-section bg-surface-tinted">
+        <div className="gfs-container">
+          {projects.length === 0 ? (
+            <p className="text-muted-foreground">
+              Nothing here yet. New work lands as it ships.
+            </p>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {projects.map((project, i) => (
+                <Reveal key={project.id} delay={i * 50} className="h-full">
+                  <ProjectCard
+                    title={project.name}
+                    category={categoryNameById.get(project.categoryId)}
+                    coverImage={project.coverImage}
+                    description={project.description.join(" ")}
+                    skills={project.technologies}
+                    href={`/projects/${project.slug}`}
+                  />
+                </Reveal>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    </>
   );
 }

@@ -4,222 +4,508 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-}
+/* ============================================================================
+   Design tokens — google-frontend-skills
+   Marketing register (public site) + Material 3 product register (admin).
+   Build against var(--gfs-*); do not hard-code values.
+   ========================================================================= */
 
 :root {
-  --radius: 0.7rem;
-  --background: oklch(0.985 0.006 285);
-  --foreground: oklch(0.21 0.02 285);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.02 285);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.02 285);
-  --primary: oklch(0.54 0.24 277);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.97 0.01 285);
-  --secondary-foreground: oklch(0.3 0.03 285);
-  --muted: oklch(0.968 0.008 285);
-  --muted-foreground: oklch(0.52 0.02 285);
-  --accent: oklch(0.95 0.025 285);
-  --accent-foreground: oklch(0.4 0.15 277);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.9 0.01 285);
-  --input: oklch(0.9 0.01 285);
-  --ring: oklch(0.54 0.24 277);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* --- Marketing type scale (fluid) ------------------------------------ */
+  --gfs-text-hero: clamp(2.5rem, 6vw, 4.5rem);
+  --gfs-text-section: clamp(2rem, 4vw, 3rem);
+  --gfs-text-band: clamp(1.75rem, 3vw, 2.5rem);
+  --gfs-text-card: clamp(1.25rem, 2vw, 1.5rem);
+  --gfs-text-lead: clamp(1rem, 1.5vw, 1.25rem);
+
+  --gfs-track-hero: -0.02em;
+  --gfs-track-heading: -0.015em;
+  --gfs-track-band: -0.01em;
+
+  /* --- Google palette --------------------------------------------------- */
+  --gfs-grey-50: #f8f9fa;
+  --gfs-grey-100: #f1f3f4;
+  --gfs-grey-200: #e8eaed;
+  --gfs-grey-300: #dadce0;
+  --gfs-grey-400: #bdc1c6;
+  --gfs-grey-500: #9aa0a6;
+  --gfs-grey-600: #80868b;
+  --gfs-grey-700: #5f6368;
+  --gfs-grey-800: #3c4043;
+  --gfs-grey-900: #202124;
+
+  --gfs-blue-50: #e8f0fe;
+  --gfs-blue-100: #d2e3fc;
+  --gfs-blue-300: #8ab4f8;
+  --gfs-blue-600: #1a73e8;
+  --gfs-blue-700: #1967d2;
+  --gfs-blue-900: #174ea6;
+
+  --gfs-red-50: #fce8e6;
+  --gfs-red-600: #d93025;
+  --gfs-red-900: #a50e0e;
+  --gfs-green-50: #e6f4ea;
+  --gfs-green-600: #1e8e3e;
+  --gfs-green-800: #0d652d;
+  --gfs-yellow-50: #fef7e0;
+  --gfs-yellow-700: #f29900;
+
+  /* Product tints — barely-coloured whites for alternating bands. */
+  --gfs-tint-1: #eef1f6; /* moonstone */
+  --gfs-tint-2: #eef3f0; /* jade-grey */
+  --gfs-tint-3: #f6f1ec; /* sand */
+
+  /* --- Semantic roles (light) ------------------------------------------ */
+  --gfs-surface: #ffffff;
+  --gfs-surface-tinted: var(--gfs-grey-50);
+  --gfs-surface-sunken: var(--gfs-grey-100);
+  --gfs-surface-inverse: var(--gfs-grey-900);
+  --gfs-on-surface: var(--gfs-grey-900);
+  --gfs-on-surface-variant: var(--gfs-grey-700);
+  --gfs-on-surface-muted: var(--gfs-grey-600);
+  --gfs-outline: var(--gfs-grey-300);
+  --gfs-outline-variant: var(--gfs-grey-200);
+  --gfs-accent: var(--gfs-blue-600);
+  /* Blue 600 on white is 4.51:1 — it passes body text with nothing to spare.
+     Small text links use blue 700 (5.37:1); blue 600 stays for filled
+     buttons, where the white-on-blue direction is what matters. */
+  --gfs-accent-text: var(--gfs-blue-700);
+  --gfs-accent-hover: var(--gfs-blue-700);
+  --gfs-accent-pressed: var(--gfs-blue-900);
+  --gfs-accent-container: var(--gfs-blue-50);
+  --gfs-on-accent-container: var(--gfs-blue-900);
+  --gfs-on-accent: #ffffff;
+  --gfs-on-inverse: #ffffff;
+  --gfs-on-inverse-variant: var(--gfs-grey-400);
+  --gfs-danger: var(--gfs-red-600);
+  --gfs-danger-container: var(--gfs-red-50);
+  --gfs-on-danger-container: var(--gfs-red-900);
+  --gfs-success: var(--gfs-green-600);
+  --gfs-success-container: var(--gfs-green-50);
+  --gfs-on-success-container: var(--gfs-green-800);
+
+  /* --- Layout ----------------------------------------------------------- */
+  --gfs-content-max: 1280px;
+  --gfs-prose-max: 68ch;
+  --gfs-gutter: 24px;
+  --gfs-nav-height: 56px;
+
+  /* Section rhythm — coarser than the component scale. Never mix them. */
+  --gfs-section-y: 72px;
+  --gfs-hero-y: 96px;
+
+  /* --- Shape ------------------------------------------------------------ */
+  --gfs-radius-xs: 4px;
+  --gfs-radius-sm: 8px;
+  --gfs-radius-md: 12px;
+  --gfs-radius-lg: 16px;
+  --gfs-radius-xl: 28px;
+  --gfs-radius-2xl: 32px;
+  --gfs-radius-full: 9999px;
+
+  /* --- Elevation (grey-800 based, never black) -------------------------- */
+  --gfs-elev-0: none;
+  --gfs-elev-1: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+  --gfs-elev-2: 0 1px 2px rgba(60, 64, 67, 0.3), 0 2px 6px 2px rgba(60, 64, 67, 0.15);
+  --gfs-elev-3: 0 1px 3px rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
+
+  /* --- Motion ----------------------------------------------------------- */
+  --gfs-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --gfs-ease-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+  --gfs-ease-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --gfs-dur-short3: 150ms;
+  --gfs-dur-short4: 200ms;
+  --gfs-dur-medium2: 300ms;
 }
 
+@media (min-width: 600px) {
+  :root {
+    --gfs-gutter: 48px;
+    --gfs-section-y: 96px;
+    --gfs-hero-y: 120px;
+    --gfs-nav-height: 64px;
+  }
+}
+@media (min-width: 1200px) {
+  :root {
+    --gfs-gutter: 80px;
+    --gfs-section-y: 120px;
+    --gfs-hero-y: 160px;
+  }
+}
+
+/* --- Semantic roles (dark) ---------------------------------------------
+   Google publishes no dark marketing palette; this is the dark-surface
+   treatment from its own dark bands: grey-900 surfaces, blue-300 accent
+   (blue-600 fails contrast on grey-900), grey-400 supporting text.
+   ---------------------------------------------------------------------- */
 .dark {
-  --background: oklch(0.16 0.012 285);
-  --foreground: oklch(0.96 0.004 285);
-  --card: oklch(0.205 0.014 285);
-  --card-foreground: oklch(0.96 0.004 285);
-  --popover: oklch(0.24 0.016 285);
-  --popover-foreground: oklch(0.96 0.004 285);
-  --primary: oklch(0.62 0.22 277);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.27 0.016 285);
-  --secondary-foreground: oklch(0.96 0.004 285);
-  --muted: oklch(0.26 0.014 285);
-  --muted-foreground: oklch(0.72 0.02 285);
-  --accent: oklch(0.3 0.04 285);
-  --accent-foreground: oklch(0.9 0.05 277);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.62 0.22 277);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.439 0 0);
+  --gfs-surface: #202124;
+  --gfs-surface-tinted: #26272a;
+  --gfs-surface-sunken: #2d2e31;
+  --gfs-surface-inverse: #ffffff;
+  --gfs-on-surface: #e8eaed;
+  --gfs-on-surface-variant: #bdc1c6;
+  --gfs-on-surface-muted: #9aa0a6;
+  --gfs-outline: #3c4043;
+  --gfs-outline-variant: #303134;
+  --gfs-accent: var(--gfs-blue-300);
+  --gfs-accent-text: var(--gfs-blue-300);
+  --gfs-accent-hover: #aecbfa;
+  --gfs-accent-pressed: #d2e3fc;
+  --gfs-accent-container: #1f3b63;
+  --gfs-on-accent-container: #d2e3fc;
+  --gfs-on-accent: #202124;
+  --gfs-on-inverse: #202124;
+  --gfs-on-inverse-variant: #5f6368;
+  --gfs-danger: #f28b82;
+  --gfs-danger-container: #442726;
+  --gfs-on-danger-container: #f6aea9;
+  --gfs-success: #81c995;
+  --gfs-success-container: #24352a;
+  --gfs-on-success-container: #a8dab5;
+
+  --gfs-tint-1: #24262b;
+  --gfs-tint-2: #232823;
+  --gfs-tint-3: #2a2724;
+
+  --gfs-elev-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+  --gfs-elev-2: 0 1px 2px rgba(0, 0, 0, 0.3), 0 2px 6px 2px rgba(0, 0, 0, 0.15);
+  --gfs-elev-3: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
 }
 
-/* --------------------------------------------------------------------------
-   Admin scope — CRM-dashboard theme (violet accent, soft surface, rounded
-   cards). Scoped to `.admin-scope` so the public portfolio is untouched.
-   -------------------------------------------------------------------------- */
-.admin-scope {
-  --radius: 0.85rem;
-  --background: oklch(0.975 0.006 285);
-  --foreground: oklch(0.21 0.02 285);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.02 285);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.02 285);
-  --primary: oklch(0.54 0.24 277);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.97 0.01 285);
-  --secondary-foreground: oklch(0.3 0.03 285);
-  --muted: oklch(0.968 0.008 285);
-  --muted-foreground: oklch(0.55 0.02 285);
-  --accent: oklch(0.96 0.02 285);
-  --accent-foreground: oklch(0.4 0.15 277);
-  --border: oklch(0.92 0.008 285);
-  --input: oklch(0.92 0.008 285);
-  --ring: oklch(0.54 0.24 277);
-  --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.21 0.02 285);
-  --sidebar-primary: oklch(0.54 0.24 277);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.96 0.02 285);
-  --sidebar-accent-foreground: oklch(0.4 0.15 277);
-  --sidebar-border: oklch(0.92 0.008 285);
+/* ============================================================================
+   Tailwind theme — semantic roles exposed as utilities
+   ========================================================================= */
+
+@theme inline {
+  --color-background: var(--gfs-surface);
+  --color-foreground: var(--gfs-on-surface);
+  --color-muted: var(--gfs-surface-sunken);
+  --color-muted-foreground: var(--gfs-on-surface-variant);
+  --color-subtle-foreground: var(--gfs-on-surface-muted);
+  --color-card: var(--gfs-surface);
+  --color-card-foreground: var(--gfs-on-surface);
+  --color-popover: var(--gfs-surface);
+  --color-popover-foreground: var(--gfs-on-surface);
+  --color-primary: var(--gfs-accent);
+  --color-primary-foreground: var(--gfs-on-accent);
+  --color-link: var(--gfs-accent-text);
+  --color-secondary: var(--gfs-surface-tinted);
+  --color-secondary-foreground: var(--gfs-on-surface);
+  --color-accent: var(--gfs-accent-container);
+  --color-accent-foreground: var(--gfs-on-accent-container);
+  --color-destructive: var(--gfs-danger);
+  --color-destructive-foreground: var(--gfs-on-accent);
+  --color-border: var(--gfs-outline);
+  --color-input: var(--gfs-outline);
+  --color-ring: var(--gfs-accent);
+
+  --color-surface-tinted: var(--gfs-surface-tinted);
+  --color-surface-sunken: var(--gfs-surface-sunken);
+  --color-surface-inverse: var(--gfs-surface-inverse);
+  --color-outline-variant: var(--gfs-outline-variant);
+  --color-tint-1: var(--gfs-tint-1);
+  --color-tint-2: var(--gfs-tint-2);
+  --color-tint-3: var(--gfs-tint-3);
+  --color-success: var(--gfs-success);
+  --color-success-container: var(--gfs-success-container);
+  --color-on-success-container: var(--gfs-on-success-container);
+  --color-danger-container: var(--gfs-danger-container);
+  --color-on-danger-container: var(--gfs-on-danger-container);
+
+  --color-sidebar: var(--gfs-surface);
+  --color-sidebar-foreground: var(--gfs-on-surface);
+  --color-sidebar-primary: var(--gfs-accent);
+  --color-sidebar-primary-foreground: var(--gfs-on-accent);
+  --color-sidebar-accent: var(--gfs-accent-container);
+  --color-sidebar-accent-foreground: var(--gfs-on-accent-container);
+  --color-sidebar-border: var(--gfs-outline);
+  --color-sidebar-ring: var(--gfs-accent);
+
+  --font-sans: var(--font-google-sans), "Google Sans Flex", "Google Sans", Roboto,
+    system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --font-heading: var(--font-sans);
+  --font-mono: var(--font-google-sans-code), "Roboto Mono", ui-monospace, monospace;
+
+  --text-hero: var(--gfs-text-hero);
+  --text-section: var(--gfs-text-section);
+  --text-band: var(--gfs-text-band);
+  /* Not `--text-card`: that makes `text-card` collide with `--color-card`,
+     and the colour namespace wins — headings get painted the card surface. */
+  --text-card-title: var(--gfs-text-card);
+  --text-lead: var(--gfs-text-lead);
+
+  --radius-xs: var(--gfs-radius-xs);
+  --radius-sm: var(--gfs-radius-sm);
+  --radius-md: var(--gfs-radius-md);
+  --radius-lg: var(--gfs-radius-lg);
+  --radius-xl: var(--gfs-radius-lg);
+  --radius-2xl: var(--gfs-radius-xl);
+  --radius-3xl: var(--gfs-radius-2xl);
+  --radius-4xl: 48px;
+
+  --shadow-elev-1: var(--gfs-elev-1);
+  --shadow-elev-2: var(--gfs-elev-2);
+  --shadow-elev-3: var(--gfs-elev-3);
+
+  --ease-standard: var(--gfs-ease-standard);
+  --ease-decelerate: var(--gfs-ease-standard-decelerate);
+  --ease-emphasized: var(--gfs-ease-emphasized-decelerate);
 }
 
-.dark .admin-scope {
-  --background: oklch(0.16 0.012 285);
-  --foreground: oklch(0.96 0.004 285);
-  --card: oklch(0.205 0.014 285);
-  --card-foreground: oklch(0.96 0.004 285);
-  --popover: oklch(0.24 0.016 285);
-  --popover-foreground: oklch(0.96 0.004 285);
-  --primary: oklch(0.62 0.23 277);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.27 0.016 285);
-  --secondary-foreground: oklch(0.96 0.004 285);
-  --muted: oklch(0.26 0.014 285);
-  --muted-foreground: oklch(0.72 0.02 285);
-  --accent: oklch(0.3 0.04 285);
-  --accent-foreground: oklch(0.9 0.05 277);
-  --border: oklch(1 0 0 / 9%);
-  --input: oklch(1 0 0 / 12%);
-  --ring: oklch(0.62 0.23 277);
-  --sidebar: oklch(0.19 0.014 285);
-  --sidebar-foreground: oklch(0.96 0.004 285);
-  --sidebar-primary: oklch(0.62 0.23 277);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.3 0.04 285);
-  --sidebar-accent-foreground: oklch(0.9 0.05 277);
-  --sidebar-border: oklch(1 0 0 / 9%);
-}
-
-/* Soft elevation used by admin cards. */
-.admin-scope .card-elevated {
-  box-shadow:
-    0 1px 2px 0 oklch(0.3 0.03 285 / 0.04),
-    0 4px 16px -4px oklch(0.3 0.03 285 / 0.06);
-}
-.dark .admin-scope .card-elevated {
-  box-shadow:
-    0 1px 2px 0 oklch(0 0 0 / 0.3),
-    0 4px 16px -6px oklch(0 0 0 / 0.4);
+/* `--radius` is still read by a handful of shadcn primitives. */
+:root {
+  --radius: var(--gfs-radius-lg);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
   html {
     @apply font-sans scroll-smooth;
   }
+  /* Display type is weight 400. This is not a mistake — size does the work. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 400;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  :focus-visible {
+    outline: 2px solid var(--gfs-accent);
+    outline-offset: 2px;
+    border-radius: inherit;
+  }
 }
 
-/* Entrance animation for above-the-fold content (no observer needed). */
+/* ============================================================================
+   Marketing-register primitives
+   ========================================================================= */
+
+.gfs-container {
+  width: 100%;
+  max-width: var(--gfs-content-max);
+  margin-inline: auto;
+  padding-inline: var(--gfs-gutter);
+}
+
+.gfs-section {
+  padding-block: var(--gfs-section-y);
+}
+
+.gfs-hero {
+  padding-block: var(--gfs-hero-y);
+}
+
+/* Skip link — first focusable element in the document. */
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: -100px;
+  z-index: 100;
+  background: var(--gfs-surface);
+  color: var(--gfs-accent);
+  padding: 12px 24px;
+  border-radius: var(--gfs-radius-full);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: var(--gfs-elev-3);
+  transition: top var(--gfs-dur-short4) var(--gfs-ease-standard);
+}
+.skip-link:focus {
+  top: 16px;
+}
+
+/* Text link with chevron — the most-used CTA on a Google marketing page. */
+.link-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--gfs-accent-text);
+  font-weight: 500;
+  text-decoration: none;
+}
+.link-cta svg {
+  transition: transform var(--gfs-dur-short4) var(--gfs-ease-standard);
+}
+.link-cta:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.link-cta:hover svg {
+  transform: translateX(3px);
+}
+
+/* A 32px chip sits under the 44px touch floor; extend its hit area. */
+.chip-hit {
+  position: relative;
+}
+.chip-hit::before {
+  content: "";
+  position: absolute;
+  inset-block: -6px;
+  inset-inline: 0;
+}
+
+/* Material state layer — hover/press feedback that stays correct on any tint. */
+.state-layer {
+  position: relative;
+  isolation: isolate;
+}
+.state-layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--gfs-dur-short3) var(--gfs-ease-standard);
+}
+.state-layer:hover::after {
+  opacity: 0.08;
+}
+.state-layer:active::after {
+  opacity: 0.1;
+}
+
+/* Outlined text field — what Google's own web forms use. Focus is a 2px
+   border made of border + inset shadow so the field never shifts. */
+.gfs-field {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--gfs-on-surface);
+  background: var(--gfs-surface);
+  border: 1px solid var(--gfs-outline);
+  border-radius: var(--gfs-radius-sm);
+  outline: none;
+  transition: border-color var(--gfs-dur-short3) var(--gfs-ease-standard),
+    box-shadow var(--gfs-dur-short3) var(--gfs-ease-standard);
+}
+.gfs-field::placeholder {
+  color: var(--gfs-on-surface-muted);
+}
+.gfs-field:hover {
+  border-color: var(--gfs-on-surface);
+}
+.gfs-field:focus {
+  border-color: var(--gfs-accent);
+  box-shadow: inset 0 0 0 1px var(--gfs-accent);
+}
+.gfs-field[aria-invalid="true"] {
+  border-color: var(--gfs-danger);
+}
+
+/* Scroll reveal — a fade plus a short rise. Nothing more. */
+.gfs-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity var(--gfs-dur-medium2) var(--gfs-ease-standard-decelerate),
+    transform var(--gfs-dur-medium2) var(--gfs-ease-standard-decelerate);
+}
+.gfs-reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
 .animate-fade-up {
   opacity: 0;
-  animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fade-up var(--gfs-dur-medium2) var(--gfs-ease-standard-decelerate) forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .gfs-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
   .animate-fade-up {
     animation: none;
     opacity: 1;
   }
+}
+
+/* ============================================================================
+   Admin scope — Material 3 product register, tonal scheme seeded on
+   Google Blue rather than the M3 purple baseline. Denser than the marketing
+   register: 40px controls, 12–16px radii, tonal surfaces instead of shadow.
+   ========================================================================= */
+
+.admin-scope {
+  /* Tonal ramp, lowest to highest: shell → panel → card. */
+  --gfs-surface-container-lowest: #ffffff;
+  --gfs-surface-container-low: #f7f9fc;
+  --gfs-surface-container: #f1f4f9;
+  --gfs-surface-container-high: #eaeef5;
+  --gfs-surface: var(--gfs-surface-container-lowest);
+  --gfs-surface-tinted: var(--gfs-surface-container-low);
+  --gfs-surface-sunken: var(--gfs-surface-container-high);
+  --gfs-on-surface: #1a1c1e;
+  --gfs-on-surface-variant: #43474e;
+  --gfs-on-surface-muted: #73777f;
+  --gfs-outline: #c3c7cf;
+  --gfs-outline-variant: #e1e2ec;
+  --gfs-accent: var(--gfs-blue-600);
+  --gfs-accent-text: var(--gfs-blue-700);
+  --gfs-accent-container: #d7e3ff;
+  --gfs-on-accent-container: #001c3a;
+  background-color: var(--gfs-surface-container);
+}
+
+.dark .admin-scope {
+  --gfs-surface-container-lowest: #121316;
+  --gfs-surface-container-low: #1a1c1e;
+  --gfs-surface-container: #1e2022;
+  --gfs-surface-container-high: #26282b;
+  /* Dark inverts the ramp: a higher surface is lighter, never shadowed. */
+  --gfs-surface: var(--gfs-surface-container-high);
+  --gfs-surface-tinted: var(--gfs-surface-container-low);
+  --gfs-surface-sunken: #2f3134;
+  --gfs-on-surface: #e2e2e5;
+  --gfs-on-surface-variant: #c3c7cf;
+  --gfs-on-surface-muted: #8d9199;
+  --gfs-outline: #3c4043;
+  --gfs-outline-variant: #2c2f31;
+  --gfs-accent: var(--gfs-blue-300);
+  --gfs-accent-text: var(--gfs-blue-300);
+  --gfs-accent-container: #00458f;
+  --gfs-on-accent-container: #d7e3ff;
+  --gfs-on-accent: #002f65;
+  background-color: var(--gfs-surface-container-lowest);
+}
+
+/* The panel the content sits on — one step up from the shell. */
+.admin-scope .surface-container {
+  background-color: var(--gfs-surface-container-lowest);
+}
+.dark .admin-scope .surface-container {
+  background-color: var(--gfs-surface-container);
 }

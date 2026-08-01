@@ -9,6 +9,11 @@ interface TimelineItemProps {
   isLast?: boolean;
 }
 
+/**
+ * An editorial two-column row rather than a dotted rail: the date sits in a
+ * grey left column, the content in the right, separated by hairlines. Borders
+ * and whitespace do the structural work — no shadows, no chrome.
+ */
 export function TimelineItem({
   title,
   subtitle,
@@ -18,31 +23,31 @@ export function TimelineItem({
   isLast = false,
 }: TimelineItemProps) {
   return (
-    <div className={cn("relative pl-8", !isLast && "pb-8")}>
-      {/* Line */}
-      {!isLast && (
-        <div className="absolute left-[4.5px] top-3 bottom-0 w-px bg-border" />
+    <div
+      className={cn(
+        "grid gap-x-10 gap-y-3 py-8 md:grid-cols-[200px_1fr]",
+        !isLast && "border-b border-outline-variant",
       )}
-      {/* Dot */}
-      <div className="absolute left-0 top-1.5 size-[10px] rounded-full bg-primary" />
-
-      <div>
-        <p className="font-medium text-foreground">{title}</p>
-        <p className="text-sm text-muted-foreground mt-0.5">
-          {subtitle}
-          {date && <span> &middot; {date}</span>}
-        </p>
+    >
+      {date && (
+        <p className="text-sm text-muted-foreground md:pt-1">{date}</p>
+      )}
+      <div className={cn(!date && "md:col-start-2")}>
+        <h3 className="text-card-title font-medium leading-[1.3] tracking-[-0.005em]">
+          {title}
+        </h3>
+        <p className="mt-1 text-muted-foreground">{subtitle}</p>
         {description && (
-          <p className="text-sm text-muted-foreground/80 mt-2 leading-relaxed">
+          <p className="mt-4 max-w-[60ch] text-muted-foreground">
             {description}
           </p>
         )}
         {tags && tags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5 mt-3">
+          <div className="mt-5 flex flex-wrap gap-2">
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="text-xs px-2 py-0.5 rounded bg-muted text-muted-foreground"
+                className="rounded-full bg-surface-sunken px-3 py-1 text-sm text-muted-foreground"
               >
                 {tag}
               </span>
@@ -54,10 +59,6 @@ export function TimelineItem({
   );
 }
 
-interface TimelineProps {
-  children: React.ReactNode;
-}
-
-export function Timeline({ children }: TimelineProps) {
-  return <div className="relative">{children}</div>;
+export function Timeline({ children }: { children: React.ReactNode }) {
+  return <div className="border-t border-outline-variant">{children}</div>;
 }

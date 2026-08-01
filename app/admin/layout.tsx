@@ -35,7 +35,7 @@ export default async function AdminLayout({
   ]);
 
   return (
-    <div className="admin-scope flex min-h-dvh flex-col bg-background md:flex-row">
+    <div className="admin-scope flex min-h-dvh flex-col md:flex-row">
       <AdminSidebar
         unread={unread}
         profile={{
@@ -45,25 +45,24 @@ export default async function AdminLayout({
           avatarUrl: profile?.avatarUrl ?? null,
         }}
       />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-border bg-background/80 px-6 backdrop-blur-md">
+      <div className="surface-container flex min-w-0 flex-1 flex-col md:my-3 md:mr-3 md:rounded-3xl">
+        <header className="surface-container sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b border-outline-variant px-6 md:rounded-t-3xl">
           <p className="text-sm text-muted-foreground">
             Welcome back
             {profile?.name ? (
               <span className="font-medium text-foreground">
                 , {profile.name.split(" ")[0]}
               </span>
-            ) : null}{" "}
-            👋
+            ) : null}
           </p>
           <div className="flex items-center gap-2">
             <Link
               href="/"
               target="_blank"
-              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground hover:border-primary/30"
+              className="state-layer inline-flex h-10 items-center gap-2 rounded-full border border-border px-4 text-sm font-medium text-link transition-colors duration-200 ease-standard"
             >
               View site
-              <ExternalLink className="size-3.5" />
+              <ExternalLink className="size-4" aria-hidden />
             </Link>
             <ThemeToggle />
           </div>

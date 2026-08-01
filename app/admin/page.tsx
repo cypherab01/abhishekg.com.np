@@ -6,7 +6,7 @@ import {
   Wrench,
   MessageSquare,
   User,
-  ArrowUpRight,
+  ChevronRight,
   Plus,
   Inbox,
 } from "lucide-react";
@@ -33,42 +33,14 @@ export default async function AdminDashboard() {
   const unread = messages.filter((m) => !m.read).length;
   const recent = messages.slice(0, 5);
 
+  // One accent, used consistently — a colour per card would read as decoration
+  // rather than information.
   const stats = [
-    {
-      label: "Experience",
-      href: "/admin/experience",
-      icon: Briefcase,
-      count: experiences.length,
-      tint: "bg-sky-500/10 text-sky-600 dark:text-sky-400",
-    },
-    {
-      label: "Projects",
-      href: "/admin/projects",
-      icon: FolderGit2,
-      count: projects.length,
-      tint: "bg-amber-500/10 text-amber-600 dark:text-amber-400",
-    },
-    {
-      label: "Education",
-      href: "/admin/education",
-      icon: GraduationCap,
-      count: education.length,
-      tint: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-    },
-    {
-      label: "Skills",
-      href: "/admin/skills",
-      icon: Wrench,
-      count: skills.length,
-      tint: "bg-rose-500/10 text-rose-600 dark:text-rose-400",
-    },
-    {
-      label: "Messages",
-      href: "/admin/messages",
-      icon: MessageSquare,
-      count: messages.length,
-      tint: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400",
-    },
+    { label: "Experience", href: "/admin/experience", icon: Briefcase, count: experiences.length },
+    { label: "Projects", href: "/admin/projects", icon: FolderGit2, count: projects.length },
+    { label: "Education", href: "/admin/education", icon: GraduationCap, count: education.length },
+    { label: "Skills", href: "/admin/skills", icon: Wrench, count: skills.length },
+    { label: "Messages", href: "/admin/messages", icon: MessageSquare, count: messages.length },
   ];
 
   const quickActions = [
@@ -81,10 +53,8 @@ export default async function AdminDashboard() {
   return (
     <div className="space-y-8">
       <header>
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          Dashboard
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <h1 className="text-2xl leading-8">Dashboard</h1>
+        <p className="mt-2 max-w-[60ch] text-sm text-muted-foreground">
           An overview of everything on your portfolio.
           {unread > 0 && (
             <>
@@ -92,7 +62,7 @@ export default async function AdminDashboard() {
               You have{" "}
               <Link
                 href="/admin/messages?tab=unread"
-                className="font-medium text-primary hover:underline"
+                className="font-medium text-link underline underline-offset-2"
               >
                 {unread} unread message{unread === 1 ? "" : "s"}
               </Link>
@@ -109,25 +79,21 @@ export default async function AdminDashboard() {
             <Link
               key={stat.href}
               href={stat.href}
-              className="card-elevated group rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              className="state-layer group rounded-2xl border border-outline-variant bg-surface-tinted p-5 transition-colors duration-200 ease-standard hover:border-border"
             >
               <div className="flex items-center justify-between">
-                <span
-                  className={cn(
-                    "flex size-10 items-center justify-center rounded-xl",
-                    stat.tint,
-                  )}
-                >
+                <span className="flex size-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
                   <stat.icon className="size-5" aria-hidden />
                 </span>
-                <ArrowUpRight className="size-4 text-muted-foreground/40 transition-colors group-hover:text-primary" aria-hidden />
+                <ChevronRight
+                  className="size-5 text-subtle-foreground transition-transform duration-200 ease-standard group-hover:translate-x-[3px]"
+                  aria-hidden
+                />
               </div>
-              <p className="mt-4 text-2xl font-semibold tabular-nums text-foreground">
+              <p className="mt-4 text-3xl leading-10 tabular-nums">
                 {stat.count}
               </p>
-              <p className="text-sm font-medium text-muted-foreground">
-                {stat.label}
-              </p>
+              <p className="text-sm text-muted-foreground">{stat.label}</p>
             </Link>
           ))}
         </div>
@@ -136,29 +102,29 @@ export default async function AdminDashboard() {
       {/* Recent messages + quick actions */}
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2">
-          <div className="flex items-center justify-between border-b border-border px-5 py-4">
-            <h2 className="text-sm font-semibold text-foreground">
-              Recent messages
-            </h2>
+          <div className="flex items-center justify-between border-b border-outline-variant px-5 py-4">
+            <h2 className="text-base font-medium">Recent messages</h2>
             <Link
               href="/admin/messages"
-              className="text-sm font-medium text-primary hover:underline"
+              className="text-sm font-medium text-link underline-offset-4 hover:underline"
             >
               View all
             </Link>
           </div>
           {recent.length === 0 ? (
-            <div className="flex flex-col items-center gap-2 px-5 py-12 text-center">
-              <Inbox className="size-6 text-muted-foreground/50" aria-hidden />
-              <p className="text-sm text-muted-foreground">No messages yet.</p>
+            <div className="flex flex-col items-center gap-2 px-5 py-14 text-center">
+              <Inbox className="size-6 text-subtle-foreground" aria-hidden />
+              <p className="text-sm text-muted-foreground">
+                No messages yet. Anything sent from the contact form lands here.
+              </p>
             </div>
           ) : (
-            <ul className="divide-y divide-border">
+            <ul className="divide-y divide-outline-variant">
               {recent.map((msg) => (
                 <li key={msg.id}>
                   <Link
                     href="/admin/messages"
-                    className="flex items-center gap-3 px-5 py-3.5 transition-colors hover:bg-muted/50"
+                    className="state-layer flex items-center gap-3 px-5 py-4"
                   >
                     <span
                       className={cn(
@@ -169,21 +135,12 @@ export default async function AdminDashboard() {
                     />
                     <span className="min-w-0 flex-1">
                       <span className="flex items-center gap-2">
-                        <span
-                          className={cn(
-                            "truncate text-sm",
-                            msg.read
-                              ? "font-medium text-foreground"
-                              : "font-semibold text-foreground",
-                          )}
-                        >
+                        <span className="truncate text-sm font-medium text-foreground">
                           {msg.name}
                         </span>
-                        {!msg.read && (
-                          <span className="sr-only">(unread)</span>
-                        )}
+                        {!msg.read && <span className="sr-only">(unread)</span>}
                       </span>
-                      <span className="truncate text-xs text-muted-foreground">
+                      <span className="block truncate text-xs text-muted-foreground">
                         {msg.message}
                       </span>
                     </span>
@@ -198,21 +155,19 @@ export default async function AdminDashboard() {
         </Card>
 
         <Card className="p-5">
-          <h2 className="text-sm font-semibold text-foreground">
-            Quick actions
-          </h2>
+          <h2 className="text-base font-medium">Quick actions</h2>
           <div className="mt-4 grid gap-2">
             {quickActions.map((action) => (
               <Link
                 key={action.href}
                 href={action.href}
-                className="flex items-center gap-3 rounded-xl border border-border bg-background/40 px-3.5 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="state-layer flex h-14 items-center gap-3 rounded-full border border-outline-variant px-4 text-sm font-medium text-foreground transition-colors duration-200 ease-standard hover:border-border"
               >
-                <span className="flex size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <span className="flex size-8 items-center justify-center rounded-full bg-accent text-accent-foreground">
                   <action.icon className="size-4" aria-hidden />
                 </span>
                 {action.label}
-                <Plus className="ml-auto size-4 text-muted-foreground/50" aria-hidden />
+                <Plus className="ml-auto size-4 text-subtle-foreground" aria-hidden />
               </Link>
             ))}
           </div>

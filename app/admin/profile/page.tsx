@@ -60,7 +60,7 @@ export default async function AdminProfilePage({
             />
           </div>
 
-          <div className="card-elevated h-full space-y-5 rounded-2xl border border-border bg-card p-4 sm:p-5">
+          <div className="h-full space-y-5 rounded-2xl border border-border bg-card p-4 sm:p-5">
             <p className="text-sm font-medium text-foreground">Quick details</p>
             <div className="grid grid-cols-1 gap-5">
               <Field

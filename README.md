@@ -1,13 +1,13 @@
 # Portfolio
 
-A dynamic, database-backed personal portfolio built with **Next.js 16**, **Drizzle ORM**, **Neon PostgreSQL**, and **UploadThing**. All content — profile, experience, teaching, projects, education, skills, and contact messages — is stored in Postgres and managed through a password-protected admin dashboard.
+A dynamic, database-backed personal portfolio built with **Next.js 16**, **Drizzle ORM**, **PostgreSQL**, and **UploadThing**. All content — profile, experience, teaching, projects, education, skills, and contact messages — is stored in Postgres and managed through a password-protected admin dashboard.
 
 Fork this repo to build your own: the page title/description are pulled live from your profile row (no code edits needed), and every admin section starts empty with an "add your first entry" prompt, so there's no personal data to clean up.
 
 ## Tech Stack
 
 - **Next.js 16** (App Router, Server Components, Server Actions)
-- **Drizzle ORM** + **Neon** (serverless PostgreSQL)
+- **Drizzle ORM** + **node-postgres** (any PostgreSQL 14+ server — local, Neon, Supabase, RDS, …)
 - **UploadThing** for resume (PDF) and image uploads
 - **Tailwind CSS v4** + shadcn-style UI
 - **jose** for a signed session-cookie based single-admin login
@@ -19,7 +19,7 @@ Fork this repo to build your own: the page title/description are pulled live fro
 Copy `.env.example` to `.env` and fill in the values:
 
 ```bash
-DATABASE_URL='postgresql://...'      # Neon connection string
+DATABASE_URL='postgresql://...'      # any Postgres connection string (add ?sslmode=require for hosted providers)
 UPLOADTHING_TOKEN='...'              # UploadThing app token
 ADMIN_PASSWORD='<sha-256 hex>'       # SHA-256 hash of the /admin password (never the plain password)
 AUTH_SECRET='...'                    # random 32+ byte hex (openssl rand -hex 32)
@@ -35,7 +35,7 @@ printf '%s' 'your-strong-password' | sha256sum | awk '{print $1}'
 ### 2. Database
 
 ```bash
-pnpm db:migrate    # apply migrations to Neon
+pnpm db:migrate    # apply migrations to the database in DATABASE_URL
 pnpm db:seed       # seed placeholder/example content (idempotent — wipes & re-inserts)
 pnpm db:studio     # (optional) open Drizzle Studio to browse/edit data
 ```

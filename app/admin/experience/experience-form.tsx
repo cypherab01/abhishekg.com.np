@@ -1,3 +1,4 @@
+import { inputClass } from "../_components/ui";
 import type { Experience } from "@/db/schema";
 import { getExperienceKindList, getAllExperiences } from "@/db/queries";
 import { saveExperience } from "../actions";
@@ -36,7 +37,7 @@ export async function ExperienceForm({
           id="kind"
           name="kind"
           defaultValue={defaultKindId}
-          className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground shadow-sm outline-none transition-all focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
+          className={inputClass}
         >
           {kinds.map((kind) => (
             <option key={kind.id} value={kind.id}>

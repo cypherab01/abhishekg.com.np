@@ -39,7 +39,7 @@ export function ProjectsList({ projects }: { projects: Project[] }) {
       {(project, handleProps, isDragging) => (
         <div
           className={cn(
-            "card-elevated flex items-center gap-2 rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary/30",
+            "flex items-center gap-2 rounded-2xl border border-border bg-card p-4 transition-colors hover:border-border",
             isDragging && "border-primary/60 opacity-60",
           )}
         >
@@ -70,7 +70,7 @@ export function ProjectsList({ projects }: { projects: Project[] }) {
           <div className="flex shrink-0 items-center gap-1">
             <Link
               href={`/admin/projects/${project.id}`}
-              className="rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="state-layer rounded-full p-2 text-muted-foreground hover:text-foreground"
               aria-label={`Edit ${project.name}`}
             >
               <Pencil className="size-4" />

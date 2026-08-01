@@ -41,7 +41,8 @@ export default async function AdminMessagesPage({
         description="Submissions from the contact form."
       />
 
-      <div className="mb-6 inline-flex flex-wrap gap-1 rounded-xl border border-border bg-muted/40 p-1">
+      {/* Filter chips: 32px pill, hairline at rest, tonal fill when selected. */}
+      <div className="mb-6 flex flex-wrap gap-2">
         {tabs.map((tabItem) => {
           const active = activeTab === tabItem.value;
           return (
@@ -52,24 +53,16 @@ export default async function AdminMessagesPage({
                   ? "/admin/messages"
                   : `/admin/messages?tab=${tabItem.value}`
               }
+              aria-current={active ? "page" : undefined}
               className={cn(
-                "inline-flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-sm font-medium transition-colors",
+                "chip-hit inline-flex h-8 items-center gap-2 rounded-full px-4 text-sm font-medium transition-colors duration-200 ease-standard",
                 active
-                  ? "bg-card text-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground",
+                  ? "bg-accent text-accent-foreground"
+                  : "border border-border text-muted-foreground hover:bg-surface-sunken hover:text-foreground",
               )}
             >
               <span>{tabItem.label}</span>
-              <span
-                className={cn(
-                  "rounded-full px-2 py-0.5 text-xs font-semibold",
-                  active
-                    ? "bg-primary/10 text-primary"
-                    : "bg-muted text-muted-foreground",
-                )}
-              >
-                {tabItem.count}
-              </span>
+              <span className="tabular-nums opacity-70">{tabItem.count}</span>
             </Link>
           );
         })}
@@ -83,10 +76,10 @@ export default async function AdminMessagesPage({
           <div
             key={msg.id}
             className={cn(
-              "card-elevated rounded-2xl border p-5",
+              "rounded-2xl border p-5",
               msg.read
                 ? "border-border bg-card"
-                : "border-primary/30 bg-primary/[0.03]",
+                : "border-primary bg-accent/40",
             )}
           >
             <div className="flex items-start justify-between gap-3">
@@ -112,7 +105,7 @@ export default async function AdminMessagesPage({
                   />
                   <button
                     type="submit"
-                    className="rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
+                    className="state-layer rounded-full p-2 text-muted-foreground hover:text-foreground"
                     aria-label={msg.read ? "Mark unread" : "Mark read"}
                     title={msg.read ? "Mark as unread" : "Mark as read"}
                   >

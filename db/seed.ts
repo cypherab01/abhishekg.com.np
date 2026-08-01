@@ -1,12 +1,12 @@
 import { config } from "dotenv";
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { Pool } from "pg";
+import { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "./schema";
 
 config({ path: ".env" });
 
-const sql = neon(process.env.DATABASE_URL!);
-const db = drizzle(sql, { schema });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
+const db = drizzle(pool, { schema });
 
 /**
  * The public site reads the profile row directly (no lazy bootstrap like
@@ -38,6 +38,7 @@ async function main() {
       "A longer bio for the About page. Replace this from /admin/profile with your own background, stack, and interests.",
   });
 
+  await pool.end();
   console.log("✅ Seed complete — now fill in the rest from /admin");
   process.exit(0);
 }

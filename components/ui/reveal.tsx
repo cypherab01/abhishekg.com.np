@@ -40,8 +40,9 @@ export function Reveal({ children, className, delay = 0, ...props }: RevealProps
       ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
       className={cn(
-        "transition-[opacity,transform] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[opacity,transform]",
-        visible ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+        // A fade plus a 20px rise over 300ms, decelerating. Nothing more.
+        "transition-[opacity,transform] duration-300 ease-decelerate will-change-[opacity,transform]",
+        visible ? "translate-y-0 opacity-100" : "translate-y-5 opacity-0",
         "motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none",
         className,
       )}

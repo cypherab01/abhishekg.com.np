@@ -26,7 +26,7 @@ import type {
   ResumeSectionKey,
 } from "@/db/schema";
 import { saveResumeConfig } from "../actions";
-import { Card } from "../_components/ui";
+import { Card, inputClass } from "../_components/ui";
 import { SubmitButton } from "../_components/submit-button";
 
 type ExperienceGroup = {
@@ -375,7 +375,7 @@ export function ResumeBuilder({
             rows={4}
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
-            className="w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm text-foreground shadow-sm outline-none focus:border-primary/60 focus:ring-4 focus:ring-primary/10"
+            className={inputClass}
           />
         </Card>
 
