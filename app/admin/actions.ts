@@ -40,11 +40,29 @@ function optStr(v: FormDataEntryValue | null): string | null {
   return s.length > 0 ? s : null;
 }
 
+/**
+ * One bullet per line, but text pasted from a resume often arrives as a single
+ * line with glyph separators — split on those too, and strip leading markers.
+ */
 function lines(v: FormDataEntryValue | null): string[] {
   return str(v)
-    .split("\n")
-    .map((l) => l.trim())
+    .split(/[\n•·▪‣]+/)
+    .map((l) => l.replace(/^[-*\s]+/, "").trim())
     .filter(Boolean);
+}
+
+/** Ordered URL list, posted by MultiUploadField as a JSON array. */
+function urlList(v: FormDataEntryValue | null): string[] {
+  const raw = str(v);
+  if (!raw) return [];
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed)
+      ? parsed.filter((u): u is string => typeof u === "string" && u.length > 0)
+      : [];
+  } catch {
+    return [];
+  }
 }
 
 function csv(v: FormDataEntryValue | null): string[] {
@@ -228,7 +246,7 @@ export async function saveProject(formData: FormData) {
     website: optStr(formData.get("website")),
     playStore: optStr(formData.get("playStore")),
     github: optStr(formData.get("github")),
-    coverImage: optStr(formData.get("coverImage")),
+    images: urlList(formData.get("images")),
     technologies: csv(formData.get("technologies")),
     description: lines(formData.get("description")),
     featured: formData.get("featured") === "on",

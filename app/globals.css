@@ -2,6 +2,11 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* UploadThing's components carry Tailwind classes from their own v3 build.
+   Scanning their dist makes those utilities exist here, so the dropzone isn't
+   left half-unstyled (and unreadable in light mode). */
+@source "../node_modules/@uploadthing/react/dist";
+
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================================================
@@ -91,8 +96,8 @@
   --gfs-nav-height: 56px;
 
   /* Section rhythm — coarser than the component scale. Never mix them. */
-  --gfs-section-y: 72px;
-  --gfs-hero-y: 96px;
+  --gfs-section-y: 56px;
+  --gfs-hero-y: 64px;
 
   /* --- Shape ------------------------------------------------------------ */
   --gfs-radius-xs: 4px;
@@ -121,16 +126,16 @@
 @media (min-width: 600px) {
   :root {
     --gfs-gutter: 48px;
-    --gfs-section-y: 96px;
-    --gfs-hero-y: 120px;
+    --gfs-section-y: 72px;
+    --gfs-hero-y: 80px;
     --gfs-nav-height: 64px;
   }
 }
 @media (min-width: 1200px) {
   :root {
     --gfs-gutter: 80px;
-    --gfs-section-y: 120px;
-    --gfs-hero-y: 160px;
+    --gfs-section-y: 88px;
+    --gfs-hero-y: 96px;
   }
 }
 
@@ -287,6 +292,12 @@
     outline-offset: 2px;
     border-radius: inherit;
   }
+  /* The nav is sticky, so an anchored section would otherwise come to rest
+     underneath it. */
+  section[id],
+  footer[id] {
+    scroll-margin-top: calc(var(--gfs-nav-height) + 16px);
+  }
 }
 
 /* ============================================================================
@@ -422,6 +433,56 @@
   transform: none;
 }
 
+/* Perspective plane for the project hero shot. The plane is deliberately
+   shallow — a tight vanishing point is what makes a 12° pitch read as a slope
+   at all; at 1800px the same rotation looks flat. The card rests laid back and
+   dropped, and swings upright the first time it enters the viewport. */
+.gfs-tilt-stage {
+  perspective: 30rem;
+}
+/* The at-rest pose. Script overwrites `transform` inline every frame from the
+   scroll position, so there is no transition to lag behind it. */
+.gfs-tilt-card {
+  transform-style: preserve-3d;
+  transform-origin: 50% 100%;
+  will-change: transform;
+  transform: translateY(80px) rotateX(12deg);
+}
+
+/* Screenshot marquee — full-bleed, seamless. The track holds two identical
+   copies of the strip and slides by exactly half its width, so the reset is
+   invisible. Render it outside `.gfs-container`: a `100vw` break-out would
+   overflow by the scrollbar's width. */
+.gfs-marquee {
+  overflow: hidden;
+  /* Fade both ends into the section rather than cutting tiles off hard. */
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+}
+.gfs-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: gfs-marquee-scroll 60s linear infinite;
+}
+.gfs-marquee:hover .gfs-marquee-track,
+.gfs-marquee:focus-within .gfs-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes gfs-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -450,6 +511,19 @@
   .animate-fade-up {
     animation: none;
     opacity: 1;
+  }
+  /* No drifting strip and no pointer-tracked tilt: the marquee becomes a
+     scroller the visitor drives, the hero shot sits flat. */
+  .gfs-marquee {
+    overflow-x: auto;
+  }
+  .gfs-marquee-track {
+    animation: none;
+  }
+  .gfs-tilt-card {
+    opacity: 1;
+    transform: none !important;
+    transition: none;
   }
 }
 

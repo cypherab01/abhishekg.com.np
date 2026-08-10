@@ -33,7 +33,7 @@ export function ExperienceSection({
                   : exp.location
               }
               date={`${exp.startDate}${exp.endDate ? ` – ${exp.endDate}` : ""}`}
-              description={exp.responsibilities.join(" • ")}
+              description={exp.responsibilities}
               tags={exp.technologies}
               isLast={i === experiences.length - 1}
             />

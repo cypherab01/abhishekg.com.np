@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Globe, Smartphone } from "lucide-react";
 import { GithubIcon } from "@/components/ui/icons";
 import { Reveal } from "@/components/ui/reveal";
+import {
+  ProjectHeroShot,
+  ProjectMarquee,
+} from "@/components/ui/project-gallery";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 import {
@@ -70,51 +73,50 @@ export default async function ProjectDetailPage({
           <Reveal>
             <Link
               href="/projects"
-              className="mb-10 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-200 ease-standard hover:text-foreground"
+              className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-200 ease-standard hover:text-foreground"
             >
               <ArrowLeft className="size-5" aria-hidden />
               All projects
             </Link>
 
-            {category && (
-              <p className="mb-4 text-sm font-medium text-muted-foreground">
-                {category}
-              </p>
-            )}
-            <div className="flex flex-wrap items-center gap-4">
-              <h1 className="max-w-[20ch] text-hero leading-[1.08] tracking-[-0.02em]">
-                {project.name}
-              </h1>
-              {project.status && (
-                <span className="rounded-lg bg-accent px-2 py-1 text-xs font-medium text-accent-foreground">
-                  {project.status}
-                </span>
-              )}
-            </div>
-          </Reveal>
-
-          {project.coverImage && (
-            <Reveal delay={80}>
-              <div className="relative mt-12 aspect-video w-full overflow-hidden rounded-3xl bg-surface-sunken">
-                <Image
-                  src={project.coverImage}
-                  alt={`A screen from ${project.name}.`}
-                  fill
-                  sizes="(max-width: 1280px) 100vw, 1120px"
-                  className="object-cover"
-                  priority
-                />
+            {/* Category and status share the eyebrow line: the status is
+                metadata about the project, not a counterweight to its name. */}
+            {(category || project.status) && (
+              <div className="mb-3 flex flex-wrap items-center gap-3">
+                {category && (
+                  <p className="text-sm font-medium text-muted-foreground">
+                    {category}
+                  </p>
+                )}
+                {project.status && (
+                  <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-accent-foreground">
+                    {project.status}
+                  </span>
+                )}
               </div>
-            </Reveal>
-          )}
+            )}
+            <h1 className="max-w-[22ch] text-section leading-[1.12] tracking-[-0.015em]">
+              {project.name}
+            </h1>
+          </Reveal>
         </div>
+
+        {/* Both live outside the container: the shot grows past the content
+            column as it rises, and the strip runs edge to edge. */}
+        {project.images[0] && (
+          <ProjectHeroShot src={project.images[0]} name={project.name} />
+        )}
+
+        {project.images.length > 1 && (
+          <ProjectMarquee images={project.images} name={project.name} />
+        )}
       </div>
 
       <div className="gfs-section bg-surface-tinted">
         <div className="gfs-container grid gap-12 md:grid-cols-[1fr_320px] md:gap-16">
           <Reveal>
             <h2 className="text-band leading-[1.2] tracking-[-0.01em]">
-              What it does.
+              What I worked on.
             </h2>
             <ul className="mt-8 space-y-4">
               {project.description.map((line, i) => (

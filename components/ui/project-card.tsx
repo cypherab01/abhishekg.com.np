@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -8,22 +7,21 @@ interface ProjectCardProps {
   description: string;
   skills: string[];
   category?: string;
-  coverImage?: string | null;
   href?: string;
   className?: string;
 }
 
 /**
- * Elevated marketing card: flat at rest, faint shadow on hover, media plated
- * on a tint. Content order is fixed — media, eyebrow, title, body, CTA. The
- * whole card is one link, so the "Learn more" affordance is decorative.
+ * Elevated marketing card: flat at rest, faint shadow on hover. Text only —
+ * screenshots live on the detail page, so listings stay a calm typographic
+ * grid. Content order is fixed — eyebrow, title, body, CTA. The whole card is
+ * one link, so the "Learn more" affordance is decorative.
  */
 export function ProjectCard({
   title,
   description,
   skills,
   category,
-  coverImage,
   href,
   className,
 }: ProjectCardProps) {
@@ -34,23 +32,11 @@ export function ProjectCard({
   const inner = (
     <div
       className={cn(
-        "group flex h-full flex-col overflow-hidden rounded-3xl bg-background p-4 transition-shadow duration-200 ease-standard hover:shadow-elev-2",
+        "group flex h-full flex-col overflow-hidden rounded-3xl bg-background p-6 transition-shadow duration-200 ease-standard hover:shadow-elev-2 sm:p-8",
         className,
       )}
     >
-      <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-surface-sunken">
-        {coverImage && (
-          <Image
-            src={coverImage}
-            alt=""
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
-            className="object-cover transition-transform duration-300 ease-standard group-hover:scale-[1.03] motion-reduce:transform-none"
-          />
-        )}
-      </div>
-
-      <div className="flex flex-1 flex-col px-2 pt-6 pb-2">
+      <div className="flex flex-1 flex-col">
         {category && (
           <p className="mb-2 text-sm font-medium text-muted-foreground">
             {category}

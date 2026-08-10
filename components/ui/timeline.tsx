@@ -4,7 +4,8 @@ interface TimelineItemProps {
   title: string;
   subtitle: string;
   date?: string;
-  description?: string;
+  /** A string renders as a paragraph; an array renders as a bulleted list. */
+  description?: string | string[];
   tags?: string[];
   isLast?: boolean;
 }
@@ -37,10 +38,26 @@ export function TimelineItem({
           {title}
         </h3>
         <p className="mt-1 text-muted-foreground">{subtitle}</p>
-        {description && (
-          <p className="mt-4 max-w-[60ch] text-muted-foreground">
-            {description}
-          </p>
+        {Array.isArray(description) ? (
+          description.length > 0 && (
+            <ul className="mt-4 max-w-[60ch] space-y-2 text-muted-foreground">
+              {description.map((line) => (
+                <li key={line} className="relative pl-5 leading-relaxed">
+                  <span
+                    aria-hidden
+                    className="absolute left-0 top-[0.65em] size-1.5 rounded-full bg-current opacity-40"
+                  />
+                  {line}
+                </li>
+              ))}
+            </ul>
+          )
+        ) : (
+          description && (
+            <p className="mt-4 max-w-[60ch] text-muted-foreground">
+              {description}
+            </p>
+          )
         )}
         {tags && tags.length > 0 && (
           <div className="mt-5 flex flex-wrap gap-2">

@@ -44,7 +44,7 @@ export function Footer({ profile }: { profile: Profile }) {
       heading: "Resources",
       links: [
         { label: "Download resume", href: "/api/resume" },
-        { label: "Get in touch", href: "/#contact-form" },
+        { label: "Get in touch", href: "/#contact" },
         ...(profile.website
           ? [{ label: "Website", href: profile.website, external: true }]
           : []),
@@ -71,7 +71,7 @@ export function Footer({ profile }: { profile: Profile }) {
   }[];
 
   return (
-    <footer id="contact" className="bg-surface-sunken">
+    <footer id="footer" className="bg-surface-sunken">
       <div className="gfs-container py-16 md:py-20">
         {/* Follow us */}
         <div className="flex flex-wrap items-center gap-4">

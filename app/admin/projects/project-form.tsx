@@ -3,7 +3,7 @@ import type { Project } from "@/db/schema";
 import { getProjectCategoryList, getProjects } from "@/db/queries";
 import { saveProject } from "../actions";
 import { Field, TextArea, Checkbox } from "../_components/fields";
-import { UploadField } from "../_components/upload-field";
+import { MultiUploadField } from "../_components/upload-field";
 import { SubmitButton } from "../_components/submit-button";
 
 export async function ProjectForm({ project }: { project?: Project }) {
@@ -88,12 +88,12 @@ export async function ProjectForm({ project }: { project?: Project }) {
         hint="One bullet point per line."
       />
 
-      <UploadField
-        label="Cover image"
-        name="coverImage"
+      <MultiUploadField
+        label="Images"
+        name="images"
         endpoint="imageUploader"
-        defaultUrl={project?.coverImage}
-        preview="rect"
+        defaultUrls={project?.images}
+        hint="First image is the cover. Reorder with the arrows; images show on the project detail page, not the cards."
       />
 
       <Checkbox

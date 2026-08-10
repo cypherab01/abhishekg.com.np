@@ -12,9 +12,10 @@ const requireAdmin = async () => {
 };
 
 export const ourFileRouter = {
-  // Images: project covers + avatar
+  // Images: project galleries + avatar. Single-image fields keep only the
+  // first result, so one endpoint serves both.
   imageUploader: f({
-    image: { maxFileSize: "8MB", maxFileCount: 1 },
+    image: { maxFileSize: "8MB", maxFileCount: 10 },
   })
     .middleware(requireAdmin)
     .onUploadComplete(async ({ file }) => {

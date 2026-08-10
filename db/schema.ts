@@ -76,7 +76,12 @@ export const projects = pgTable("projects", {
   website: text("website"),
   playStore: text("play_store"),
   github: text("github"),
-  coverImage: text("cover_image"),
+  /**
+   * Gallery, ordered. The first entry is the cover image — the detail page
+   * slider opens on it. Column keeps its original `cover_image` name so the
+   * single-URL data it used to hold migrates in place.
+   */
+  images: jsonb("cover_image").$type<string[]>().notNull().default([]),
   technologies: jsonb("technologies").$type<string[]>().notNull().default([]),
   description: jsonb("description").$type<string[]>().notNull().default([]),
   featured: boolean("featured").notNull().default(false),

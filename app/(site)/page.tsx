@@ -57,7 +57,7 @@ export default async function Home() {
       <SkillsSection skillCategories={skills} tone="tint-2" />
 
       <Section
-        id="contact-form"
+        id="contact"
         eyebrow="Contact"
         title="Let's work together."
         lead="Tell me what you're building and I'll get back to you."

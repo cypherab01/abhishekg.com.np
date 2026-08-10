@@ -79,7 +79,7 @@ export function Navbar({ initials, name }: NavbarProps) {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Link
-              href="/#contact-form"
+              href="/#contact"
               className={cn(buttonVariants({ variant: "default" }))}
             >
               Get in touch
@@ -90,7 +90,7 @@ export function Navbar({ initials, name }: NavbarProps) {
         {/* Mobile controls — the primary CTA stays visible in the bar. */}
         <div className="flex items-center gap-1 md:hidden">
           <Link
-            href="/#contact-form"
+            href="/#contact"
             className={cn(buttonVariants({ variant: "default", size: "sm" }))}
           >
             Get in touch

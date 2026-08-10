@@ -129,11 +129,23 @@ export async function getExperienceById(id: number) {
   return rows[0] ?? null;
 }
 
+/**
+ * `cover_image` held a single nullable URL before it became a jsonb gallery.
+ * Rows written before the 0002 migration still come back as null or a bare
+ * string, so coerce here rather than guarding at every render site.
+ */
+function withImages<T extends { images: string[] }>(row: T): T {
+  const raw: unknown = row.images;
+  if (Array.isArray(raw)) return row;
+  return { ...row, images: typeof raw === "string" && raw ? [raw] : [] };
+}
+
 export async function getProjects() {
-  return db
+  const rows = await db
     .select()
     .from(projectsTable)
     .orderBy(asc(projectsTable.sortOrder), asc(projectsTable.id));
+  return rows.map(withImages);
 }
 
 export async function getProjectCategoryList() {
@@ -148,11 +160,12 @@ export async function getProjectCategories() {
 }
 
 export async function getFeaturedProjects() {
-  return db
+  const rows = await db
     .select()
     .from(projectsTable)
     .where(eq(projectsTable.featured, true))
     .orderBy(asc(projectsTable.sortOrder), asc(projectsTable.id));
+  return rows.map(withImages);
 }
 
 export async function getProjectBySlug(slug: string) {
@@ -161,7 +174,7 @@ export async function getProjectBySlug(slug: string) {
     .from(projectsTable)
     .where(eq(projectsTable.slug, slug))
     .limit(1);
-  return rows[0] ?? null;
+  return rows[0] ? withImages(rows[0]) : null;
 }
 
 export async function getProjectById(id: number) {
@@ -170,7 +183,7 @@ export async function getProjectById(id: number) {
     .from(projectsTable)
     .where(eq(projectsTable.id, id))
     .limit(1);
-  return rows[0] ?? null;
+  return rows[0] ? withImages(rows[0]) : null;
 }
 
 export async function getProjectCategoryByName(name: string) {
