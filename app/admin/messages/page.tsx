@@ -53,12 +53,23 @@ function listTimestamp(date: Date, now: Date): string {
   return String(date.getFullYear());
 }
 
+/**
+ * First *code point*, not first code unit. Indexing a string with `[0]` splits
+ * an emoji or other astral character into a lone surrogate, which the HTML
+ * stream and the RSC payload encode differently — a hydration mismatch. Spam
+ * senders use emoji names often enough for this to bite.
+ */
+function firstCodePoint(word: string): string {
+  return Array.from(word)[0] ?? "";
+}
+
 function initials(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   if (parts.length === 0) return "?";
-  const first = parts[0]![0]!;
-  const last = parts.length > 1 ? parts[parts.length - 1]![0]! : "";
-  return (first + last).toUpperCase();
+  const first = firstCodePoint(parts[0]!);
+  const last =
+    parts.length > 1 ? firstCodePoint(parts[parts.length - 1]!) : "";
+  return (first + last).toUpperCase() || "?";
 }
 
 /** A one-line preview of the body, with newlines collapsed to spaces. */

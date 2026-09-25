@@ -8,7 +8,12 @@ import { SubmitButton } from "../_components/submit-button";
 
 export async function ProjectForm({ project }: { project?: Project }) {
   const categories = await getProjectCategoryList();
-  const defaultCategoryId = project?.categoryId ?? categories[0]?.id;
+  // The options carry category *names* (that is what the action looks up), so
+  // the default has to be a name too — seeding it with the id matched nothing
+  // and the browser silently fell back to the first option on every edit.
+  const defaultCategory =
+    categories.find((c) => c.id === project?.categoryId)?.name ??
+    categories[0]?.name;
   const defaultSortOrder = project
     ? project.sortOrder
     : (await getProjects()).length + 1;
@@ -32,7 +37,7 @@ export async function ProjectForm({ project }: { project?: Project }) {
           <select
             id="category"
             name="category"
-            defaultValue={defaultCategoryId}
+            defaultValue={defaultCategory}
             className={inputClass}
           >
             {categories.map((category) => (
