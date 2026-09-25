@@ -3,6 +3,7 @@ import { Plus, Pencil, Settings2, Briefcase } from "lucide-react";
 import { getExperienceGroups } from "@/db/queries";
 import { deleteExperience } from "../actions";
 import { DeleteButton } from "../_components/delete-button";
+import { FlashToast } from "../_components/flash-toast";
 import {
   PageHeader,
   Pill,
@@ -14,13 +15,21 @@ import {
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
-export default async function AdminExperiencePage() {
-  const experienceGroups = await getExperienceGroups();
+export default async function AdminExperiencePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ saved?: string }>;
+}) {
+  const [experienceGroups, sp] = await Promise.all([
+    getExperienceGroups(),
+    searchParams,
+  ]);
 
   const isEmpty = experienceGroups.every((group) => group.items.length === 0);
 
   return (
     <div>
+      {sp.saved && <FlashToast message="Experience saved" />}
       <PageHeader
         title="Experience"
         description="Your work history, grouped by type."

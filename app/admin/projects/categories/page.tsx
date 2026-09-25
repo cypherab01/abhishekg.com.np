@@ -3,6 +3,7 @@ import { ArrowLeft, AlertTriangle, FolderTree, Plus } from "lucide-react";
 import { getProjectCategories, getProjects } from "@/db/queries";
 import { deleteProjectCategory, saveProjectCategory } from "../../actions";
 import { DeleteButton } from "../../_components/delete-button";
+import { FlashToast } from "../../_components/flash-toast";
 import { PageHeader, Alert, Pill, inputClass, rowInputClass } from "../../_components/ui";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
@@ -10,9 +11,9 @@ import { cn } from "@/lib/utils";
 export default async function ProjectCategoriesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; saved?: string }>;
 }) {
-  const [{ error }, categories, projects] = await Promise.all([
+  const [{ error, saved }, categories, projects] = await Promise.all([
     searchParams,
     getProjectCategories(),
     getProjects(),
@@ -28,6 +29,7 @@ export default async function ProjectCategoriesPage({
 
   return (
     <div>
+      {saved && <FlashToast message="Project category saved" />}
       <Link
         href="/admin/projects"
         className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"

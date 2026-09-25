@@ -3,6 +3,7 @@ import { ArrowLeft, AlertTriangle, Tag, Plus } from "lucide-react";
 import { getExperienceKindList, getExperienceGroups } from "@/db/queries";
 import { deleteExperienceKind, saveExperienceKind } from "../../actions";
 import { DeleteButton } from "../../_components/delete-button";
+import { FlashToast } from "../../_components/flash-toast";
 import { PageHeader, Alert, Pill, inputClass, rowInputClass } from "../../_components/ui";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
@@ -10,9 +11,9 @@ import { cn } from "@/lib/utils";
 export default async function ExperienceTypesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; saved?: string }>;
 }) {
-  const [{ error }, kinds, groups] = await Promise.all([
+  const [{ error, saved }, kinds, groups] = await Promise.all([
     searchParams,
     getExperienceKindList(),
     getExperienceGroups(),
@@ -24,6 +25,7 @@ export default async function ExperienceTypesPage({
 
   return (
     <div>
+      {saved && <FlashToast message="Experience type saved" />}
       <Link
         href="/admin/experience"
         className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"

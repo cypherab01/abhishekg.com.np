@@ -158,7 +158,7 @@ export async function saveExperience(formData: FormData) {
     await db.insert(experiences).values(values);
   }
   revalidateSite();
-  redirect("/admin/experience");
+  redirect("/admin/experience?saved=1");
 }
 
 export async function deleteExperience(formData: FormData) {
@@ -192,6 +192,7 @@ export async function saveExperienceKind(formData: FormData) {
   revalidateSite();
   revalidatePath("/admin/experience");
   revalidatePath("/admin/experience/types");
+  redirect("/admin/experience/types?saved=1");
 }
 
 export async function deleteExperienceKind(formData: FormData) {
@@ -303,6 +304,7 @@ export async function saveProjectCategory(formData: FormData) {
   revalidateSite();
   revalidatePath("/admin/projects");
   revalidatePath("/admin/projects/categories");
+  redirect("/admin/projects/categories?saved=1");
 }
 
 export async function deleteProjectCategory(formData: FormData) {
@@ -422,7 +424,7 @@ export async function saveSkillCategory(formData: FormData) {
   revalidateSite();
   revalidatePath("/admin/skills");
   revalidatePath("/admin/skills/categories");
-  redirect("/admin/skills/categories");
+  redirect("/admin/skills/categories?saved=1");
 }
 
 export async function deleteSkillCategory(formData: FormData) {

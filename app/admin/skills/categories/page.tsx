@@ -5,14 +5,15 @@ import { buttonVariants } from "@/components/ui/button-variants";
 import { getSkillCategoryList, getSkillGroups } from "@/db/queries";
 import { deleteSkillCategory, saveSkillCategory } from "../../actions";
 import { DeleteButton } from "../../_components/delete-button";
+import { FlashToast } from "../../_components/flash-toast";
 import { PageHeader, Alert, Pill, rowInputClass, inputClass } from "../../_components/ui";
 
 export default async function SkillCategoriesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; saved?: string }>;
 }) {
-  const [{ error }, categories, skillGroups] = await Promise.all([
+  const [{ error, saved }, categories, skillGroups] = await Promise.all([
     searchParams,
     getSkillCategoryList(),
     getSkillGroups(),
@@ -24,6 +25,7 @@ export default async function SkillCategoriesPage({
 
   return (
     <div>
+      {saved && <FlashToast message="Skill category saved" />}
       <Link
         href="/admin/skills"
         className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
