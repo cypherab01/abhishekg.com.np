@@ -125,3 +125,39 @@ export function Pill({
     </span>
   );
 }
+
+/**
+ * Admin listing table. The shell owns the border and the rounding so the
+ * table itself can stay a plain `<table>`; `overflow-x-auto` is the escape
+ * hatch for narrow screens, and secondary columns are dropped with
+ * `hidden md:table-cell` before it ever comes to that.
+ */
+export function TableShell({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "overflow-x-auto rounded-2xl border border-border bg-card",
+        className,
+      )}
+    >
+      <table className="w-full border-collapse text-sm">{children}</table>
+    </div>
+  );
+}
+
+/** Column heading: label-small, muted, on the sunken header band. */
+export const thClass =
+  "whitespace-nowrap px-4 py-3 text-left text-xs font-medium uppercase tracking-[0.06em] text-muted-foreground";
+
+/** Body cell. Rows are separated by a hairline rather than boxed. */
+export const tdClass =
+  "border-t border-border px-4 py-3 align-middle text-foreground";
+
+/** Row: a faint hover so the pointer has something to land on. */
+export const trClass = "transition-colors hover:bg-surface-sunken";

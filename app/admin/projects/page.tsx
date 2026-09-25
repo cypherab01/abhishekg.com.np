@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Plus, Settings2, FolderGit2 } from "lucide-react";
-import { getProjects } from "@/db/queries";
+import { getProjects, getProjectCategoryList } from "@/db/queries";
 import { PageHeader } from "../_components/ui";
 import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
@@ -12,7 +12,11 @@ export default async function AdminProjectsPage({
 }: {
   searchParams: Promise<{ saved?: string }>;
 }) {
-  const [projects, sp] = await Promise.all([getProjects(), searchParams]);
+  const [projects, categories, sp] = await Promise.all([
+    getProjects(),
+    getProjectCategoryList(),
+    searchParams,
+  ]);
 
   return (
     <div>
@@ -60,7 +64,7 @@ export default async function AdminProjectsPage({
           </Link>
         </div>
       ) : (
-        <ProjectsList projects={projects} />
+        <ProjectsList projects={projects} categories={categories} />
       )}
     </div>
   );

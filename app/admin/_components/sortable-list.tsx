@@ -13,12 +13,14 @@ import {
 import {
   SortableContext,
   rectSortingStrategy,
+  verticalListSortingStrategy,
   sortableKeyboardCoordinates,
   useSortable,
   arrayMove,
   type SortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { TableShell } from "./ui";
 
 /** Props to spread onto the drag-handle element (from @dnd-kit's useSortable). */
 export type DragHandleProps = ReturnType<typeof useSortable>["attributes"] &
@@ -26,9 +28,14 @@ export type DragHandleProps = ReturnType<typeof useSortable>["attributes"] &
 
 function SortableItem({
   id,
+  as: Element = "div",
+  className,
   children,
 }: {
   id: number;
+  /** Element to render the row as — `tr` when the list is a table body. */
+  as?: "div" | "tr" | "li";
+  className?: string | ((isDragging: boolean) => string);
   children: (handleProps: DragHandleProps, isDragging: boolean) => ReactNode;
 }) {
   const {
@@ -48,38 +55,30 @@ function SortableItem({
   };
 
   return (
-    <div ref={setNodeRef} style={style}>
+    <Element
+      ref={setNodeRef}
+      style={style}
+      className={
+        typeof className === "function" ? className(isDragging) : className
+      }
+    >
       {children(
         { ...attributes, ...(listeners ?? {}) } as DragHandleProps,
         isDragging,
       )}
-    </div>
+    </Element>
   );
 }
 
 /**
- * Generic drag-to-reorder list backed by @dnd-kit (same library the resume
- * builder uses). Reordering is optimistic; `onReorder` is called with the new
- * id order once a drag completes and the order actually changed.
+ * Shared reorder state. Reordering is optimistic: the new order shows at once
+ * and `onReorder` is called with the id order after a drag that moved
+ * something.
  */
-export function SortableList<T extends { id: number }>({
-  items,
-  onReorder,
-  className,
-  strategy = rectSortingStrategy,
-  children,
-}: {
-  items: T[];
-  onReorder: (ids: number[]) => void | Promise<void>;
-  className?: string;
-  strategy?: SortingStrategy;
-  children: (
-    item: T,
-    dragHandleProps: DragHandleProps,
-    isDragging: boolean,
-  ) => ReactNode;
-}) {
-  const dndId = useId();
+function useReorder<T extends { id: number }>(
+  items: T[],
+  onReorder: (ids: number[]) => void | Promise<void>,
+) {
   const [order, setOrder] = useState<T[]>(items);
 
   // Sync local state when the server sends a new list (add/delete/reorder).
@@ -108,6 +107,33 @@ export function SortableList<T extends { id: number }>({
     void onReorder(next.map((i) => i.id));
   }
 
+  return { order, sensors, handleDragEnd };
+}
+
+/**
+ * Generic drag-to-reorder list backed by @dnd-kit (same library the resume
+ * builder uses).
+ */
+export function SortableList<T extends { id: number }>({
+  items,
+  onReorder,
+  className,
+  strategy = rectSortingStrategy,
+  children,
+}: {
+  items: T[];
+  onReorder: (ids: number[]) => void | Promise<void>;
+  className?: string;
+  strategy?: SortingStrategy;
+  children: (
+    item: T,
+    dragHandleProps: DragHandleProps,
+    isDragging: boolean,
+  ) => ReactNode;
+}) {
+  const dndId = useId();
+  const { order, sensors, handleDragEnd } = useReorder(items, onReorder);
+
   return (
     <DndContext
       id={dndId}
@@ -125,6 +151,69 @@ export function SortableList<T extends { id: number }>({
             </SortableItem>
           ))}
         </div>
+      </SortableContext>
+    </DndContext>
+  );
+}
+
+/**
+ * The same thing as a table. The whole table — shell included — is rendered
+ * *inside* DndContext rather than the other way round: DndContext is not
+ * DOM-free, it mounts a hidden live region for screen-reader announcements,
+ * and a stray <div> between <table> and <tbody> is invalid HTML that the
+ * browser relocates, which shows up as a hydration error.
+ *
+ * `head` is the header row; `children` renders the cells of one body row.
+ */
+export function SortableTable<T extends { id: number }>({
+  items,
+  onReorder,
+  head,
+  rowClassName,
+  children,
+}: {
+  items: T[];
+  onReorder: (ids: number[]) => void | Promise<void>;
+  head: ReactNode;
+  rowClassName?: string | ((isDragging: boolean) => string);
+  children: (
+    item: T,
+    dragHandleProps: DragHandleProps,
+    isDragging: boolean,
+  ) => ReactNode;
+}) {
+  const dndId = useId();
+  const { order, sensors, handleDragEnd } = useReorder(items, onReorder);
+
+  return (
+    <DndContext
+      id={dndId}
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+    >
+      {/* Rows sort vertically, so the list strategy rather than the grid one. */}
+      <SortableContext
+        items={order.map((i) => i.id)}
+        strategy={verticalListSortingStrategy}
+      >
+        <TableShell>
+          <thead>{head}</thead>
+          <tbody>
+            {order.map((item) => (
+              <SortableItem
+                key={item.id}
+                id={item.id}
+                as="tr"
+                className={rowClassName}
+              >
+                {(handleProps, isDragging) =>
+                  children(item, handleProps, isDragging)
+                }
+              </SortableItem>
+            ))}
+          </tbody>
+        </TableShell>
       </SortableContext>
     </DndContext>
   );
