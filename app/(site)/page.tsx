@@ -5,6 +5,8 @@ import { EducationSection } from "@/components/sections/education";
 import { SkillsSection } from "@/components/sections/skills";
 import { Section } from "@/components/layout/section";
 import { ContactForm } from "@/components/sections/contact-form";
+import { BlogSection } from "@/components/sections/blog";
+import { getPopularPosts } from "@/lib/blog";
 import {
   getProfile,
   getExperienceGroups,
@@ -15,7 +17,7 @@ import {
 } from "@/db/queries";
 
 export default async function Home() {
-  const [profile, experienceGroups, featured, allProjects, education, skills] =
+  const [profile, experienceGroups, featured, allProjects, education, skills, posts] =
     await Promise.all([
       getProfile(),
       getExperienceGroups(),
@@ -23,6 +25,7 @@ export default async function Home() {
       getProjects(),
       getEducation(),
       getSkillGroups(),
+      getPopularPosts(),
     ]);
 
   if (!profile) return null;
@@ -56,12 +59,18 @@ export default async function Home() {
 
       <SkillsSection skillCategories={skills} tone="tint-2" />
 
+      <BlogSection
+        mostViewed={posts.mostViewed}
+        mostLiked={posts.mostLiked}
+        tone="surface"
+      />
+
       <Section
         id="contact"
         eyebrow="Contact"
         title="Let's work together."
         lead="Tell me what you're building and I'll get back to you."
-        tone="surface"
+        tone="tint-3"
       >
         <ContactForm />
       </Section>
