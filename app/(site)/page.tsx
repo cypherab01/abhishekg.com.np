@@ -3,7 +3,7 @@ import { ExperienceSection } from "@/components/sections/experience";
 import { ProjectsSection } from "@/components/sections/projects";
 import { EducationSection } from "@/components/sections/education";
 import { SkillsSection } from "@/components/sections/skills";
-import { Section } from "@/components/layout/section";
+import { Section, type SectionTone } from "@/components/layout/section";
 import { ContactForm } from "@/components/sections/contact-form";
 import { BlogSection } from "@/components/sections/blog";
 import { getPopularPosts } from "@/lib/blog";
@@ -33,36 +33,59 @@ export default async function Home() {
   // Fall back to all projects if none are flagged as featured.
   const projects = featured.length > 0 ? featured : allProjects.slice(0, 3);
 
+  // Work history leads, then projects; supporting groups (certificates,
+  // awards, ...) follow skills and education, matching how reviewers scan.
+  const [primaryGroup, ...otherGroups] = experienceGroups.filter(
+    (group) => group.items.length > 0,
+  );
+
+  // Bands alternate tint and surface by position, so the pattern holds no
+  // matter how many experience groups exist.
+  const tints: SectionTone[] = ["tinted", "tint-1", "tint-2", "tint-3"];
+  const toneAt = (position: number): SectionTone =>
+    position % 2 === 0 ? tints[(position / 2) % tints.length] : "surface";
+  // Experience, projects, skills, education, then the other groups.
+  const afterGroups = 4 + otherGroups.length;
+
   return (
     <>
       <Hero profile={profile} />
 
-      {/* Bands alternate surface and tint; never two of the same in a row. */}
-      {experienceGroups.map((group, index) => (
+      {primaryGroup && (
         <ExperienceSection
-          key={group.kind}
-          experiences={group.items}
-          title={group.label}
-          headline={index === 0 ? "Where the work happened." : `More ${group.label.toLowerCase()}.`}
-          id={index === 0 ? "experience" : group.kind}
-          tone={index % 2 === 0 ? "tinted" : "surface"}
+          experiences={primaryGroup.items}
+          title={primaryGroup.label}
+          headline="Where the work happened."
+          id="experience"
+          tone={toneAt(0)}
         />
-      ))}
+      )}
 
       <ProjectsSection
         projects={projects}
         showAllLink={allProjects.length > projects.length}
-        tone="tint-1"
+        tone={toneAt(1)}
       />
 
-      <EducationSection education={education} tone="surface" />
+      <SkillsSection skillCategories={skills} tone={toneAt(2)} />
 
-      <SkillsSection skillCategories={skills} tone="tint-2" />
+      <EducationSection education={education} tone={toneAt(3)} />
+
+      {otherGroups.map((group, index) => (
+        <ExperienceSection
+          key={group.kind}
+          experiences={group.items}
+          title={group.label}
+          headline={`More ${group.label.toLowerCase()}.`}
+          id={group.kind}
+          tone={toneAt(4 + index)}
+        />
+      ))}
 
       <BlogSection
         mostViewed={posts.mostViewed}
         mostLiked={posts.mostLiked}
-        tone="surface"
+        tone={toneAt(afterGroups)}
       />
 
       <Section
@@ -70,7 +93,7 @@ export default async function Home() {
         eyebrow="Contact"
         title="Let's work together."
         lead="Tell me what you're building and I'll get back to you."
-        tone="tint-3"
+        tone={toneAt(afterGroups + 1)}
       >
         <ContactForm />
       </Section>
