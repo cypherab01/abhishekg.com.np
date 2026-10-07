@@ -90,6 +90,8 @@ export const projects = pgTable("projects", {
   summary: text("summary").notNull().default(""),
   description: jsonb("description").$type<string[]>().notNull().default([]),
   featured: boolean("featured").notNull().default(false),
+  /** Hidden from the public site until switched on, so drafts never leak. */
+  isActive: boolean("is_active").notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),
 });
 

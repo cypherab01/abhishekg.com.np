@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { eq } from "drizzle-orm";
+import { eq, max } from "drizzle-orm";
 import { db } from "@/db";
 import {
   profile,
@@ -252,6 +252,7 @@ export async function saveProject(formData: FormData) {
     summary: str(formData.get("summary")),
     description: lines(formData.get("description")),
     featured: formData.get("featured") === "on",
+    isActive: formData.get("isActive") === "on",
     sortOrder: Number(str(formData.get("sortOrder"))) || 0,
   };
   if (id) {
@@ -282,30 +283,76 @@ export async function reorderProjects(ids: number[]) {
   revalidatePath("/admin/projects");
 }
 
+export async function setProjectFlag(
+  id: number,
+  flag: "isActive" | "featured",
+  value: boolean,
+) {
+  await assertAuth();
+  await db
+    .update(projects)
+    .set({ [flag]: value })
+    .where(eq(projects.id, id));
+  revalidateSite();
+  revalidatePath("/admin/projects");
+}
+
 export async function saveProjectCategory(formData: FormData) {
   await assertAuth();
   const id = optStr(formData.get("id"));
-  const values = {
-    name: str(formData.get("name")),
-    sortOrder: Number(str(formData.get("sortOrder"))) || 0,
-  };
-  if (!values.name) {
+  const name = str(formData.get("name"));
+  if (!name) {
     redirect(
       `/admin/projects/categories?error=${encodeURIComponent("Name is required.")}`,
     );
   }
+  // Order is set by dragging, so a rename leaves it alone and a new category
+  // joins the end of the list.
   if (id) {
     await db
       .update(projectCategories)
-      .set(values)
+      .set({ name })
       .where(eq(projectCategories.id, Number(id)));
   } else {
-    await db.insert(projectCategories).values(values);
+    const [last] = await db
+      .select({ sortOrder: max(projectCategories.sortOrder) })
+      .from(projectCategories);
+    await db
+      .insert(projectCategories)
+      .values({ name, sortOrder: (last?.sortOrder ?? -1) + 1 });
   }
   revalidateSite();
   revalidatePath("/admin/projects");
   revalidatePath("/admin/projects/categories");
   redirect("/admin/projects/categories?saved=1");
+}
+
+export async function renameProjectCategory(id: number, name: string) {
+  await assertAuth();
+  const trimmed = name.trim();
+  if (!trimmed) throw new Error("Name is required.");
+  await db
+    .update(projectCategories)
+    .set({ name: trimmed })
+    .where(eq(projectCategories.id, id));
+  revalidateSite();
+  revalidatePath("/admin/projects");
+  revalidatePath("/admin/projects/categories");
+}
+
+export async function reorderProjectCategories(ids: number[]) {
+  await assertAuth();
+  await Promise.all(
+    ids.map((id, index) =>
+      db
+        .update(projectCategories)
+        .set({ sortOrder: index })
+        .where(eq(projectCategories.id, id)),
+    ),
+  );
+  revalidateSite();
+  revalidatePath("/admin/projects");
+  revalidatePath("/admin/projects/categories");
 }
 
 export async function deleteProjectCategory(formData: FormData) {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ProjectCard } from "@/components/ui/project-card";
 import { Reveal } from "@/components/ui/reveal";
-import { getProjects, getProjectCategories } from "@/db/queries";
+import { getActiveProjects, getProjectCategories } from "@/db/queries";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default async function ProjectsPage() {
   const [projects, categories] = await Promise.all([
-    getProjects(),
+    getActiveProjects(),
     getProjectCategories(),
   ]);
   const categoryNameById = new Map(

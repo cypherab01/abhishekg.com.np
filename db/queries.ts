@@ -1,5 +1,5 @@
 import "server-only";
-import { asc, desc, eq } from "drizzle-orm";
+import { and, asc, desc, eq } from "drizzle-orm";
 import { db } from "./index";
 import {
   profile as profileTable,
@@ -140,10 +140,21 @@ function withImages<T extends { images: string[] }>(row: T): T {
   return { ...row, images: typeof raw === "string" && raw ? [raw] : [] };
 }
 
+/** Every project, drafts included. For the admin and the resume builder. */
 export async function getProjects() {
   const rows = await db
     .select()
     .from(projectsTable)
+    .orderBy(asc(projectsTable.sortOrder), asc(projectsTable.id));
+  return rows.map(withImages);
+}
+
+/** Projects switched on for the public site. */
+export async function getActiveProjects() {
+  const rows = await db
+    .select()
+    .from(projectsTable)
+    .where(eq(projectsTable.isActive, true))
     .orderBy(asc(projectsTable.sortOrder), asc(projectsTable.id));
   return rows.map(withImages);
 }
@@ -163,7 +174,7 @@ export async function getFeaturedProjects() {
   const rows = await db
     .select()
     .from(projectsTable)
-    .where(eq(projectsTable.featured, true))
+    .where(and(eq(projectsTable.featured, true), eq(projectsTable.isActive, true)))
     .orderBy(asc(projectsTable.sortOrder), asc(projectsTable.id));
   return rows.map(withImages);
 }
@@ -172,7 +183,7 @@ export async function getProjectBySlug(slug: string) {
   const rows = await db
     .select()
     .from(projectsTable)
-    .where(eq(projectsTable.slug, slug))
+    .where(and(eq(projectsTable.slug, slug), eq(projectsTable.isActive, true)))
     .limit(1);
   return rows[0] ? withImages(rows[0]) : null;
 }

@@ -11,7 +11,7 @@ import {
   getProfile,
   getExperienceGroups,
   getFeaturedProjects,
-  getProjects,
+  getActiveProjects,
   getEducation,
   getSkillGroups,
 } from "@/db/queries";
@@ -22,7 +22,7 @@ export default async function Home() {
       getProfile(),
       getExperienceGroups(),
       getFeaturedProjects(),
-      getProjects(),
+      getActiveProjects(),
       getEducation(),
       getSkillGroups(),
       getPopularPosts(),

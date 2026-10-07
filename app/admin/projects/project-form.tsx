@@ -109,6 +109,11 @@ export async function ProjectForm({ project }: { project?: Project }) {
       />
 
       <Checkbox
+        label="Active (show on the website)"
+        name="isActive"
+        defaultChecked={project?.isActive}
+      />
+      <Checkbox
         label="Feature on home page"
         name="featured"
         defaultChecked={project?.featured}

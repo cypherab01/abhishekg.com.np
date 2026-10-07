@@ -9,12 +9,12 @@ import { buttonVariants } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 import {
   getProjectBySlug,
-  getProjects,
+  getActiveProjects,
   getProjectCategories,
 } from "@/db/queries";
 
 export async function generateStaticParams() {
-  const projects = await getProjects();
+  const projects = await getActiveProjects();
   return projects.map((p) => ({ slug: p.slug }));
 }
 
@@ -40,7 +40,7 @@ export default async function ProjectDetailPage({
   const [project, categories, projects] = await Promise.all([
     getProjectBySlug(slug),
     getProjectCategories(),
-    getProjects(),
+    getActiveProjects(),
   ]);
 
   if (!project) notFound();

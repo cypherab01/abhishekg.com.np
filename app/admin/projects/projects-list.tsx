@@ -1,12 +1,14 @@
 "use client";
 
+import { useState, useTransition } from "react";
 import Link from "next/link";
-import { Pencil, Star, GripVertical } from "lucide-react";
+import { Pencil, GripVertical } from "lucide-react";
 import { toast } from "sonner";
 import type { Project } from "@/db/schema";
-import { deleteProject, reorderProjects } from "../actions";
+import { deleteProject, reorderProjects, setProjectFlag } from "../actions";
 import { DeleteButton } from "../_components/delete-button";
 import { SortableTable } from "../_components/sortable-list";
+import { Switch } from "../_components/switch";
 import { Pill, thClass, tdClass, trClass } from "../_components/ui";
 import { cn } from "@/lib/utils";
 
@@ -56,6 +58,8 @@ export function ProjectsList({
           <th className={cn(thClass, "hidden md:table-cell")}>Category</th>
           <th className={cn(thClass, "hidden lg:table-cell")}>Status</th>
           <th className={cn(thClass, "hidden lg:table-cell")}>Screens</th>
+          <th className={cn(thClass, "w-20")}>Active</th>
+          <th className={cn(thClass, "w-20")}>Featured</th>
           <th className={cn(thClass, "w-24 text-right")}>Actions</th>
         </tr>
       }
@@ -74,20 +78,12 @@ export function ProjectsList({
           </td>
 
           <td className={tdClass}>
-            <div className="flex items-center gap-2">
-              <Link
-                href={`/admin/projects/${project.id}`}
-                className="font-medium text-foreground hover:underline"
-              >
-                {project.name}
-              </Link>
-              {project.featured && (
-                <Pill tone="accent">
-                  <Star className="size-3 fill-current" />
-                  Featured
-                </Pill>
-              )}
-            </div>
+            <Link
+              href={`/admin/projects/${project.id}`}
+              className="font-medium text-foreground hover:underline"
+            >
+              {project.name}
+            </Link>
             <p className="text-xs text-muted-foreground">{project.slug}</p>
           </td>
 
@@ -109,6 +105,14 @@ export function ProjectsList({
             className={cn(tdClass, "hidden text-muted-foreground lg:table-cell")}
           >
             {project.images.length}
+          </td>
+
+          <td className={cn(tdClass, "w-20")}>
+            <FlagSwitch project={project} flag="isActive" label="Active" />
+          </td>
+
+          <td className={cn(tdClass, "w-20")}>
+            <FlagSwitch project={project} flag="featured" label="Featured" />
           </td>
 
           <td className={cn(tdClass, "w-24")}>
@@ -133,5 +137,46 @@ export function ProjectsList({
         </>
       )}
     </SortableTable>
+  );
+}
+
+/**
+ * Flips immediately and saves in the background, rolling back if the save
+ * fails, so the table never shows a state the database doesn't hold.
+ */
+function FlagSwitch({
+  project,
+  flag,
+  label,
+}: {
+  project: Project;
+  flag: "isActive" | "featured";
+  label: string;
+}) {
+  const [checked, setChecked] = useState(project[flag]);
+  const [pending, startTransition] = useTransition();
+
+  function handleChange(next: boolean) {
+    setChecked(next);
+    startTransition(async () => {
+      try {
+        await setProjectFlag(project.id, flag, next);
+        toast.success(
+          `${project.name} ${next ? "is now" : "is no longer"} ${label.toLowerCase()}`,
+        );
+      } catch {
+        setChecked(!next);
+        toast.error(`Couldn't update "${project.name}"`);
+      }
+    });
+  }
+
+  return (
+    <Switch
+      checked={checked}
+      onCheckedChange={handleChange}
+      disabled={pending}
+      label={`${label}: ${project.name}`}
+    />
   );
 }
