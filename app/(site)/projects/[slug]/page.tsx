@@ -25,7 +25,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
-  return { title: project ? project.name : "Project" };
+  return {
+    title: project ? project.name : "Project",
+    description: project?.summary || undefined,
+  };
 }
 
 export default async function ProjectDetailPage({
@@ -44,9 +47,12 @@ export default async function ProjectDetailPage({
 
   const category = categories.find((c) => c.id === project.categoryId)?.name;
 
-  // The lead carries the first line of the write-up, so the list below starts
-  // at the second: the same sentence twice reads like a template, not a page.
-  const [lead, ...detail] = project.description;
+  // The summary leads when there is one. Without it the lead borrows the first
+  // line of the write-up, so the list below starts at the second: the same
+  // sentence twice reads like a template, not a page.
+  const [lead, ...detail] = project.summary
+    ? [project.summary, ...project.description]
+    : project.description;
 
   // Wraps around, so the last project still offers somewhere to go next.
   const current = projects.findIndex((p) => p.slug === project.slug);

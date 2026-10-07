@@ -83,6 +83,11 @@ export const projects = pgTable("projects", {
    */
   images: jsonb("cover_image").$type<string[]>().notNull().default([]),
   technologies: jsonb("technologies").$type<string[]>().notNull().default([]),
+  /**
+   * One or two plain sentences for the project card and the detail page lead.
+   * Empty falls back to the description bullets.
+   */
+  summary: text("summary").notNull().default(""),
   description: jsonb("description").$type<string[]>().notNull().default([]),
   featured: boolean("featured").notNull().default(false),
   sortOrder: integer("sort_order").notNull().default(0),

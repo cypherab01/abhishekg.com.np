@@ -86,6 +86,13 @@ export async function ProjectForm({ project }: { project?: Project }) {
         hint="Comma-separated."
       />
       <TextArea
+        label="Summary"
+        name="summary"
+        defaultValue={project?.summary}
+        rows={3}
+        hint="One or two sentences. Shown on the project card and under the title on the detail page."
+      />
+      <TextArea
         label="Description"
         name="description"
         defaultValue={project?.description.join("\n")}

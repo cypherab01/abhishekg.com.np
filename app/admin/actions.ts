@@ -249,6 +249,7 @@ export async function saveProject(formData: FormData) {
     github: optStr(formData.get("github")),
     images: urlList(formData.get("images")),
     technologies: csv(formData.get("technologies")),
+    summary: str(formData.get("summary")),
     description: lines(formData.get("description")),
     featured: formData.get("featured") === "on",
     sortOrder: Number(str(formData.get("sortOrder"))) || 0,

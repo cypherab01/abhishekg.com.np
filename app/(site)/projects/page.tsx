@@ -47,7 +47,7 @@ export default async function ProjectsPage() {
                   <ProjectCard
                     title={project.name}
                     category={categoryNameById.get(project.categoryId)}
-                    description={project.description.join(" ")}
+                    description={project.summary || project.description.join(" ")}
                     skills={project.technologies}
                     href={`/projects/${project.slug}`}
                   />
