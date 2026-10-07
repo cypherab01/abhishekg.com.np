@@ -63,7 +63,7 @@ async function ProjectsSectionContent({
       cta={
         showAllLink ? (
           <Link href="/projects" className="link-cta">
-            Browse all projects
+            See more projects
             <ChevronRight className="size-5" aria-hidden />
           </Link>
         ) : undefined

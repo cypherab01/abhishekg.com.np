@@ -172,27 +172,59 @@ export async function deleteExperience(formData: FormData) {
 export async function saveExperienceKind(formData: FormData) {
   await assertAuth();
   const id = optStr(formData.get("id"));
-  const values = {
-    name: str(formData.get("name")),
-    sortOrder: Number(str(formData.get("sortOrder"))) || 0,
-  };
-  if (!values.name) {
+  const name = str(formData.get("name"));
+  if (!name) {
     redirect(
       `/admin/experience/types?error=${encodeURIComponent("Name is required.")}`,
     );
   }
+  // Order is set by dragging, so a rename leaves it alone and a new type
+  // joins the end of the list.
   if (id) {
     await db
       .update(experienceKinds)
-      .set(values)
+      .set({ name })
       .where(eq(experienceKinds.id, Number(id)));
   } else {
-    await db.insert(experienceKinds).values(values);
+    const [last] = await db
+      .select({ sortOrder: max(experienceKinds.sortOrder) })
+      .from(experienceKinds);
+    await db
+      .insert(experienceKinds)
+      .values({ name, sortOrder: (last?.sortOrder ?? -1) + 1 });
   }
   revalidateSite();
   revalidatePath("/admin/experience");
   revalidatePath("/admin/experience/types");
   redirect("/admin/experience/types?saved=1");
+}
+
+export async function renameExperienceKind(id: number, name: string) {
+  await assertAuth();
+  const trimmed = name.trim();
+  if (!trimmed) throw new Error("Name is required.");
+  await db
+    .update(experienceKinds)
+    .set({ name: trimmed })
+    .where(eq(experienceKinds.id, id));
+  revalidateSite();
+  revalidatePath("/admin/experience");
+  revalidatePath("/admin/experience/types");
+}
+
+export async function reorderExperienceKinds(ids: number[]) {
+  await assertAuth();
+  await Promise.all(
+    ids.map((id, index) =>
+      db
+        .update(experienceKinds)
+        .set({ sortOrder: index })
+        .where(eq(experienceKinds.id, id)),
+    ),
+  );
+  revalidateSite();
+  revalidatePath("/admin/experience");
+  revalidatePath("/admin/experience/types");
 }
 
 export async function deleteExperienceKind(formData: FormData) {

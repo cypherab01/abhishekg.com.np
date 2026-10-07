@@ -28,13 +28,13 @@ export default async function ProjectsPage() {
               Things I&apos;ve built.
             </h1>
             <p className="mt-6 max-w-[60ch] text-lead text-muted-foreground">
-              Web and mobile applications, platforms, and the odd experiment.
+              A selection of web and mobile applications, platforms, and the odd experiment.
             </p>
           </Reveal>
         </div>
       </section>
 
-      <section aria-label="All projects" className="gfs-section bg-surface-tinted">
+      <section aria-label="Selected projects" className="gfs-section bg-surface-tinted">
         <div className="gfs-container">
           {projects.length === 0 ? (
             <p className="text-muted-foreground">

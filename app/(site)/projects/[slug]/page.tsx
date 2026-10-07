@@ -106,7 +106,7 @@ export default async function ProjectDetailPage({
               className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors duration-200 ease-standard hover:text-foreground"
             >
               <ArrowLeft className="size-5" aria-hidden />
-              All projects
+              More projects
             </Link>
           </Reveal>
 
